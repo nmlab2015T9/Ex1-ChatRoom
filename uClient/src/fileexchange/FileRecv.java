@@ -3,7 +3,7 @@ import java.net.*;
 import java.io.*;
 /**
  *
- * @author Kevin
+ * @author dd Kevin
  */
 public class FileRecv implements Runnable {
 	private RecvGUI gui;
