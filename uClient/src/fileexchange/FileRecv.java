@@ -4,6 +4,7 @@ import java.io.*;
 /**
  *
  * @author dd Kevin
+ * @author StarryDawn
  */
 public class FileRecv implements Runnable {
 	private RecvGUI gui;
