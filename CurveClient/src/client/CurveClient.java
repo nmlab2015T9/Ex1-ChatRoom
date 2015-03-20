@@ -3,18 +3,20 @@
  */
 package client;
 
-/**
- * @author dd
- *
- */
 public class CurveClient {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public static ClientMgr cMgr;
+	public static DisplayMgr dMgr;
+	
+	private static void createAndShowGUI() {
+		cMgr = new ClientMgr();
+		dMgr = new DisplayMgr();
+	}	
+	
+	public static void main(String[] args){
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
 	}
-
 }
