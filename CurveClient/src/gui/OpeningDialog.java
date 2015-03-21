@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 
@@ -26,8 +27,8 @@ public class OpeningDialog extends JDialog implements ActionListener{
 	public static BufferedImage profileBufferedImg = new BufferedImage(profileImageSX ,profileImageSY,BufferedImage.TYPE_INT_ARGB);
 	private Container c;
 	private JButton profileImage, logIn;
-	public static String clientName;
-	private JTextField profileName;
+	private String clientName;
+	private JTextField profileName, IP, port;
 	
 	public OpeningDialog(MainFrame mainFrame){
 		//super(mainFrame);
@@ -76,7 +77,7 @@ public class OpeningDialog extends JDialog implements ActionListener{
 		c.add(IPLabel);
 				
 		//IP text field
-		JTextField IP = new JTextField();
+		IP = new JTextField();
 		IP.setText("140.112.18.198");
 		IP.setSize(profileImageSX, 30);
 		IP.setLocation(0, profileImageSY+55);
@@ -90,7 +91,7 @@ public class OpeningDialog extends JDialog implements ActionListener{
 		c.add(portLabel);
 				
         //port text field
-		JTextField port = new JTextField();
+		port = new JTextField();
 		port.setText("9987");
 		port.setSize(profileImageSX, 30);
 		port.setLocation(0, profileImageSY+95);
@@ -129,9 +130,22 @@ public class OpeningDialog extends JDialog implements ActionListener{
 		}
 		
 		else if(e.getSource().equals(logIn)){
-			this.setVisible(false);
-			mainframe.setVisible(true);
-			client.CurveClient.dMgr.mainFrame.setClientName(profileName.getText());
+			
+			//check if the name is valid
+			if( profileName.getText().equals("") ) {
+	            JOptionPane.showMessageDialog(this, "Please don't leave the Profile Name blank!", "", JOptionPane.ERROR_MESSAGE);
+	        } 
+			else if( profileName.getText().contains(" ") ) {
+	            JOptionPane.showMessageDialog(this, "Please don't contain blank in your Profile Name!", "", JOptionPane.ERROR_MESSAGE);
+	            profileName.setText("");
+	        } 
+			//continue to proceed only if all requirements is achieved
+			else {
+	        	this.setVisible(false);
+				mainframe.setVisible(true);
+				client.CurveClient.dMgr.mainFrame.setClientName(profileName.getText());
+				client.CurveClient.cMgr.setClientInfo(IP.getText(), new java.lang.Integer(port.getText()).intValue(), profileName.getText());
+	        }	
 		}
 	}
 	
