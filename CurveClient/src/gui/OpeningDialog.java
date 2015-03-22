@@ -18,10 +18,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import client.CurveClient;
+
 
 public class OpeningDialog extends JDialog implements ActionListener{
 
-	private MainFrame mainframe;
+	private MainHead mainhead;
 	public static int profileImageSX = 120, profileImageSY = 100;
 	private int OpeningDialogSX = 120, OpeningDialogSY = 280;
 	public static BufferedImage profileBufferedImg = new BufferedImage(profileImageSX ,profileImageSY,BufferedImage.TYPE_INT_ARGB);
@@ -29,10 +31,11 @@ public class OpeningDialog extends JDialog implements ActionListener{
 	private JButton profileImage, logIn;
 	private String clientName;
 	private JTextField profileName, IP, port;
+	private JLabel profileNameLabel;
 	
-	public OpeningDialog(MainFrame mainFrame){
+	public OpeningDialog(MainHead mainHead){
 		//super(mainFrame);
-		mainframe = mainFrame;
+		mainhead = mainHead;
 		setLocation(500, 300);
 		setSize(OpeningDialogSX, OpeningDialogSY);
 	    setVisible(true);
@@ -55,8 +58,8 @@ public class OpeningDialog extends JDialog implements ActionListener{
 		profileImage.addActionListener(this);
 		c.add(profileImage);
 		
-		//profile name label
-		JLabel profileNameLabel = new JLabel();
+		//profile name label: if you want to change and edit this, remember to also change the label down at the rename() method
+		profileNameLabel = new JLabel();
 		profileNameLabel.setText("Profile Name");
 		profileNameLabel.setSize(profileImageSX, 30);
 		profileNameLabel.setLocation(5, profileImageSY-5);
@@ -142,9 +145,10 @@ public class OpeningDialog extends JDialog implements ActionListener{
 			//continue to proceed only if all requirements is achieved
 			else {
 	        	this.setVisible(false);
-				mainframe.setVisible(true);
+				//mainframe.setVisible(true);
 				client.CurveClient.dMgr.mainFrame.setClientName(profileName.getText());
 				client.CurveClient.cMgr.setClientInfo(IP.getText(), new java.lang.Integer(port.getText()).intValue(), profileName.getText());
+				CurveClient.cMgr.connectionBegin();
 	        }	
 		}
 	}
@@ -152,5 +156,23 @@ public class OpeningDialog extends JDialog implements ActionListener{
 	
 	public String GetclientName(){
 		return clientName;
+	}
+
+	public void rename() {
+		IP.setBackground(new Color(200, 200, 200));
+		IP.setEditable(false);
+		port.setBackground(new Color(200, 200, 200));
+		port.setEditable(false);
+		
+		profileNameLabel = new JLabel("<html>Profile Name <font color='red'>Already used!</font></html>");
+		profileNameLabel.setText("Profile Name");
+		profileNameLabel.setSize(profileImageSX, 30);
+		profileNameLabel.setLocation(5, profileImageSY-5);
+		c.add(profileNameLabel);
+		//profileNameLabel.setText("Profile Name: Already used!");
+		
+		profileName.setText("");
+		
+		this.setVisible(true);
 	}
 }

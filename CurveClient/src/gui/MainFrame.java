@@ -35,8 +35,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void initFrame(){
 		//frame
 		setSize(frameSX, frameSY);
-		setLocation(100, 0);
-		//setVisible(true);
+		setLocation(100, 100);
+		//setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		c = getContentPane();
 		

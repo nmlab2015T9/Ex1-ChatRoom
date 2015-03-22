@@ -3,9 +3,11 @@ package client;
 public class DisplayMgr {
 	public gui.OpeningDialog openDialog;
 	public gui.MainFrame mainFrame;
+	public gui.MainHead mainHead;
 	
 	public DisplayMgr(){
 		mainFrame = new gui.MainFrame();
-		openDialog = new gui.OpeningDialog(mainFrame);
+		mainHead = new gui.MainHead(mainFrame);
+		openDialog = new gui.OpeningDialog(mainHead);
 	}
 }
