@@ -145,7 +145,7 @@ public class OpeningDialog extends JDialog implements ActionListener{
 			//continue to proceed only if all requirements is achieved
 			else {
 	        	this.setVisible(false);
-				//mainframe.setVisible(true);
+				mainhead.setVisible(true);
 				client.CurveClient.dMgr.mainFrame.setClientName(profileName.getText());
 				client.CurveClient.cMgr.setClientInfo(IP.getText(), new java.lang.Integer(port.getText()).intValue(), profileName.getText());
 				CurveClient.cMgr.connectionBegin();
