@@ -6,8 +6,11 @@ import java.awt.FileDialog;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
@@ -81,7 +84,7 @@ public class OpeningDialog extends JDialog implements ActionListener{
 				
 		//IP text field
 		IP = new JTextField();
-		IP.setText("140.112.18.198");
+		IP.setText("140.112.18.199");
 		IP.setSize(profileImageSX, 30);
 		IP.setLocation(0, profileImageSY+55);
 		c.add(IP);
@@ -106,8 +109,21 @@ public class OpeningDialog extends JDialog implements ActionListener{
 		logIn.setLocation(0, profileImageSY+125);
 		logIn.addActionListener(this);
 		c.add(logIn);
+		
+		//press enter = log in button pressed
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(new KeyEventDispatcher(){
+        	 public boolean dispatchKeyEvent(KeyEvent e) {
+                 if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER)){
+                	 logIn.doClick();
+                 }
+                 return false;
+             }
+        });
 	}
 
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(profileImage)){

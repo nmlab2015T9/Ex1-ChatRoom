@@ -23,7 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 public class MainHead extends JFrame{
-	private static int sx = 60, sy = 60, sx2 = 100, sy2 = 100; //sx2, sy2 = cross size
+	private static int sx = 60, sy = 60, sx2 = 80, sy2 = 80; //sx2, sy2 = cross size
 	private static int gap = 150;
 	private static int i = 0;
     private static Point point = new Point();
@@ -59,7 +59,7 @@ public class MainHead extends JFrame{
         JLabel cross = new JLabel(crossImage);
         closeArea.getContentPane().setLayout(null);
         cross.setSize(50, 50);
-        cross.setLocation(25, 25);
+        cross.setLocation(15, 15);
         closeArea.getContentPane().add(cross);
         closeArea.setUndecorated(true);
         closeArea.setShape(ellipse2);
@@ -94,22 +94,23 @@ public class MainHead extends JFrame{
             	}
             	else
             		mainframe.setVisible(false);
-            	timer = new Timer();
+            	/*timer = new Timer();
             	timer.scheduleAtFixedRate(new TimerTask(){  
             		@Override
             		public void run() {
-            			if(i<=10){
+            			if(i<=20){
             				if(p.y > 20)
-            					setLocation(p.x + ((width - sx) - p.x)*i/10, p.y - (p.y - 20)*i/10);
+            					setLocation(p.x + ((width - sx) - p.x)*i/20, p.y - (p.y - 20)*i/20);
             				else if(p.y < 20)
-            					setLocation(p.x + ((width - sx) - p.x)*i/10, p.y + (20 - p.y)*i/10);
+            					setLocation(p.x + ((width - sx) - p.x)*i/20, p.y + (20 - p.y)*i/20);
             				i++;
+            				mainframe.setSize(gui.MainFrame.frameSX*i/20, gui.MainFrame.frameSY*i/20);
             			}
             			else{
             					timer.cancel();
             					i = 0;
             			}
-            		}},10 ,10);
+            		}},10 ,1);*/
             }
             
             public void mouseReleased(MouseEvent e){
@@ -118,22 +119,22 @@ public class MainHead extends JFrame{
             		p.x = 0;
             		setLocation(p);
             	}
-            	if(p.y < gap){
+            	else if(p.y < gap){
             		p.y = 20;
             		setLocation(p);
             	}
-            	if(Math.abs(p.x - width) < (gap + sx)){
+            	else if(Math.abs(p.x - width) < (gap + sx)){
             		p.x = width-sx;
             		setLocation(p);
             	}
-            	if(Math.abs(p.y - height) < (gap + sy)){
+            	else if(Math.abs(p.y - height) < (gap + sy)){
             		p.y = height-sy;
             		setLocation(p);
             	}
             	
-                if(p.x > (width/2 - sx2/2 - 200) && p.x < (width/2 + sx2/2 + 200) && p.y > (height - sy2 - 200)){
+                //if(p.x > (width/2 - sx2/2 - 200) && p.x < (width/2 + sx2/2 + 200) && p.y > (height - sy2 - 200)){
                 	closeProcess();
-            	}
+            	//}
             }
         });
         
@@ -142,14 +143,16 @@ public class MainHead extends JFrame{
             	
                 Point p = getLocation();
                 setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
-                if(p.x > (width/2 - sx2/2 - 200) && p.x < (width/2 + sx2/2 + 200) && p.y > (height - sy2 - 200)){
+                //if(p.x > (width/2 - sx2/2 - 200) && p.x < (width/2 + sx2/2 + 200) && p.y > (height - sy2 - 200)){
                 	closeArea.setVisible(true);
-                	inArea = true;
-            	}
-                else if(inArea && (p.x < (width/2 - sx2/2 - 200) || p.x > (width/2 + sx2/2 + 200) || p.y < (height - sy2 - 200))){
-                	closeProcess();
-                	inArea = false;
-                }
+                	closeArea.setLocation((width/2 - sx2/2) + ((p.x + e.getX() - point.x) - (width/2 - sx2/2)) / 50, 
+                						  (height - sy2) + ((p.y + e.getY() - point.y) - (height - sy2)) / 50);
+                //	inArea = true;
+            	//}
+                //else if(inArea && (p.x < (width/2 - sx2/2 - 200) || p.x > (width/2 + sx2/2 + 200) || p.y < (height - sy2 - 200))){
+                //	closeProcess();
+                //	inArea = false;
+                //}
             }
         });
         
@@ -167,8 +170,9 @@ public class MainHead extends JFrame{
 				public void run() {
 					if(i<=50){
 	    				closeArea.setLocation(width/2 - sx2/2, (height - sy2)+300*i/50);
+	    				//for the main head to set in the center of closeArea
 	    				if(p.x > (width/2 - sx2/2) && p.x < (width/2 + sx2/2) && p.y > (height - sy2))
-	    					setLocation(width/2 - sx2/2 + 20, (height - sy2 + 20)+300*i/50);
+	    					setLocation(width/2 - sx2/2 + 10, (height - sy2 + 10)+300*i/50);
 	    				i++;
 	    			}
 	    			else{

@@ -14,6 +14,7 @@ public class ClientMgr implements Runnable {
 	private DataOutputStream output;
 	private DataInputStream input;
 	private Thread thread;
+	private gui.MainFrame mainframe;
 	
 	public ClientMgr () {
 		//connectionBegin();
@@ -70,6 +71,10 @@ public class ClientMgr implements Runnable {
 		this.name = name;
 		System.out.println(IP + " " + port + " " + name);
 	}
+	
+	public void setMainFrame(gui.MainFrame mainFrame){
+		mainframe = mainFrame;
+	}
 
 	@Override
 	public void run() {
@@ -78,11 +83,31 @@ public class ClientMgr implements Runnable {
 			String TransferLine = input.readUTF();
 	                System.out.println("Recv: " + TransferLine);
 
-	               // parseMsg(TransferLine);
+	                readInput(TransferLine);
 	            }
 		}
 	        catch (Exception e) {
 	           // interrupt();
 		}		
+	}
+
+	private void readInput(String msg) {
+		//add user:  /q+ <user> <texture>
+        if (msg.startsWith("/q+")) {
+            String[] splitedLine = msg.split(" ", 3);
+                System.out.println("User joined:" + splitedLine[1]);
+                mainframe.addNewUser(splitedLine[1], Integer.parseInt(splitedLine[2]));
+        }
+        //delete user:  /q- <user>
+        else if (msg.startsWith("/q-")) {
+            String[] splitedLine = msg.split(" ", 2);
+                System.out.println("User left:" + splitedLine[1]);
+                mainframe.delUser(splitedLine[1]);
+        }
+        
+        else if (msg.startsWith("/s")) {
+            String[] splitedLine = msg.split(" ", 3);
+            //mainframe.addNewLine(splitedLine[1] + " says: " + splitedLine[2], splitedLine[1], 0);
+        }
 	}
 }
