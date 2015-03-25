@@ -49,13 +49,13 @@ public class MainHead extends JFrame{
         setSize(sx, sy);
         setLocation(width-sx, 100);
         setLayout(new BorderLayout());
-    	URL url = client.DisplayMgr.class.getResource("/res/lobby.png");
+    	URL url = client.CurveClient.class.getResource("/res/lobby.png");
 		ImageIcon lobbyImage = new ImageIcon(url);
         JLabel mainhead = new JLabel(lobbyImage);
         getContentPane().add(mainhead,BorderLayout.CENTER);
         
         //setting of the close area
-    	URL url2 = client.DisplayMgr.class.getResource("/res/cross.png");
+    	URL url2 = client.CurveClient.class.getResource("/res/cross.png");
 		ImageIcon crossImage = new ImageIcon(url2);
         JLabel cross = new JLabel(crossImage);
         closeArea.getContentPane().setLayout(null);
@@ -261,12 +261,12 @@ public class MainHead extends JFrame{
     }*/
 
     // "/c" command
-    /*public void userChangeColor ( String name, int c ) {
-        MainChatTab.userChangeColor(name, c);
-        for (ChatTab t:tabs) {
-            t.userChangeColor(name, c);
-        }
-    }*/
+    public void userChangeColor ( String name, int c ) {
+    	mainframe.userChangeColor(name, c);
+        //for (ChatTab t:tabs) {
+        //    t.userChangeColor(name, c);
+        //}
+    }
 
     // "/f" command
     /*public void sendFile( String dest ) {

@@ -148,7 +148,7 @@ public class MainFrame extends JFrame implements ActionListener{
 			choiceFrame[i].setBorder(BorderFactory.createEtchedBorder(BevelBorder.RAISED));
 		}
 		
-		URL url = client.DisplayMgr.class.getResource("/res/editcolor.png");
+		URL url = client.CurveClient.class.getResource("/res/editcolor.png");
 		ImageIcon editColorImage = new ImageIcon(url);
 		editColor = new JButton("Edit Color",editColorImage);
 		editColor.setBounds(140 + 5 + choiceFrame.length * (colorPanelLength+4), 0, 90, 30);
@@ -159,6 +159,16 @@ public class MainFrame extends JFrame implements ActionListener{
 		sendingTarAndColorPanel.add(editColor);
 		sendingTarAndColorPanel.add(sendingTarget);
 		sendingTarAndColorPanel.setBounds(new Rectangle(0, 370, 450, 30));
+		sendingTarAndColorPanel.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if(e.getX() > 140 && e.getX() < 140 + choiceFrame.length * (colorPanelLength+4)){
+					int columnChoosed = (e.getX()-140)/(colorPanelLength+4);
+					Color temp = new Color(colorColumn[0][columnChoosed],colorColumn[1][columnChoosed],colorColumn[2][columnChoosed]);
+					color = temp.getRGB();
+					user.sendColorChange(color);
+				}
+			}
+		});
 		
 		//text input area on the right hand side
 		textInputArea = new JTextPane();
@@ -244,19 +254,11 @@ public class MainFrame extends JFrame implements ActionListener{
 			profileImg.drawImage(iconResized.getImage(),0,0,this);
 		}
 		else if(e.getSource().equals(editColor)){
-			int R = (byte)(color & 0x000000FF);
-			int G = (byte)((color & 0x0000FF00) >> 8);
-			int B = (byte)((color & 0x00FF0000) >> 16);
-			Color c = JColorChooser.showDialog( this, "Choose the color you like for your text.", new Color(R, G, B));
-			int getR = c.getRed();
-			int getG = c.getGreen();
-			int getB = c.getBlue();
-			
-			R = (getR << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
-		    G = (getG << 8) & 0x0000FF00; //Shift Green 8-bits and mask out other stuff
-		    B = getB & 0x000000FF; //Mask out anything not blue.
-
-		    color = 0xFF000000 | R | G | B;
+			Color temp = JColorChooser.showDialog(this, "Choose color.", new Color(color));
+			if( temp != null ) {
+				color = temp.getRGB();
+			}
+	        user.sendColorChange(color);
 		}
 	}
 	 
@@ -332,13 +334,13 @@ public class MainFrame extends JFrame implements ActionListener{
         addSysLine(newUser + " joined.");
 	}
 	
-	public void delUser ( String newUser ) {
-		userListVector.remove(newUser);
+	public void delUser ( String user ) {
+		userListVector.remove(user);
 		userList.setListData(userListVector);
 
-        doc.removeStyle(newUser);
+        doc.removeStyle(user);
 
-        addSysLine(newUser + " left.");
+        addSysLine(user + " left.");
     }
 	
 	public void addNewLine ( String text , String color ) {
@@ -422,6 +424,15 @@ public class MainFrame extends JFrame implements ActionListener{
         ChatLineColor.add("warn");
         refreshChat(text + "\n", "warn");
     }
+    
+    public void userChangeColor ( String name, int c ) {
+        if (name.equals(clientName)) {
+            //profileNameLabel.setForeground(new Color(c));
+        }
+        Style s = doc.getStyle(name);
+        StyleConstants.setForeground(s, new Color(c));
+    }
+
 
     //refresh chat room text
     private void refreshChat ( String text, String color) {

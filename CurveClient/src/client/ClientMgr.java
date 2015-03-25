@@ -38,8 +38,8 @@ public class ClientMgr implements Runnable {
             thread.start();  //call run()
         }
         catch (Exception e) {
-            //GUIObject.addWarnLine("Failed: " + serverIP + ":" + port);
-            //interrupt();
+        	mainhead.addWarnLine("Failed: " + IP + ":" + port);
+            interrupt();
             e.printStackTrace();
         }
 	}
@@ -120,7 +120,7 @@ public class ClientMgr implements Runnable {
 	            }
 		}
 	        catch (Exception e) {
-	           // interrupt();
+	            interrupt();
 		}		
 	}
 
@@ -203,5 +203,54 @@ public class ClientMgr implements Runnable {
             String[] splitedLine = msg.split(" ", 3);
             mainhead.addNewLine(splitedLine[1] + " says: " + splitedLine[2], splitedLine[1], 0);
         }
+        //error msg:  /e error_msg
+        else if (msg.startsWith("/e")) {
+            String[] splitedLine = msg.split(" ", 2);
+            mainhead.addWarnLine(splitedLine[1]);
+        }
+        //whisper msg:  /w <user> <target> <roomID> <msg>
+       /* else if (msg.startsWith("/w")) {
+            String[] splitedLine = msg.split(" ", 5);
+            if ( splitedLine[1].equals(name) ) {
+            	mainhead.addNewLine("Whisper to " + splitedLine[2] + " : " + splitedLine[4], "whisper", Integer.parseInt(splitedLine[3]));
+            }
+            else {
+            	mainhead.addNewLine(splitedLine[1] + " whispers: " + splitedLine[4], "whisper", Integer.parseInt(splitedLine[3]));
+            	mainhead.setLastWhisper(splitedLine[1], Integer.parseInt(splitedLine[3]));
+            }
+        }*/
+        //color change:  /c <user> <texture>
+        else if (msg.startsWith("/c")) {
+            String[] splitedLine = msg.split(" ", 3);
+            mainhead.userChangeColor(splitedLine[1], Integer.parseInt(splitedLine[2]));
+        }
+        //add client to room:  /a <roomID>
+       /* else if (msg.startsWith("/a")) {
+            String[] splitedLine = msg.split(" ", 2);
+            mainhead.addTab(Integer.parseInt(splitedLine[1]));
+        }*/
+        //add user into room:  /r+ <roomID> [username] [texture]
+       /* else if (msg.startsWith("/r+")) {
+            String[] splitedLine = msg.split(" ", 4);
+            mainhead.addUser(splitedLine[2], Integer.parseInt(splitedLine[3]), Integer.parseInt(splitedLine[1]));
+        }*/
+        //remove user from room:  /r- <roomID> <user>
+       /* else if (msg.startsWith("/r-")) {
+            String[] splitedLine = msg.split(" ", 3);
+            mainhead.delUser(splitedLine[2], Integer.parseInt(splitedLine[1]));
+        }*/
+        //room msg:  /rs <roomID> <user> msg
+        else if (msg.startsWith("/rs")) {
+            String[] splitedLine = msg.split(" ", 4);
+            mainhead.addNewLine(splitedLine[2] + " says: " + splitedLine[3], splitedLine[2],
+                                 Integer.parseInt(splitedLine[1]));
+        }
+        // file transfer request: /f [src name] [dest name] [src IP]
+        /*else if( msg.startsWith("/f") ) {
+                String srcName = msg.split(" ", 4)[1];
+                String srcAddr = msg.split(" ", 4)[3];
+                Thread recvThd = new Thread( new FileRecv( srcAddr, srcName ) );
+                recvThd.start();
+        }*/
 	}
 }
