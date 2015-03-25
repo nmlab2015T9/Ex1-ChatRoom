@@ -16,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -188,5 +189,92 @@ public class MainHead extends JFrame{
 				}
     		});
     			}},10 ,10);
+    }
+    
+ // "/q+" command
+    public void addNewUser ( String user , int color ) {
+        mainframe.addNewUser(user, color);
+    }
+
+    // "/q-" command
+    public void delUser ( String user ) {
+    	mainframe.delUser(user);
+    }
+
+    // "/r+" command
+    /*public void addUser ( String user , int color , int roomID ) {
+        ChatTab tab = map.get(roomID);
+        tab.addUser(user, color);
+    }*/
+
+    // "/r-" command
+   /* public void delUser ( String user , int roomID ) {
+        ChatTab tab = map.get(roomID);
+        tab.delUser(user);
+    }*/
+
+    //add new lines
+    public void addNewLine ( String text , String color , int roomID ) {
+        if (roomID == 0) {
+        	mainframe.addNewLine(text, color);
+        }
+        //else {
+       //   ChatTab tab = map.get(roomID);
+       //    tab.addNewLine(text, color);
+       // }
+    }
+
+    public void addSysLine ( String text ) {
+    	mainframe.addSysLine(text);
+    }
+
+    public void addWarnLine ( String text ) {
+    	mainframe.addWarnLine(text);
+    }
+
+    /*public void setLastWhisper ( String name , int roomID ) {
+        if (roomID == 0) {
+            MainChatTab.setLastWhisper(name);
+        }
+        else {
+            ChatTab tab = map.get(roomID);
+            tab.setLastWhisper(name);
+        }
+    }*/
+
+    // "/a" command
+    /*public void addTab ( int roomID ) {
+        ChatTab newTab = new ChatTab(roomID, username);
+        newTab.setFrame(this);
+        newTab.setClientObject(ClientObject);
+        tabs.add(newTab);
+        map.put(roomID, newTab);
+        TabPane.add("Room "+roomID, newTab);
+    }
+
+    // "/l" command
+    public void delTab ( int roomID ) {
+        ChatTab tab = map.get(roomID);
+        tabs.remove(tab);
+        map.remove(roomID);
+        TabPane.remove(tab);
+    }*/
+
+    // "/c" command
+    /*public void userChangeColor ( String name, int c ) {
+        MainChatTab.userChangeColor(name, c);
+        for (ChatTab t:tabs) {
+            t.userChangeColor(name, c);
+        }
+    }*/
+
+    // "/f" command
+    /*public void sendFile( String dest ) {
+    	ClientObject.sendFile(username, dest);
+    }*/
+
+
+    public void clear () {
+    	mainframe.clear();
     }
 }

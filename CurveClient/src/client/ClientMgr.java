@@ -14,7 +14,7 @@ public class ClientMgr implements Runnable {
 	private DataOutputStream output;
 	private DataInputStream input;
 	private Thread thread;
-	private gui.MainFrame mainframe;
+	private gui.MainHead mainhead;
 	private gui.OpeningDialog openingdialog;
 	
 	public ClientMgr () {
@@ -24,7 +24,7 @@ public class ClientMgr implements Runnable {
 	public void connectionBegin() {
 		try {
             socket = new Socket(InetAddress.getByName(IP), port);
-            mainframe.addSysLine("Connected: " + IP + ":" + port);
+            mainhead.addSysLine("Connected: " + IP + ":" + port);
             
             //check if name available
             checkName();
@@ -57,7 +57,7 @@ public class ClientMgr implements Runnable {
 	    		massage = input.readUTF();
 	    		if( massage.equals("/ua") ) break;
 	    		else {
-	    			mainframe.addSysLine("Name already in use! please change it!");
+	    			mainhead.addSysLine("Name already in use! please change it!");
 	                CurveClient.dMgr.openDialog.rename();
 	                output.writeUTF(name);
 	    		}	
@@ -67,8 +67,8 @@ public class ClientMgr implements Runnable {
 	}
 	
 	private void interrupt() {
-        mainframe.addWarnLine("Interrupt!");
-        mainframe.clear();
+		mainhead.addWarnLine("Interrupt!");
+		mainhead.clear();
         reconnect();
 	}
 	
@@ -78,7 +78,7 @@ public class ClientMgr implements Runnable {
         //create socket
         try {
         	socket = new Socket(InetAddress.getByName(IP), port);
-        	mainframe.addSysLine("Connected: " + IP + ":" + port);
+        	mainhead.addSysLine("Connected: " + IP + ":" + port);
              
         	//check if name available
         	checkName();
@@ -92,7 +92,7 @@ public class ClientMgr implements Runnable {
             thread.start();  //call run()
         }
         catch (Exception e) {
-            mainframe.addWarnLine("Failed: " + IP + ":" + port);
+            mainhead.addWarnLine("Failed: " + IP + ":" + port);
             e.printStackTrace();
         }
     }
@@ -104,9 +104,9 @@ public class ClientMgr implements Runnable {
 		System.out.println(IP + " " + port + " " + name);
 	}
 	
-	public void setMainFrameAndOpeningDialog(gui.MainFrame mainFrame, gui.OpeningDialog openingDialog){
-		mainframe = mainFrame;
+	public void setOpeningDialogAndMainhead(gui.OpeningDialog openingDialog, gui.MainHead mainHead){
 		openingdialog = openingDialog;
+		mainhead = mainHead;
 	}
 
 	@Override
@@ -124,23 +124,84 @@ public class ClientMgr implements Runnable {
 		}		
 	}
 
+	 public void send ( String msg ) {
+	        try{
+	        	output.writeUTF(msg);
+	            System.out.println("Send: " + msg);
+		}
+		catch (Exception e) {
+	            interrupt();
+		}
+	    }
+
+	    //open new room
+	    public void sendNewRoom () {
+	        //new room: "/n"
+	        send("/n");
+	    }
+
+	    //leave room
+	    public void sendLeaveRoom ( int roomID ) {
+	        //leave room: "/l <roomID>"
+	        send("/l "+roomID);
+	    }
+
+	    //add user into room
+	    public void sendAddRoomUser ( String user, int roomID ) {
+	        //leave room: "/a <roomID> <user>"
+	        send("/a " +roomID+" " +user);
+	    }
+
+	    //send public msg
+	    public void sendSMsg ( String msg ) {
+	        //send msg: "/s <user> <msg>"
+	        send("/s " + name+" " + msg);
+	    }
+
+	    //send room msg
+	    public void sendRMsg ( String msg , int roomID ) {
+	        //send room msg: "/rs <roomID> [src name] <msg>"
+	        send("/rs " + roomID+" "+ name+" " + msg);
+	    }
+
+	    //send whisper msg
+	    public void sendWMsg ( String msg , String target , int roomID) {
+	       //whisper msg: "/w <user> <target> <roomID> <msg>"
+	       send("/w " + name+" " + target+" " + roomID+" " + msg);
+		
+	    }
+
+	    //color change
+	    public void sendColorChange ( int c ) {
+	        //color change: "/c <user> <color>"
+	        send("/c " + name+" " + c);
+	    }
+
+	    //send file
+	    /*public void sendFile( String src, String dest ) {
+	        // send file request: /f [src name] [dest name]
+	        send( "/f "+src+" "+dest );
+	        Thread fsthd = new Thread( new FileSend() );
+	        fsthd.start();
+	    }*/
+	
 	private void readInput(String msg) {
 		//add user:  /q+ <user> <texture>
         if (msg.startsWith("/q+")) {
             String[] splitedLine = msg.split(" ", 3);
                 System.out.println("User joined:" + splitedLine[1]);
-                mainframe.addNewUser(splitedLine[1], Integer.parseInt(splitedLine[2]));
+                mainhead.addNewUser(splitedLine[1], Integer.parseInt(splitedLine[2]));
         }
         //delete user:  /q- <user>
         else if (msg.startsWith("/q-")) {
             String[] splitedLine = msg.split(" ", 2);
                 System.out.println("User left:" + splitedLine[1]);
-                mainframe.delUser(splitedLine[1]);
+                mainhead.delUser(splitedLine[1]);
         }
         
         else if (msg.startsWith("/s")) {
             String[] splitedLine = msg.split(" ", 3);
-            //mainframe.addNewLine(splitedLine[1] + " says: " + splitedLine[2], splitedLine[1], 0);
+            mainhead.addNewLine(splitedLine[1] + " says: " + splitedLine[2], splitedLine[1], 0);
         }
 	}
 }

@@ -8,21 +8,32 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -31,6 +42,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.border.BevelBorder;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -61,8 +73,11 @@ public class MainFrame extends JFrame implements ActionListener{
     private Vector <String> userListVector;
     private StyledDocument doc;
     private Vector <String> ChatLines;
-    private Vector <String> ChatLineTexture;
+    private Vector <String> ChatLineColor;
+    private Vector <String> smileys;
     private int color = Color.black.getRGB();
+    
+    private client.ClientMgr user = client.CurveClient.cMgr;
    
 	
 	public MainFrame(){
@@ -76,6 +91,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		setSize(frameSX, frameSY);
 		setLocation(100, 100);
 		setUndecorated(true);
+		setShape(new RoundRectangle2D.Double(0, 0, frameSX, frameSY, 30, 30));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		c = getContentPane();
 		
@@ -181,17 +197,27 @@ public class MainFrame extends JFrame implements ActionListener{
 				point.y = e.getY();
 			}
 		});
+		
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(new KeyEventDispatcher(){
+        	 public boolean dispatchKeyEvent(KeyEvent e) {
+                 if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
+                	 prepareMsg(getInputText(textInputArea));
+                	 textInputArea.setText(null);
+                 }
+                 return false;
+             }
+        });
 	}
 	
 	public void initComponents(){
-
 		userListVector = new Vector<String>();
 		ChatLines = new Vector<String>();
-        ChatLineTexture = new Vector<String>();
+        ChatLineColor = new Vector<String>();
+        smileys = new Vector<String>();
         doc = chatArea.getStyledDocument();
         addStylesToDocument(doc);
         addSmileysToDocument(doc);
-		
 	}
 	
 	@Override
@@ -217,8 +243,78 @@ public class MainFrame extends JFrame implements ActionListener{
 			Graphics2D profileImg = (Graphics2D) profileBufferedImg.getGraphics();
 			profileImg.drawImage(iconResized.getImage(),0,0,this);
 		}
-		
+		else if(e.getSource().equals(editColor)){
+			int R = (byte)(color & 0x000000FF);
+			int G = (byte)((color & 0x0000FF00) >> 8);
+			int B = (byte)((color & 0x00FF0000) >> 16);
+			Color c = JColorChooser.showDialog( this, "Choose the color you like for your text.", new Color(R, G, B));
+			int getR = c.getRed();
+			int getG = c.getGreen();
+			int getB = c.getBlue();
+			
+			R = (getR << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
+		    G = (getG << 8) & 0x0000FF00; //Shift Green 8-bits and mask out other stuff
+		    B = getB & 0x000000FF; //Mask out anything not blue.
+
+		    color = 0xFF000000 | R | G | B;
+		}
 	}
+	 
+	public List<Element> getAllElements(JTextPane x) {
+			Element[] roots = x.getStyledDocument().getRootElements();
+			return getAllElements(roots);
+		    }
+		    private List<Element> getAllElements(Element[] roots) {
+		            List<Element> icons = new LinkedList<Element>();
+		            for (int a = 0; a < roots.length; a++) {
+		                    if(roots[a] == null)
+		                            continue ;
+		                    icons.add(roots[a]);
+		                    for (int c = 0; c < roots[a].getElementCount(); c++) {
+		                        Element element = roots[a].getElement(c);
+		                        icons.addAll(getAllElements(new Element[] { element }));
+		                    }
+		            }
+		            return icons;
+		    }
+	
+    public String getInputText(JTextPane x) {
+        Map<Integer,String> mp = new HashMap<Integer,String>();
+        String t =x.getText();
+        List<Element> els = getAllElements(x);
+        for(Element el : els) {
+                Icon icon = StyleConstants.getIcon(el.getAttributes());
+                if(icon != null) {
+                        String tmp = ((ImageIcon)icon).getDescription();
+                        // 假设 icon中的desc存放它的 filePath
+                        mp.put(el.getStartOffset(), tmp);
+                }
+        }
+        StringBuffer tt = new StringBuffer("");
+        char[] chr = t.toCharArray();
+        for(int c=0; c<chr.length; c++) {
+                String v = mp.get(new Integer(c));
+                if(v == null)
+                        tt.append(chr[c]);
+                else
+                        tt.append(v);
+        }
+        return tt.toString();
+}
+	
+	 //send msg as public or whisper
+    private void prepareMsg ( String msg ) {
+
+        String tar = target;
+        //public msg
+        if ( tar == "All members" ) {
+        	user.sendSMsg(msg);
+        }
+        //whisper msg
+        else {
+            user.sendWMsg(msg, tar, 0);
+        }
+    }
 	
 	public void setClientName(String name) {
 		clientName = name;
@@ -245,15 +341,85 @@ public class MainFrame extends JFrame implements ActionListener{
         addSysLine(newUser + " left.");
     }
 	
+	public void addNewLine ( String text , String color ) {
+		ChatLines.add(text + "\n");
+		ChatLineColor.add(color);
+		String oriText = text + "\n";
+		String oriTexture = color;
+		
+		Vector<String> texts = new Vector<String>();
+		Vector<String> textures = new Vector<String>();
+		Vector<Integer> indexs  = new Vector<Integer>();
+
+        for (String regex : smileys) {
+            int index = 0;
+            while (index >= 0) {
+                index = oriText.indexOf(regex, index);
+                if (index>=0) {
+                    indexs.add(index);
+                    index++;
+                }
+            }
+        }
+
+        if ( indexs.size()!=0 ) {  //some smileys exist
+            int[] indexs_array = new int[indexs.size()];
+            for (int k=0; k<indexs.size(); k++) {
+                indexs_array[k] = indexs.elementAt(k);
+            }
+
+            Arrays.sort(indexs_array);
+
+            Vector<String> splited = new Vector<String>();
+            splited.add(oriText.substring(0, indexs_array[0]));
+            for (int j=0; j<indexs_array.length; j++) {
+                splited.add(oriText.substring(indexs_array[j], indexs_array[j]+9));
+                if (j==indexs_array.length-1)
+                    splited.add(oriText.substring(indexs_array[j]+9));
+                else
+                    splited.add(oriText.substring(indexs_array[j]+9, indexs_array[j+1]));
+            }
+            for (int i=0; i<splited.size(); i++) {
+                String s = splited.elementAt(i);
+                String t = oriTexture;
+                for (String smi: smileys) {
+                    if (s.equals(smi)) {
+                        t = smi;
+                    }
+                    else if (s.equals("")) {
+                        s = new String(" ");
+                    }
+                }
+                texts.add(i, s);
+                textures.add(i, t);
+            }            
+        }
+        else {
+            texts.add(oriText);
+            textures.add(oriTexture);
+        }
+        try {
+            for (int i =0; i<texts.size(); i++) {
+                doc.insertString( doc.getLength(),
+                                  texts.elementAt(i),
+                                  doc.getStyle(textures.elementAt(i)) );
+            }
+        }
+        catch (BadLocationException ble) {
+            System.err.println("Couldn't insert initial text into text pane.");
+        }
+        chatArea.setCaretPosition(doc.getLength());
+	}
+	
     public void addSysLine ( String text ) {
         ChatLines.add(text + "\n");
-        ChatLineTexture.add("system");
+        ChatLineColor.add("system");
         refreshChat(text + "\n", "system");
     }
 
     public void addWarnLine ( String text ) {
         ChatLines.add(text + "\n");
-        ChatLineTexture.add("warn");
+        ChatLineColor.add("warn");
         refreshChat(text + "\n", "warn");
     }
 
