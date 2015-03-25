@@ -37,7 +37,6 @@ public class OpeningDialog extends JDialog implements ActionListener{
 	private JLabel profileNameLabel;
 	
 	public OpeningDialog(MainHead mainHead){
-		//super(mainFrame);
 		mainhead = mainHead;
 		setLocation(500, 300);
 		setSize(OpeningDialogSX, OpeningDialogSY);
@@ -114,7 +113,7 @@ public class OpeningDialog extends JDialog implements ActionListener{
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new KeyEventDispatcher(){
         	 public boolean dispatchKeyEvent(KeyEvent e) {
-                 if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER)){
+                 if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
                 	 logIn.doClick();
                  }
                  return false;
@@ -160,7 +159,7 @@ public class OpeningDialog extends JDialog implements ActionListener{
 	        } 
 			//continue to proceed only if all requirements is achieved
 			else {
-	        	this.setVisible(false);
+	        	setVisible(false);
 				mainhead.setVisible(true);
 				client.CurveClient.dMgr.mainFrame.setClientName(profileName.getText());
 				client.CurveClient.cMgr.setClientInfo(IP.getText(), new java.lang.Integer(port.getText()).intValue(), profileName.getText());
@@ -189,6 +188,16 @@ public class OpeningDialog extends JDialog implements ActionListener{
 		
 		profileName.setText("");
 		
-		this.setVisible(true);
+		setVisible(true);
 	}
+	
+	 public void reconnect() {
+		 IP.setBackground(java.awt.Color.WHITE);
+		 IP.setEditable(true);
+		 port.setBackground(java.awt.Color.WHITE);
+		 port.setEditable(true);
+		 profileNameLabel.setText("");
+
+		 setVisible(true);
+	 }
 }

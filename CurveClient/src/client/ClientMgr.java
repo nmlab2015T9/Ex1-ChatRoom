@@ -15,6 +15,7 @@ public class ClientMgr implements Runnable {
 	private DataInputStream input;
 	private Thread thread;
 	private gui.MainFrame mainframe;
+	private gui.OpeningDialog openingdialog;
 	
 	public ClientMgr () {
 		//connectionBegin();
@@ -23,7 +24,7 @@ public class ClientMgr implements Runnable {
 	public void connectionBegin() {
 		try {
             socket = new Socket(InetAddress.getByName(IP), port);
-            //CurveClient.dMgr.mainFrame.addSysLine("Connected: " + IP + ":" + port);
+            mainframe.addSysLine("Connected: " + IP + ":" + port);
             
             //check if name available
             checkName();
@@ -56,7 +57,7 @@ public class ClientMgr implements Runnable {
 	    		massage = input.readUTF();
 	    		if( massage.equals("/ua") ) break;
 	    		else {
-	    			//GUIObject.addSysLine("名稱已被使用，請換一個名稱");
+	    			mainframe.addSysLine("Name already in use! please change it!");
 	                CurveClient.dMgr.openDialog.rename();
 	                output.writeUTF(name);
 	    		}	
@@ -65,6 +66,37 @@ public class ClientMgr implements Runnable {
 	     //GUIObject.setTitle("uSocket chatroom: " + username);
 	}
 	
+	private void interrupt() {
+        mainframe.addWarnLine("Interrupt!");
+        mainframe.clear();
+        reconnect();
+	}
+	
+	public synchronized void reconnect() {
+		openingdialog.reconnect();
+
+        //create socket
+        try {
+        	socket = new Socket(InetAddress.getByName(IP), port);
+        	mainframe.addSysLine("Connected: " + IP + ":" + port);
+             
+        	//check if name available
+        	checkName();
+
+        	output = new DataOutputStream(socket.getOutputStream());
+        	input = new DataInputStream(socket.getInputStream());
+        	this.output = new DataOutputStream(output); //?
+        	this.input = new DataInputStream(input); //?
+
+            thread = new Thread(this);
+            thread.start();  //call run()
+        }
+        catch (Exception e) {
+            mainframe.addWarnLine("Failed: " + IP + ":" + port);
+            e.printStackTrace();
+        }
+    }
+	
 	public void setClientInfo(String ip, int port, String name){
 		IP = ip;
 		this.port = port;
@@ -72,8 +104,9 @@ public class ClientMgr implements Runnable {
 		System.out.println(IP + " " + port + " " + name);
 	}
 	
-	public void setMainFrame(gui.MainFrame mainFrame){
+	public void setMainFrameAndOpeningDialog(gui.MainFrame mainFrame, gui.OpeningDialog openingDialog){
 		mainframe = mainFrame;
+		openingdialog = openingDialog;
 	}
 
 	@Override

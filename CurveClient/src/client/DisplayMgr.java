@@ -14,6 +14,6 @@ public class DisplayMgr {
 	}
 	
 	private void SetUp(){
-		CurveClient.cMgr.setMainFrame(mainFrame);
+		CurveClient.cMgr.setMainFrameAndOpeningDialog(mainFrame, openDialog);
 	}
 }
