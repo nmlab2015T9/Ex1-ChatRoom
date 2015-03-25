@@ -23,7 +23,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class CurveServer {
 	private static ServerSocket ss;
-	private static int PORT = 9987;
+	public static int PORT = 9987;
 	private static boolean hasGUI;
 	private static ServerGUI gui;
 	static Vector<Client> cli= new Vector<Client>();
@@ -52,8 +52,8 @@ public class CurveServer {
 			try {
 				UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
 				ss = new ServerSocket(PORT);
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
+				//SwingUtilities.invokeLater(new Runnable() {
+					//public void run() {
 						gui = new ServerGUI(ss);
 						gui.setSize(new Dimension(1024, 768));
 						gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,8 +61,8 @@ public class CurveServer {
 						gui.setLocationRelativeTo(null);
 						//frame.pack();
 						gui.setVisible(true);
-					}
-				});
+					//}
+				//});
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (InstantiationException e) {
@@ -86,6 +86,8 @@ public class CurveServer {
 	// synchronized static method ensures only one thread can operate a one time
 	synchronized static void listenForever() {
 		try {
+			if(gui != null)
+				printMsg("start listen forever");
 			while(true) {
 				Socket s = ss.accept();
 				printMsg(s.getInetAddress().getHostAddress()+" connected. ID: "+id);
