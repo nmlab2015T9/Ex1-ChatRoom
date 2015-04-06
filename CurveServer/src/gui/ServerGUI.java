@@ -31,7 +31,8 @@ public class ServerGUI extends JFrame
 	private static final String VERSION = "1.0";
 	private ServerSocket ss;
 	private JTextArea textarea = new JTextArea(30, 50);
-	private JList<String> userlist;
+	private JList<String> userList;
+	private DefaultListModel<String> userListModel;
 	private JTextField broadcastT = new JTextField();
 	
 	public ServerGUI() {
@@ -55,13 +56,13 @@ public class ServerGUI extends JFrame
 		GridBagConstraints c = new GridBagConstraints();
 		
 		// user list
-		userlist = new JList<String>(new DefaultListModel<String>());
+		userList = new JList<String>(userListModel);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 1;
 		c.weighty = 10;
 		c.fill = GridBagConstraints.BOTH;
-		JScrollPane userscroll = new JScrollPane(userlist);
+		JScrollPane userscroll = new JScrollPane(userList);
 		//add(userscroll, c);
 		
 		// text area
@@ -130,8 +131,21 @@ public class ServerGUI extends JFrame
 		JDialog dialog = new JDialog(this, "What port do you want the server to listen?");
 		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 	}
+	// append the message to a new line.
 	public void addText(String s) {
 		textarea.append(s + "\n");
+	}
+	
+	// add user to the end of the list
+	public void addUser(String username) {
+		userListModel.addElement(username);
+	}
+	// remove the specified user
+	public void removeUser(int id) {
+		userListModel.remove(id);
+	}
+	public void removeUser(String username) {
+		userListModel.removeElement(username);
 	}
 
 }

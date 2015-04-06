@@ -126,7 +126,7 @@ public class Client implements Runnable
 				username = name;
 				send( "/ua" ); // send username ACK
 				send( "/s Server Welcome to the chatroom");
-				for( Client c: (CurveServer.cli) ) { // send the current userlist to the new user
+				for( Client c: (CurveServer.clientList) ) { // send the current userlist to the new user
 					if (c!=this) send("/q+ "+ c.username+" " + c.userColor);
 				}
 				CurveServer.sendAll( "/q+ " + username+" " + userColor); // send the new user information to all other users
