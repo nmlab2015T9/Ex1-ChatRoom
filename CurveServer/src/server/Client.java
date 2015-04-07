@@ -14,7 +14,7 @@ public class Client implements Runnable
 	private DataOutputStream out;
 	private String msg;
 	public String username;
-	private int clientID;
+	public int clientID;
     public int userColor;
 	
     public Client(Socket s, int id) {
@@ -114,6 +114,10 @@ public class Client implements Runnable
 		else if( msg.startsWith("/q-")) { // remove user
 			// /q- [username]
 			CurveServer.removeUser(this, clientID);
+		}
+		else if(msg.startsWith("/v")) {
+			// /v [srcname] [destname] 
+			
 		}
 	}
 	private void setname() throws IOException {

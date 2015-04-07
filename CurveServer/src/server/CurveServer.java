@@ -191,9 +191,11 @@ public class CurveServer {
 	/**********************/
 	public static int findUserByName(String username) {
 		int size = clientList.size();
-		for(int i = 0; i != size; ++i)
-			if(clientList.get(i).username == username)
+		for(int i = 0; i != size; ++i) {
+			//printMsg("clientList[" + i + "] = " + clientList.get(i).username);
+			if(clientList.get(i).username.equals(username))
 				return i;
+		}
 		return -1;
 	}
 }
