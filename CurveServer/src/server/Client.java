@@ -110,7 +110,11 @@ public class Client implements Runnable
 			String src = msg.split(" ", 3)[1];
 			String dest = msg.split(" ", 3)[2];
 			CurveServer.sendPrivate(dest, msg+" "+sock.getInetAddress().getHostName());
-		}		
+		}
+		else if( msg.startsWith("/q-")) { // remove user
+			// /q- [username]
+			CurveServer.removeUser(this, clientID);
+		}
 	}
 	private void setname() throws IOException {
 		String name;
@@ -126,7 +130,7 @@ public class Client implements Runnable
 				username = name;
 				send( "/ua" ); // send username ACK
 				send( "/s Server Welcome to the chatroom");
-				for( Client c: (CurveServer.cli) ) { // send the current userlist to the new user
+				for( Client c: (CurveServer.clientList) ) { // send the current userlist to the new user
 					if (c!=this) send("/q+ "+ c.username+" " + c.userColor);
 				}
 				CurveServer.sendAll( "/q+ " + username+" " + userColor); // send the new user information to all other users

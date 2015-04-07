@@ -26,8 +26,10 @@ public class CurveServer {
 	public static int PORT = 9987;
 	private static boolean hasGUI;
 	private static ServerGUI gui;
-	static Vector<Client> cli= new Vector<Client>();
-	private static int id;
+	static Vector<Client> clientList = new Vector<Client>();
+	static Vector<Room> roomList = new Vector<Room>();
+	private static int maxId; // accumulated client id
+	private int maxRoomId; // accumulated room id
 	public static void main(String[] args) {		
 		// run in command line mode, no GUI
 		if(args.length == 2 && args[0] == "-c") { 
@@ -72,27 +74,25 @@ public class CurveServer {
 			} catch (UnsupportedLookAndFeelException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
 		listenForever();
 	}
 	
 	/***********************/
 	/*  LISTENING FOREVER  */ 
 	/***********************/
-	// synchronized static method ensures only one thread can operate a one time
+	// synchronized static method ensures only one thread can operate at one time
 	synchronized static void listenForever() {
 		try {
 			if(gui != null)
 				printMsg("start listen forever");
 			while(true) {
 				Socket s = ss.accept();
-				printMsg(s.getInetAddress().getHostAddress()+" connected. ID: "+id);
-				cli.add( new Client(s, id++ ) );
-				Thread thd = new Thread( cli.lastElement() );
+				printMsg(s.getInetAddress().getHostAddress()+" connected. ID: "+maxId);
+				clientList.add( new Client(s, maxId++ ) );
+				Thread thd = new Thread( clientList.lastElement() );
 				thd.start();
 			}
 		} catch (IOException e) {
@@ -112,12 +112,12 @@ public class CurveServer {
 	}
 	// iterate thu every client
 	public static void sendAll(String str) {
-		for( Client c : cli ) {
+		for( Client c : clientList ) {
 			c.send(str);
 		}		
 	}
 	public static void sendPublic(String msg) {
-		sendAll(msg);		
+		sendAll(msg);
 	}
 	public static void sendBroadcast(String string) {
 		sendAll(string);
@@ -127,7 +127,7 @@ public class CurveServer {
 		int findId = findUserByName(username);
 		if(findId == -1) return false;
 		else {
-			cli.get(findId).send(msg);
+			clientList.get(findId).send(msg);
 			return true;
 		}
 	}
@@ -145,9 +145,24 @@ public class CurveServer {
 		if(hasGUI)
 			gui.addUser(username);
 	}
-	public static void removeUser(Client client, int clientID) {
-		// TODO Auto-generated method stub
-		
+	public static void removeUser(Client client, int id) {
+		printMsg("Removing user: " + client.username + ", id: "+id);
+		String name = client.username;
+		//int i = cli.indexOf(c);
+		//sock.remove(i);
+		clientList.remove(client);
+		//thd.remove(i);
+		if( name!=null ) {
+			gui.removeUser(name);
+			//userlist.remove(name);
+			for( Room cr: roomList ) {
+				if( cr.hasClient(client) ) {
+					sendRoom(cr.getID(), "/r- "+cr.getID()+" "+name);
+				}
+			}
+			sendAll("/q- "+ name );
+		}
+		printMsg("Client "+name+" (id:"+id+") disconnected.");		
 	}
 	
 	/***************************/
@@ -174,9 +189,9 @@ public class CurveServer {
 	/*   HELPER METHODS   */
 	/**********************/
 	public static int findUserByName(String username) {
-		int size = cli.size();
+		int size = clientList.size();
 		for(int i = 0; i != size; ++i)
-			if(cli.get(i).username == username)
+			if(clientList.get(i).username == username)
 				return i;
 		return -1;
 	}

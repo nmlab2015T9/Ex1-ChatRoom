@@ -166,6 +166,7 @@ public class MainFrame extends JFrame implements ActionListener{
 					Color temp = new Color(colorColumn[0][columnChoosed],colorColumn[1][columnChoosed],colorColumn[2][columnChoosed]);
 					color = temp.getRGB();
 					user.sendColorChange(color);
+					textInputArea.setForeground(temp);
 				}
 			}
 		});
@@ -215,6 +216,9 @@ public class MainFrame extends JFrame implements ActionListener{
                 	 prepareMsg(getInputText(textInputArea));
                 	 textInputArea.setText(null);
                  }
+                 if(e.getID() == KeyEvent.KEY_RELEASED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
+                	 textInputArea.setText(null);
+                 }
                  return false;
              }
         });
@@ -259,6 +263,7 @@ public class MainFrame extends JFrame implements ActionListener{
 				color = temp.getRGB();
 			}
 	        user.sendColorChange(color);
+	        textInputArea.setForeground(temp);
 		}
 	}
 	 
@@ -426,9 +431,6 @@ public class MainFrame extends JFrame implements ActionListener{
     }
     
     public void userChangeColor ( String name, int c ) {
-        if (name.equals(clientName)) {
-            //profileNameLabel.setForeground(new Color(c));
-        }
         Style s = doc.getStyle(name);
         StyleConstants.setForeground(s, new Color(c));
     }
