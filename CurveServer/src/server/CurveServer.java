@@ -110,7 +110,7 @@ public class CurveServer {
 			gui.addText(s);
 		System.out.println(s);
 	}
-	// 
+	// iterate thu every client
 	public static void sendAll(String str) {
 		for( Client c : cli ) {
 			c.send(str);
@@ -118,6 +118,10 @@ public class CurveServer {
 	}
 	public static void sendPublic(String msg) {
 		sendAll(msg);		
+	}
+	public static void sendBroadcast(String string) {
+		sendAll(string);
+		printMsg("[SERVERBROADCAST] " + string);
 	}
 	public static boolean sendPrivate(String username, String msg) {
 		int findId = findUserByName(username);
@@ -135,9 +139,11 @@ public class CurveServer {
 	/***********************/
 	/*   USER ADD REMOVE   */
 	/***********************/
-	public static void adduser(String username, int clientID) {
-		// TODO Auto-generated method stub
-		
+	public static void adduser(String username, int id) {
+		printMsg( "Client "+id+" is "+username );
+		//userlist.add(username);
+		if(hasGUI)
+			gui.addUser(username);
 	}
 	public static void removeUser(Client client, int clientID) {
 		// TODO Auto-generated method stub

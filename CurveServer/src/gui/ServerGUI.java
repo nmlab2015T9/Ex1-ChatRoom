@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.ServerSocket;
 
 import javax.swing.BorderFactory;
@@ -120,7 +122,14 @@ public class ServerGUI extends JFrame
 		
 		add(southSplitPane, BorderLayout.CENTER);
 		
-		
+		broadcastT.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String txt = broadcastT.getText();
+				broadcastT.setText("");
+				CurveServer.sendBroadcast("/s [SERVER BROADCAST] " + txt);
+			}
+		});
 	}
 	
 	/* 
