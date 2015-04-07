@@ -179,6 +179,8 @@ public class ClientMgr implements Runnable {
 		 //color change: "/c <user> <color>"
 		 send("/c " + name + " " + c);
 	 }
+	 
+	 
 
 	 //send file
 	 /*public void sendFile( String src, String dest ) {
@@ -211,17 +213,20 @@ public class ClientMgr implements Runnable {
             String[] splitedLine = msg.split(" ", 2);
             mainhead.addWarnLine(splitedLine[1]);
         }
+        
+        
         //whisper msg:  /w <user> <target> <roomID> <msg>
-       /* else if (msg.startsWith("/w")) {
+        else if (msg.startsWith("/w")) {
             String[] splitedLine = msg.split(" ", 5);
             if ( splitedLine[1].equals(name) ) {
             	mainhead.addNewLine("Whisper to " + splitedLine[2] + " : " + splitedLine[4], "whisper", Integer.parseInt(splitedLine[3]));
             }
             else {
             	mainhead.addNewLine(splitedLine[1] + " whispers: " + splitedLine[4], "whisper", Integer.parseInt(splitedLine[3]));
-            	mainhead.setLastWhisper(splitedLine[1], Integer.parseInt(splitedLine[3]));
+            	mainhead.setTarget(splitedLine[1], Integer.parseInt(splitedLine[3]));
             }
-        }*/
+        }
+        
         //color change:  /c <user> <texture>
         else if (msg.startsWith("/c")) {
             String[] splitedLine = msg.split(" ", 3);

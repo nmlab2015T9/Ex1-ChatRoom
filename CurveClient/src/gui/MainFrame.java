@@ -144,7 +144,6 @@ public class MainFrame extends JFrame implements ActionListener{
             public void mouseReleased(MouseEvent e) {
             	if( userList.getSelectedIndex() != -1) {
             		userListPopup.show(e.getComponent(), e.getX(), e.getY());
-            		System.out.println(e.getPoint() + " " + e.getComponent());
             	}
             }
         });
@@ -301,7 +300,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		}
 		
 		else if(e.getSource().equals(whisper)){
-			
+	        String tar = userList.getSelectedValue().toString();
+	        target = tar;
+	        sendingTarget.setText("Whisper to: "+ target);
 		}
 		
 		else if(e.getSource().equals(video)){
@@ -494,6 +495,10 @@ public class MainFrame extends JFrame implements ActionListener{
         }
 
         chatArea.setCaretPosition(doc.getLength());
+    }
+    
+    public void setTarget(String t){
+    	target = t;
     }
     
     public void clear () {

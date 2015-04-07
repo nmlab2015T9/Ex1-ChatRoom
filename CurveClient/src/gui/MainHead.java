@@ -295,15 +295,15 @@ public class MainHead extends JFrame{
     	mainframe.addWarnLine(text);
     }
 
-    /*public void setLastWhisper ( String name , int roomID ) {
+    public void setTarget ( String name , int roomID ) {
         if (roomID == 0) {
-            MainChatTab.setLastWhisper(name);
+        	mainframe.setTarget(name);
         }
-        else {
-            ChatTab tab = map.get(roomID);
-            tab.setLastWhisper(name);
-        }
-    }*/
+        //else {
+        //    ChatTab tab = map.get(roomID);
+        //    tab.setTarget(name);
+        //}
+    }
 
     // "/a" command
     /*public void addTab ( int roomID ) {
