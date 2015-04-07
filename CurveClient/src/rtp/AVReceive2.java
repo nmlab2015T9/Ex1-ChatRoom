@@ -1,4 +1,4 @@
-/**
+package rtp; /**
  * Created by user on 2015/4/4.
  */
 
@@ -39,7 +39,7 @@ public class AVReceive2 implements ReceiveStreamListener, SessionListener,
         this.sessions = sessions;
     }
 
-    protected boolean initialize() {
+    public boolean initialize() {
 
         try {
             InetAddress ipAddr;
@@ -445,9 +445,9 @@ public class AVReceive2 implements ReceiveStreamListener, SessionListener,
     }
 
 
-    public static void main(String argv[]) {
-        if (argv.length == 0)
-            prUsage();
+    /*public static void main(String argv[]) {
+        //if (argv.length == 0)
+        //    prUsage();
         String [] arg = new String[2];
         arg[0] = "224.112.112.112/1234";
         arg[1] = "224.112.112.112/1236";
@@ -464,14 +464,14 @@ public class AVReceive2 implements ReceiveStreamListener, SessionListener,
         } catch (Exception e) {}
 
         System.err.println("Exiting AVReceive2");
-    }
+    }*/
 
 
-    static void prUsage() {
+    /*static void prUsage() {
         System.err.println("Usage: AVReceive2 <session> <session> ...");
         System.err.println("     <session>: <address>/<port>/<ttl>");
         System.exit(0);
-    }
+    }*/
 
 }// end of AVReceive2
 

@@ -117,7 +117,7 @@ public class MainHead extends JFrame{
             }
             
             public void mouseReleased(MouseEvent e){
-            	Point p = getLocation();
+            	final Point p = getLocation();
             	if(p.x < gap){
             		Timer timer = new Timer();
                 	timer.scheduleAtFixedRate(new TimerTask(){  

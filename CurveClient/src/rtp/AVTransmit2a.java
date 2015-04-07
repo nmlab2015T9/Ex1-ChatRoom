@@ -1,4 +1,4 @@
-/**
+package rtp; /**
  * Created by user on 2015/4/4.
  */
 
@@ -13,7 +13,6 @@ import javax.media.control.TrackControl;
 import javax.media.control.QualityControl;
 import javax.media.rtp.*;
 import javax.media.rtp.rtcp.*;
-import com.sun.media.rtp.*;
 
 public class AVTransmit2a {
     // Input MediaLocator
@@ -395,9 +394,9 @@ public class AVTransmit2a {
         arg[1] = "224.112.112.112";
         arg[2] = "1236";
 
-        if (arg.length < 3) {
+        /*if (arg.length < 3) {
             prUsage();
-        }
+        }*/
 
         Format fmt = null;
         int i = 0;
@@ -437,7 +436,7 @@ public class AVTransmit2a {
     }
 
 
-    static void prUsage() {
+    /*static void prUsage() {
         System.err.println("Usage: AVTransmit2 <sourceURL> <destIP> <destPortBase>");
         System.err.println("     <sourceURL>: input URL or file name");
         System.err.println("     <destIP>: multicast, broadcast or unicast IP address for the transmission");
@@ -445,5 +444,5 @@ public class AVTransmit2a {
         System.err.println("                     The first track will use the destPortBase.");
         System.err.println("                     The next track will use destPortBase + 2 and so on.\n");
         System.exit(0);
-    }
+    }*/
 }

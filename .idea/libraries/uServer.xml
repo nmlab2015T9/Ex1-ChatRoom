@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="uServer">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/uServer/dist/uServer.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

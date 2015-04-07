@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CurveClient/CurveClient.iml" filepath="$PROJECT_DIR$/CurveClient/CurveClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CurveServer/CurveServer.iml" filepath="$PROJECT_DIR$/CurveServer/CurveServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uClient/uClient.iml" filepath="$PROJECT_DIR$/uClient/uClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uServer/uServer.iml" filepath="$PROJECT_DIR$/uServer/uServer.iml" />
+    </modules>
+  </component>
+</project>
