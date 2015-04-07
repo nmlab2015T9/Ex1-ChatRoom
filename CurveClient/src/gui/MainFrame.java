@@ -1,6 +1,4 @@
 package gui;
-import rtp.AVReceive2;
-
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Container;
@@ -308,20 +306,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		}
 		
 		else if(e.getSource().equals(video)){
-            String [] arg = new String[1];
-            arg[0] = "224.112.112.112/1234";
-            //arg[1] = "224.112.112.112/1236";
-            AVReceive2 avReceive = new AVReceive2(arg);
-            if (!avReceive.initialize()) {
-                System.err.println("Failed to initialize the sessions.");
-                System.exit(-1);
-            }
-
-            // Check to see if AVReceive2 is done.
-            try {
-                while (!avReceive.isDone())
-                    Thread.sleep(1000);
-            } catch (Exception ex) {}
+			String tar = userList.getSelectedValue().toString();
+			target = tar;
+			client.CurveClient.cMgr.sendVideo(target);
 		}
 		
 		else if(e.getSource().equals(sendfile)){

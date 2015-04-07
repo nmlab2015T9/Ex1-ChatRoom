@@ -180,7 +180,10 @@ public class ClientMgr implements Runnable {
 		 send("/c " + name + " " + c);
 	 }
 	 
-	 
+	 public void sendVideo(String dest){
+		 // send file request: /v [src name] [dest name]
+		 send( "/v " + name + " " + dest);
+	 }
 
 	 //send file
 	 /*public void sendFile( String src, String dest ) {
@@ -252,6 +255,11 @@ public class ClientMgr implements Runnable {
             String[] splitedLine = msg.split(" ", 4);
             mainhead.addNewLine(splitedLine[2] + " says: " + splitedLine[3], splitedLine[2],
                                  Integer.parseInt(splitedLine[1]));
+        }
+        
+        // file transfer request: /v [src name] [dest name] 
+        else if( msg.startsWith("/v") ) {
+                String srcName = msg.split(" ", 4)[1];
         }
         // file transfer request: /f [src name] [dest name] [src IP]
         /*else if( msg.startsWith("/f") ) {
