@@ -21,6 +21,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import server.Client;
 import server.CurveServer;
 
 /*
@@ -33,8 +34,8 @@ public class ServerGUI extends JFrame
 	private static final String VERSION = "1.0";
 	//private ServerSocket ss;
 	private JTextArea textarea = new JTextArea(30, 50);
-	private JList<String> userList;
-	private DefaultListModel<String> userListModel = new DefaultListModel<String>();
+	private JList<Client> userList;
+	private DefaultListModel<Client> userListModel = new DefaultListModel<>();
 	private JTextField broadcastT = new JTextField();
 	
 	public ServerGUI() {
@@ -58,7 +59,8 @@ public class ServerGUI extends JFrame
 		GridBagConstraints c = new GridBagConstraints();
 		
 		// user list
-		userList = new JList<String>(userListModel);
+		userList = new JList<>(userListModel);
+		userList.setCellRenderer(new ClientListRenderer());
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 1;
@@ -146,8 +148,8 @@ public class ServerGUI extends JFrame
 	}
 	
 	// add user to the end of the list
-	public void addUser(String username) {
-		userListModel.addElement(username);
+	public void addUser(Client c) {
+		userListModel.addElement(c);
 	}
 	// remove the specified user
 	public void removeUser(int id) {

@@ -1,10 +1,13 @@
 package server;
 
+import java.awt.image.BufferedImage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
+
+import javax.imageio.ImageIO;
 
 
 public class Client implements Runnable
@@ -16,6 +19,7 @@ public class Client implements Runnable
 	public String username;
 	public int clientID;
     public int userColor;
+	public BufferedImage face;
 	
     public Client(Socket s, int id) {
 		try {
@@ -29,6 +33,12 @@ public class Client implements Runnable
 		}
 		
 		userColor = java.awt.Color.BLACK.getRGB();
+		
+		try {
+			face = ImageIO.read(CurveServer.class.getResource("profileimg.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
     public void send( String s ) {
 		try {
@@ -139,10 +149,15 @@ public class Client implements Runnable
 					if (c!=this) send("/q+ "+ c.username+" " + c.userColor);
 				}
 				CurveServer.sendAll( "/q+ " + username+" " + userColor); // send the new user information to all other users
-				CurveServer.adduser(username, clientID);
+				CurveServer.adduser(this);
 				break;
 			}
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return username;
 	}
 	
 }

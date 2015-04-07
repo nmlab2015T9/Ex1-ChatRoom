@@ -142,11 +142,11 @@ public class CurveServer {
 	/***********************/
 	/*   USER ADD REMOVE   */
 	/***********************/
-	public static void adduser(String username, int id) {
-		printMsg( "Client "+id+" is "+username );
+	public static void adduser(Client c) {
+		printMsg( "Client "+c.clientID+" is "+c.username );
 		//userlist.add(username);
 		if(hasGUI)
-			gui.addUser(username);
+			gui.addUser(c);
 	}
 	public static void removeUser(Client client, int id) {
 		printMsg("Removing user: " + client.username + ", id: "+id);
