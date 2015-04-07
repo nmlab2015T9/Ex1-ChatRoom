@@ -25,7 +25,7 @@ import javax.swing.SwingUtilities;
 
 public class MainHead extends JFrame{
 	private static int sx = 60, sy = 60, sx2 = 80, sy2 = 80; //sx2, sy2 = cross size
-	private static int gap = 150;
+	private static int gap = 250;
 	private static int i = 0;
     private static Point point = new Point();
     private static Ellipse2D ellipse = new Ellipse2D.Double(0, 0, sx, sy), ellipse2 = new Ellipse2D.Double(0, 0, sx2, sy2);   
@@ -117,25 +117,83 @@ public class MainHead extends JFrame{
             public void mouseReleased(MouseEvent e){
             	Point p = getLocation();
             	if(p.x < gap){
-            		p.x = 0;
-            		setLocation(p);
+            		Timer timer = new Timer();
+                	timer.scheduleAtFixedRate(new TimerTask(){  
+                		@Override
+                		public void run() {
+                			if(i<=15){
+                				if(i<=10)
+                					setLocation(p.x - (p.x + 10) * i/10, p.y);
+                				else if(i>10)
+                					setLocation(-10 + 2 * (i - 10), p.y);
+                				i++;
+                			}
+                			else{
+                				closeProcess();
+                				cancel();
+                				i = 0;
+                			}
+                		}},10 ,3);
             	}
             	else if(p.y < gap){
-            		p.y = 20;
-            		setLocation(p);
+            		Timer timer = new Timer();
+                	timer.scheduleAtFixedRate(new TimerTask(){  
+                		@Override
+                		public void run() {
+                			if(i<=15){
+                				if(i<=10)
+                					setLocation(p.x, p.y - (p.y - 10) * i/10);
+                				else if(i>10)
+                					setLocation(p.x, 10 + 2 * (i - 10));
+                				i++;
+                			}
+                			else{
+                				closeProcess();
+                				cancel();
+                				i = 0;
+                			}
+                		}},10 ,3);
             	}
             	else if(Math.abs(p.x - width) < (gap + sx)){
-            		p.x = width-sx;
-            		setLocation(p);
+            		Timer timer = new Timer();
+                	timer.scheduleAtFixedRate(new TimerTask(){  
+                		@Override
+                		public void run() {
+                			if(i<=15){
+                				if(i<=10)
+                					setLocation(p.x + ((width - sx) - p.x+ 10) * i/10, p.y);
+                				else if(i>10)
+                					setLocation(width - sx + 10 - 2 * (i - 10), p.y);
+                				i++;
+                			}
+                			else{
+                				closeProcess();
+                				cancel();
+                				i = 0;
+                			}
+                		}},10 ,3);
             	}
             	else if(Math.abs(p.y - height) < (gap + sy)){
-            		p.y = height-sy;
-            		setLocation(p);
+            		Timer timer = new Timer();
+                	timer.scheduleAtFixedRate(new TimerTask(){  
+                		@Override
+                		public void run() {
+                			if(i<=15){
+                				if(i<=10)
+                					setLocation(p.x , p.y + ((height - sy) - p.y+ 10) * i/10);
+                				else if(i>10)
+                					setLocation(p.x, height - sy + 10 - 2 * (i - 10));
+                				i++;
+                			}
+                			else{
+                				closeProcess();
+                				cancel();
+                				i = 0;
+                			}
+                		}},10 ,3);
             	}
-            	
-                //if(p.x > (width/2 - sx2/2 - 200) && p.x < (width/2 + sx2/2 + 200) && p.y > (height - sy2 - 200)){
-                	closeProcess();
-            	//}
+            	else
+            		closeProcess();
             }
         });
         
@@ -161,7 +219,7 @@ public class MainHead extends JFrame{
     
     private void closeProcess(){
     	final Point p = getLocation();
-    	timer = new Timer();
+    	Timer timer = new Timer();
     	timer.scheduleAtFixedRate(new TimerTask(){  
     		public void run(){  
     			SwingUtilities.invokeLater(new Runnable(){
@@ -182,7 +240,7 @@ public class MainHead extends JFrame{
 	    				else {
 	    					closeArea.setVisible(false);
 	    					closeArea.setLocation(width/2 - sx2/2, height - sy2);
-	    					timer.cancel();
+	    					cancel();
 	    					i = 0;
 	    				}
 	    			}
