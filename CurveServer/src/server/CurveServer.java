@@ -193,7 +193,8 @@ public class CurveServer {
 		int size = clientList.size();
 		for(int i = 0; i != size; ++i) {
 			//printMsg("clientList[" + i + "] = " + clientList.get(i).username);
-			if(clientList.get(i).username.equals(username))
+			if(clientList.get(i).username != null 
+					&& clientList.get(i).username.equals(username))
 				return i;
 		}
 		return -1;
