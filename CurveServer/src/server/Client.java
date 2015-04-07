@@ -58,6 +58,7 @@ public class Client implements Runnable
 			}
 		}
 	}
+	@SuppressWarnings("unused")
 	private void parseMsg(String msg) {
 		if( msg.startsWith("/s")) { // public chat
 			// /s [srcname] message

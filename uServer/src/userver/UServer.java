@@ -142,10 +142,10 @@ public class UServer {
 		//dis.addText("Room #"+room+" add "+c.getname());
 		roomlist.get(room-1).adduser(c);
 		c.send("/a "+room);
-                for( Client cli: (roomlist.get(room-1).roomCli) ) { // send the current userlist to the new user
-                        if (cli!=c) c.send("/r+ "+ room+" " + cli.getname()+" " + cli.userColor);
-                }
-                sendRoom( room, "/r+ "+room+" "+c.getname() + " "+c.userColor );
+        for( Client cli: (roomlist.get(room-1).roomCli) ) { // send the current userlist to the new user
+                if (cli!=c) c.send("/r+ "+ room+" " + cli.getname()+" " + cli.userColor);
+        }
+        sendRoom( room, "/r+ "+room+" "+c.getname() + " "+c.userColor );
 	}
 	public void roomadd( int room, String cname ) {
 		Client c = cli.get( userlist.indexOf(cname) );

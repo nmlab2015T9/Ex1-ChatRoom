@@ -31,7 +31,7 @@ public class ServerGUI extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private static final String VERSION = "1.0";
-	private ServerSocket ss;
+	//private ServerSocket ss;
 	private JTextArea textarea = new JTextArea(30, 50);
 	private JList<String> userList;
 	private DefaultListModel<String> userListModel = new DefaultListModel<String>();
@@ -45,11 +45,11 @@ public class ServerGUI extends JFrame
 	public ServerGUI(ServerSocket s) {
 		super("Curve Server" + VERSION);
 		initComponent();
-		ss = s;
+		//ss = s;
 	}
 	
 	public void setSocket(ServerSocket s) {
-		ss = s;
+		//ss = s;
 	}
 	
 	private void initComponent() {

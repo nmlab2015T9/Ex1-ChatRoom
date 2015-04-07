@@ -1,29 +1,42 @@
 package server;
 
+import java.util.Vector;
+
 public class Room {
+	public int roomId;
+	public Vector<Client> memberList;
+	public String roomName;
 
 	public Room(int i) {
-		// TODO Auto-generated constructor stub
+		roomId = i;
+		memberList = new Vector<Client>();
+		roomName = "Room #" + roomId;
+	}
+	public Room(int i, String roomname) {
+		roomId = i;
+		memberList = new Vector<Client>();
+		roomName = roomname;
 	}
 
 	public boolean hasClient(Client client) {
-		// TODO Auto-generated method stub
-		return false;
+		return memberList.contains(client);
 	}
 
 	public int getID() {
-		// TODO Auto-generated method stub
-		return 0;
+		return roomId;
 	}
 
 	public void sendRoom(String msg) {
-		// TODO Auto-generated method stub
-		
+		for(Client c: memberList)
+			c.send(msg);
 	}
 
 	public void roomAddUser(Client client) {
-		// TODO Auto-generated method stub
-		
+		memberList.add(client);
+	}
+
+	public void roomRmUser(Client client) {
+		memberList.remove(client);
 	}
 
 }

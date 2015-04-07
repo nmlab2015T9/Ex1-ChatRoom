@@ -180,14 +180,23 @@ public class CurveServer {
 	public static void roomAddUser(int roomId, Client client) {
 		roomList.get(roomId-1).roomAddUser(client);
 		client.send("/a " + roomId);
+		// send the member list to the user
+		for(Client c: (roomList.get(roomId-1).memberList)) {
+			if(c != client)
+				client.send("/r+ " + roomId + " " 
+						+ c.username + " " + c.userColor);
+		}
+        sendRoom(roomId, "/r+ "+roomId+" "+client.username + " "+client.userColor);
+
 	}
 	public static void roomAddUser(int roomId, String username) {
-		// TODO Auto-generated method stub
-		
+		int idx = findUserByName(username);
+		if(idx != -1)
+			roomAddUser(roomId, clientList.get(idx));
 	}
 	public static void roomRmUser(int roomId, Client client) {
-		// TODO Auto-generated method stub
-		
+		roomList.get(roomId-1).roomRmUser(client);
+		sendRoom(roomId, "/r- "+roomId+" "+ client.username);
 	}
 	
 	/**********************/
