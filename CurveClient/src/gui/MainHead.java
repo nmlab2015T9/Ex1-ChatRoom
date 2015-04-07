@@ -25,7 +25,7 @@ import javax.swing.SwingUtilities;
 
 public class MainHead extends JFrame{
 	private static int sx = 60, sy = 60, sx2 = 80, sy2 = 80; //sx2, sy2 = cross size
-	private static int gap = 250;
+	private static int gap = 200;
 	private static int i = 0;
     private static Point point = new Point();
     private static Ellipse2D ellipse = new Ellipse2D.Double(0, 0, sx, sy), ellipse2 = new Ellipse2D.Double(0, 0, sx2, sy2);   
@@ -36,13 +36,15 @@ public class MainHead extends JFrame{
     private static Timer timer;
     private static boolean inArea;
     private MainFrame mainframe;
+    private OtherHead otherhead;
 
-    public MainHead(MainFrame mainFrame){
+    public MainHead(MainFrame mainFrame, OtherHead otherHead){
     	mainframe = mainFrame;
-    	initComponent();
+    	otherhead = otherHead;
+    	initComponents();
 }
     
-    private void initComponent(){
+    private void initComponents(){
     	setUndecorated(true);
         setAlwaysOnTop(true);
         setShape(ellipse);
@@ -202,6 +204,7 @@ public class MainHead extends JFrame{
             	
                 Point p = getLocation();
                 setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
+                otherhead.setDraggedPosition(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
                 //if(p.x > (width/2 - sx2/2 - 200) && p.x < (width/2 + sx2/2 + 200) && p.y > (height - sy2 - 200)){
                 	closeArea.setVisible(true);
                 	closeArea.setLocation((width/2 - sx2/2) + ((p.x + e.getX() - point.x) - (width/2 - sx2/2)) / 50, 
@@ -235,8 +238,10 @@ public class MainHead extends JFrame{
 	    				i++;
 	    			}
 	    			else{
-	    				if(p.x > (width/2 - sx2/2) && p.x < (width/2 + sx2/2) && p.y > (height - sy2))
+	    				if(p.x > (width/2 - sx2/2) && p.x < (width/2 + sx2/2) && p.y > (height - sy2)){
+	    					client.CurveClient.cMgr.sendDelUser();
 	    					System.exit(0);
+	    				}
 	    				else {
 	    					closeArea.setVisible(false);
 	    					closeArea.setLocation(width/2 - sx2/2, height - sy2);
@@ -249,7 +254,7 @@ public class MainHead extends JFrame{
     			}},10 ,10);
     }
     
- // "/q+" command
+    // "/q+" command
     public void addNewUser ( String user , int color ) {
         mainframe.addNewUser(user, color);
     }
@@ -335,4 +340,5 @@ public class MainHead extends JFrame{
     public void clear () {
     	mainframe.clear();
     }
+    
 }

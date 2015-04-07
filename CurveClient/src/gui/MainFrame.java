@@ -1,6 +1,5 @@
 package gui;
 import java.awt.AlphaComposite;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.FileDialog;
@@ -37,9 +36,12 @@ import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
@@ -58,6 +60,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JButton profileImage, editColor;
 	private JLabel profileNameLabel, sendingTarget;
 	private JList userList;
+	private JPopupMenu userListPopup;
+	private JMenuItem whisper, video, sendfile;
 	private JTextPane chatArea;
 	private JTextPane textInputArea;
     private static Point point = new Point();
@@ -111,9 +115,39 @@ public class MainFrame extends JFrame implements ActionListener{
 		profilePanel.add(profileImage);
 		profilePanel.add(profileNameLabel);
 		profilePanel.setBounds(new Rectangle(0, 0, 120, 125));
+	
+		//items that pop up when right key pressed
+		whisper = new JMenuItem("Whisper");
+		whisper.addActionListener(this);
+		video = new JMenuItem("Camera Conference");
+		video.addActionListener(this);
+		sendfile = new JMenuItem("Send File");
+		sendfile.addActionListener(this);
+		
+		userListPopup = new JPopupMenu();
+		userListPopup.add(whisper);
+		userListPopup.add(video);
+		userListPopup.add(sendfile);
 		
 		//user list on the left side
-		userList = new JList();
+		userList = new JList(userListVector);
+		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		userList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+            	userList.clearSelection();
+            	Rectangle r = userList.getCellBounds( 0, userListVector.size()-1 );
+            	if( r!=null && r.contains(e.getPoint()) ) {
+            		int index = userList.locationToIndex(e.getPoint());
+            		userList.setSelectedIndex(index);
+            	}
+            }
+            public void mouseReleased(MouseEvent e) {
+            	if( userList.getSelectedIndex() != -1) {
+            		userListPopup.show(e.getComponent(), e.getX(), e.getY());
+            		System.out.println(e.getPoint() + " " + e.getComponent());
+            	}
+            }
+        });
 		JScrollPane userListScrollPane = new JScrollPane(userList);
 		userListScrollPane.setBounds(new Rectangle(0, 125, 120, 335));
 		
@@ -264,6 +298,18 @@ public class MainFrame extends JFrame implements ActionListener{
 			}
 	        user.sendColorChange(color);
 	        textInputArea.setForeground(temp);
+		}
+		
+		else if(e.getSource().equals(whisper)){
+			
+		}
+		
+		else if(e.getSource().equals(video)){
+			
+		}
+		
+		else if(e.getSource().equals(sendfile)){
+	
 		}
 	}
 	 

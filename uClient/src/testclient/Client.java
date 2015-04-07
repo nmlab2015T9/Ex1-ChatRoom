@@ -217,14 +217,14 @@ public class Client implements Runnable {
         //add user:  /q+ <user> <texture>
         if (msg.startsWith("/q+")) {
             String[] splitedLine = msg.split(" ", 3);
-                System.out.println("User joined:" + splitedLine[1]);
-                GUIObject.addUser(splitedLine[1], Integer.parseInt(splitedLine[2]));
+            System.out.println("User joined:" + splitedLine[1]);
+            GUIObject.addUser(splitedLine[1], Integer.parseInt(splitedLine[2]));
         }
         //delete user:  /q- <user>
         else if (msg.startsWith("/q-")) {
             String[] splitedLine = msg.split(" ", 2);
-                System.out.println("User left:" + splitedLine[1]);
-                GUIObject.delUser(splitedLine[1]);
+            System.out.println("User left:" + splitedLine[1]);
+            GUIObject.delUser(splitedLine[1]);
         }
         //normal msg:  /s <user> <msg>
         else if (msg.startsWith("/s")) {

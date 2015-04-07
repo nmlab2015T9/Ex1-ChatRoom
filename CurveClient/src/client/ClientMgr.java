@@ -134,51 +134,54 @@ public class ClientMgr implements Runnable {
 		}
 	    }
 
-	    //open new room
-	    public void sendNewRoom () {
-	        //new room: "/n"
-	        send("/n");
-	    }
+	 public void sendDelUser(){
+		 send("/q- " + name);
+	 }
+	 
+	 //open new room
+	 public void sendNewRoom () {
+		 //new room: "/n"
+		 send("/n");
+	 }
 
-	    //leave room
-	    public void sendLeaveRoom ( int roomID ) {
-	        //leave room: "/l <roomID>"
-	        send("/l "+roomID);
-	    }
+	 //leave room
+	 public void sendLeaveRoom ( int roomID ) {
+		 //leave room: "/l <roomID>"
+		 send("/l " + roomID);
+	 }
 
-	    //add user into room
-	    public void sendAddRoomUser ( String user, int roomID ) {
-	        //leave room: "/a <roomID> <user>"
-	        send("/a " +roomID+" " +user);
-	    }
+	 //add user into room
+	 public void sendAddRoomUser ( String user, int roomID ) {
+		 //leave room: "/a <roomID> <user>"
+		 send("/a " + roomID + " " + user);
+	 }
 
-	    //send public msg
-	    public void sendSMsg ( String msg ) {
-	        //send msg: "/s <user> <msg>"
-	        send("/s " + name+" " + msg);
-	    }
+	 //send public msg
+	 public void sendSMsg ( String msg ) {
+		 //send msg: "/s <user> <msg>"
+		 send("/s " + name + " " + msg);
+	 }
 
-	    //send room msg
-	    public void sendRMsg ( String msg , int roomID ) {
-	        //send room msg: "/rs <roomID> [src name] <msg>"
-	        send("/rs " + roomID+" "+ name+" " + msg);
-	    }
+	 //send room msg
+	 public void sendRMsg ( String msg , int roomID ) {
+		 //send room msg: "/rs <roomID> [src name] <msg>"
+		 send("/rs " + roomID + " " + name + " " + msg);
+	 }
 
-	    //send whisper msg
-	    public void sendWMsg ( String msg , String target , int roomID) {
-	       //whisper msg: "/w <user> <target> <roomID> <msg>"
-	       send("/w " + name+" " + target+" " + roomID+" " + msg);
-		
-	    }
+	 //send whisper msg
+	 public void sendWMsg ( String msg , String target , int roomID) {
+		 //whisper msg: "/w <user> <target> <roomID> <msg>"
+		 send("/w " + name + " " + target + " " + roomID + " " + msg);	 
+	 }
 
-	    //color change
-	    public void sendColorChange ( int c ) {
-	        //color change: "/c <user> <color>"
-	        send("/c " + name+" " + c);
-	    }
+	 //color change
+	 public void sendColorChange ( int c ) {
+		 //color change: "/c <user> <color>"
+		 send("/c " + name + " " + c);
+	 }
 
-	    //send file
-	    /*public void sendFile( String src, String dest ) {
+	 //send file
+	 /*public void sendFile( String src, String dest ) {
 	        // send file request: /f [src name] [dest name]
 	        send( "/f "+src+" "+dest );
 	        Thread fsthd = new Thread( new FileSend() );

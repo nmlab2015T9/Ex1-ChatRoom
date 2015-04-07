@@ -4,12 +4,14 @@ public class DisplayMgr {
 	public gui.OpeningDialog openDialog;
 	public gui.MainFrame mainFrame;
 	public gui.MainHead mainHead;
+	public gui.OtherHead otherhead;
 	
 	public DisplayMgr(){
 		mainFrame = new gui.MainFrame();
-		mainHead = new gui.MainHead(mainFrame);
-		openDialog = new gui.OpeningDialog(mainHead);
-		
+		otherhead = new gui.OtherHead();
+		mainHead = new gui.MainHead(mainFrame, otherhead);
+		openDialog = new gui.OpeningDialog(mainHead, otherhead);
+
 		SetUp();
 	}
 	

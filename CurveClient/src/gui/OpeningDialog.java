@@ -27,6 +27,7 @@ import client.CurveClient;
 public class OpeningDialog extends JDialog implements ActionListener{
 
 	private MainHead mainhead;
+	private OtherHead otherhead;
 	public static int profileImageSX = 120, profileImageSY = 100;
 	private int OpeningDialogSX = 120, OpeningDialogSY = 280;
 	public static BufferedImage profileBufferedImg = new BufferedImage(profileImageSX ,profileImageSY,BufferedImage.TYPE_INT_ARGB);
@@ -36,8 +37,9 @@ public class OpeningDialog extends JDialog implements ActionListener{
 	private JTextField profileName, IP, port;
 	private JLabel profileNameLabel;
 	
-	public OpeningDialog(MainHead mainHead){
+	public OpeningDialog(MainHead mainHead, OtherHead otherHead){
 		mainhead = mainHead;
+		otherhead = otherHead;
 		setLocation(500, 300);
 		setSize(OpeningDialogSX, OpeningDialogSY);
 	    setVisible(true);
@@ -161,6 +163,7 @@ public class OpeningDialog extends JDialog implements ActionListener{
 			else {
 	        	setVisible(false);
 				mainhead.setVisible(true);
+				otherhead.setVisible(true);
 				client.CurveClient.dMgr.mainFrame.setClientName(profileName.getText());
 				client.CurveClient.cMgr.setClientInfo(IP.getText(), new java.lang.Integer(port.getText()).intValue(), profileName.getText());
 				CurveClient.cMgr.connectionBegin();
