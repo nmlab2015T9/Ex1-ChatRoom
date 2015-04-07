@@ -110,7 +110,11 @@ public class Client implements Runnable
 			String src = msg.split(" ", 3)[1];
 			String dest = msg.split(" ", 3)[2];
 			CurveServer.sendPrivate(dest, msg+" "+sock.getInetAddress().getHostName());
-		}		
+		}
+		else if( msg.startsWith("/q-")) { // remove user
+			// /q- [username]
+			CurveServer.removeUser(this, clientID);
+		}
 	}
 	private void setname() throws IOException {
 		String name;
