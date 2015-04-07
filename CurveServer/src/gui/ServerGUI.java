@@ -34,7 +34,7 @@ public class ServerGUI extends JFrame
 	private ServerSocket ss;
 	private JTextArea textarea = new JTextArea(30, 50);
 	private JList<String> userList;
-	private DefaultListModel<String> userListModel;
+	private DefaultListModel<String> userListModel = new DefaultListModel<String>();
 	private JTextField broadcastT = new JTextField();
 	
 	public ServerGUI() {

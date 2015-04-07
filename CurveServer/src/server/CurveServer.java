@@ -110,7 +110,7 @@ public class CurveServer {
 			gui.addText(s);
 		System.out.println(s);
 	}
-	// iterate thu every client
+	// iterate thru every client
 	public static void sendAll(String str) {
 		for( Client c : clientList ) {
 			c.send(str);
@@ -153,7 +153,8 @@ public class CurveServer {
 		clientList.remove(client);
 		//thd.remove(i);
 		if( name!=null ) {
-			gui.removeUser(name);
+			if(hasGUI)
+				gui.removeUser(name);
 			//userlist.remove(name);
 			for( Room cr: roomList ) {
 				if( cr.hasClient(client) ) {
