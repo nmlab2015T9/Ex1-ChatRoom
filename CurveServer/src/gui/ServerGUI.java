@@ -128,7 +128,7 @@ public class ServerGUI extends JFrame
 			public void actionPerformed(ActionEvent e) {
 				String txt = broadcastT.getText();
 				broadcastT.setText("");
-				CurveServer.sendBroadcast("/s [SERVER BROADCAST] " + txt);
+				CurveServer.sendBroadcast("/b " + txt);
 			}
 		});
 	}

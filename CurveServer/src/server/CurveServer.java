@@ -12,10 +12,8 @@ import java.net.Socket;
 import java.util.Vector;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 
 /**
  * @author dd
@@ -29,7 +27,7 @@ public class CurveServer {
 	static Vector<Client> clientList = new Vector<Client>();
 	static Vector<Room> roomList = new Vector<Room>();
 	private static int maxId; // accumulated client id
-	private int maxRoomId; // accumulated room id
+	private static int maxRoomId; // accumulated room id
 	public static void main(String[] args) {		
 		// run in command line mode, no GUI
 		if(args.length == 2 && args[0] == "-c") { 
@@ -42,7 +40,6 @@ public class CurveServer {
 				e.printStackTrace();
 				System.exit(-1);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -121,7 +118,11 @@ public class CurveServer {
 	}
 	public static void sendBroadcast(String string) {
 		sendAll(string);
-		printMsg("[SERVERBROADCAST] " + string);
+		// send to every room!!
+		for(int i = 0; i != roomList.size(); ++i)
+			sendRoom(i, string);
+		
+		printMsg(string);
 	}
 	public static boolean sendPrivate(String username, String msg) {
 		int findId = findUserByName(username);
@@ -131,9 +132,11 @@ public class CurveServer {
 			return true;
 		}
 	}
-	public static boolean sendRoom(int room, String msg) {
-		// TODO Auto-generated method stub
-		return false;
+	public static boolean sendRoom(int roomId, String msg) {
+		if( roomId > roomList.size() ) return false;
+		Room r = roomList.get(roomId-1);
+		r.sendRoom(msg);
+		return true;
 	}
 	
 	/***********************/
@@ -170,18 +173,19 @@ public class CurveServer {
 	/*   ROOM NEW ADD REMOVE   */
 	/***************************/
 	public static int roomNew() {
-		// TODO Auto-generated method stub
-		return 0;
+		roomList.add(new Room(++maxRoomId));
+		printMsg("NEW ROOM CREATED, ROOMID = " + maxRoomId);
+		return maxRoomId;
 	}
-	public static void roomAddUser(int roomid, Client client) {
+	public static void roomAddUser(int roomId, Client client) {
+		roomList.get(roomId-1).roomAddUser(client);
+		client.send("/a " + roomId);
+	}
+	public static void roomAddUser(int roomId, String username) {
 		// TODO Auto-generated method stub
 		
 	}
-	public static void roomAddUser(int room, String dest) {
-		// TODO Auto-generated method stub
-		
-	}
-	public static void roomRmUser(int room, Client client) {
+	public static void roomRmUser(int roomId, Client client) {
 		// TODO Auto-generated method stub
 		
 	}
