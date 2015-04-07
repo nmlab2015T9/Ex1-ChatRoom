@@ -74,6 +74,7 @@ public class OpeningDialog extends JDialog implements ActionListener{
 		profileName.setSize(profileImageSX, 30);
 		profileName.setLocation(0, profileImageSY+15);
 		c.add(profileName);
+		profileName.addActionListener(this);
 
 		
 		//IP label
@@ -112,7 +113,7 @@ public class OpeningDialog extends JDialog implements ActionListener{
 		c.add(logIn);
 		
 		//press enter = log in button pressed
-		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		/*KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new KeyEventDispatcher(){
         	 public boolean dispatchKeyEvent(KeyEvent e) {
                  if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
@@ -120,7 +121,7 @@ public class OpeningDialog extends JDialog implements ActionListener{
                  }
                  return false;
              }
-        });
+        });*/
 	}
 
 	
@@ -168,6 +169,9 @@ public class OpeningDialog extends JDialog implements ActionListener{
 				client.CurveClient.cMgr.setClientInfo(IP.getText(), new java.lang.Integer(port.getText()).intValue(), profileName.getText());
 				CurveClient.cMgr.connectionBegin();
 	        }	
+		}
+		else if(e.getSource().equals(profileName)){
+			logIn.doClick();
 		}
 	}
 	

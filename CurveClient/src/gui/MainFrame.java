@@ -58,6 +58,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private BufferedImage profileBufferedImg = OpeningDialog.profileBufferedImg;
 	private String clientName, target = "All members";
 	private JButton profileImage, editColor;
+	private JButton angelButton, angryButton, coolButton, cryButton, eatingButton, embarrassButton, sadButton, smileButton; 
 	private JLabel profileNameLabel, sendingTarget;
 	private JList userList;
 	private JPopupMenu userListPopup;
@@ -154,7 +155,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		chatArea = new JTextPane();
 		chatArea.setEditable(false);
 		JScrollPane chatAreaScrollPane = new JScrollPane(chatArea);
-		chatAreaScrollPane.setBounds(new Rectangle(0, 0, 450, 365));
+		chatAreaScrollPane.setBounds(new Rectangle(0, 0, 450, 330));
 		
 		//sending target panel on the right hand side
 		sendingTarget = new JLabel();
@@ -189,9 +190,63 @@ public class MainFrame extends JFrame implements ActionListener{
 		editColor.setHorizontalTextPosition(AbstractButton.LEFT);
 		editColor.addActionListener(this);
 		
+		//smiley icons on the right hand side
+		angelButton = new JButton(new ImageIcon(client.CurveClient.class.getResource("/res/angel.png")));
+		angelButton.setBounds(0, 0, 20, 20);
+		angelButton.setBorderPainted(false);
+		angelButton.addActionListener(this);
+		
+		angryButton = new JButton(new ImageIcon(client.CurveClient.class.getResource("/res/angry.png")));
+		angryButton.setBounds(25, 0, 20, 20);
+		angryButton.setBorderPainted(false);
+		angryButton.addActionListener(this);
+
+		coolButton = new JButton(new ImageIcon(client.CurveClient.class.getResource("/res/cool.png")));
+		coolButton.setBounds(50, 0, 20, 20);
+		coolButton.setBorderPainted(false);		
+		coolButton.addActionListener(this);
+
+		cryButton = new JButton(new ImageIcon(client.CurveClient.class.getResource("/res/cry.png")));
+		cryButton.setBounds(75, 0, 20, 20);
+		cryButton.setBorderPainted(false);
+		cryButton.addActionListener(this);
+
+		eatingButton = new JButton(new ImageIcon(client.CurveClient.class.getResource("/res/eating.png")));
+		eatingButton.setBounds(100, 0, 20, 20);
+		eatingButton.setBorderPainted(false);
+		eatingButton.addActionListener(this);
+
+		embarrassButton = new JButton(new ImageIcon(client.CurveClient.class.getResource("/res/embarrass.png")));
+		embarrassButton.setBounds(125, 0, 20, 20);
+		embarrassButton.setBorderPainted(false);
+		embarrassButton.addActionListener(this);
+
+		sadButton = new JButton(new ImageIcon(client.CurveClient.class.getResource("/res/sad.png")));
+		sadButton.setBounds(150, 0, 20, 20);
+		sadButton.setBorderPainted(false);
+		sadButton.addActionListener(this);
+
+		smileButton = new JButton(new ImageIcon(client.CurveClient.class.getResource("/res/smile.png")));
+		smileButton.setBounds(50, 0, 20, 20);
+		smileButton.setBorderPainted(false);
+		smileButton.addActionListener(this);
+
+		
+		JPanel smileysPanel = new JPanel();
+		smileysPanel.setLayout(null);
+		smileysPanel.add(angelButton);
+		smileysPanel.add(angryButton);
+		//smileysPanel.add(coolButton);
+		//smileysPanel.add(cryButton);
+		//smileysPanel.add(eatingButton);
+		//smileysPanel.add(embarrassButton);
+		//smileysPanel.add(sadButton);
+		smileysPanel.add(smileButton);
+		smileysPanel.setBounds(0, 370, 200, 20);
+		
 		sendingTarAndColorPanel.add(editColor);
 		sendingTarAndColorPanel.add(sendingTarget);
-		sendingTarAndColorPanel.setBounds(new Rectangle(0, 370, 450, 30));
+		sendingTarAndColorPanel.setBounds(new Rectangle(0, 335, 450, 30));
 		sendingTarAndColorPanel.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				if(e.getX() > 140 && e.getX() < 140 + choiceFrame.length * (colorPanelLength+4)){
@@ -203,11 +258,11 @@ public class MainFrame extends JFrame implements ActionListener{
 				}
 			}
 		});
-		
+
 		//text input area on the right hand side
 		textInputArea = new JTextPane();
 		JScrollPane textInputAreaScrollPane = new JScrollPane(textInputArea);
-		textInputAreaScrollPane.setBounds(new Rectangle(0, 405, 450, 55));
+		textInputAreaScrollPane.setBounds(new Rectangle(0, 395, 450, 65));
 		
 		//left side panel
 		JPanel leftPanel = new JPanel();
@@ -221,6 +276,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		rightPanel.setLayout( null );
 		rightPanel.add(chatAreaScrollPane);
 		rightPanel.add(sendingTarAndColorPanel);
+		rightPanel.add(smileysPanel);
 		rightPanel.add(textInputAreaScrollPane);
 		rightPanel.setBounds(140, 10, 450, 460);
 		
@@ -246,7 +302,34 @@ public class MainFrame extends JFrame implements ActionListener{
         manager.addKeyEventDispatcher(new KeyEventDispatcher(){
         	 public boolean dispatchKeyEvent(KeyEvent e) {
                  if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
-                	 prepareMsg(getInputText(textInputArea));
+
+                	String m = getInputText(textInputArea);
+                 	if (m.indexOf(client.CurveClient.class.getResource("/res/angel.png").toString()) != -1){ 
+                 		m = m.replace(client.CurveClient.class.getResource("/res/angel.png").toString(), "angel.png ");
+                 	}
+                 	if (m.indexOf(client.CurveClient.class.getResource("/res/angry.png").toString()) != -1){ 
+                 		m = m.replace(client.CurveClient.class.getResource("/res/angry.png").toString(), "angry.png ");
+                 	}
+                 	if (m.indexOf(client.CurveClient.class.getResource("/res/cool.png").toString()) != -1){ 
+                 		m = m.replace(client.CurveClient.class.getResource("/res/cool.png").toString(), "cool.png ");
+                 	}
+                 	if (m.indexOf(client.CurveClient.class.getResource("/res/cry.png").toString()) != -1){ 
+                 		m = m.replace(client.CurveClient.class.getResource("/res/cry.png").toString(), "cry.png ");
+                 	}
+                 	if (m.indexOf(client.CurveClient.class.getResource("/res/eating.png").toString()) != -1){ 
+                 		m = m.replace(client.CurveClient.class.getResource("/res/eating.png").toString(), "eating.png ");
+                 	}
+                 	if (m.indexOf(client.CurveClient.class.getResource("/res/embarrass.png").toString()) != -1){ 
+                 		m = m.replace(client.CurveClient.class.getResource("/res/embarrass.png").toString(), "embarrass.png ");
+                 	}
+                 	if (m.indexOf(client.CurveClient.class.getResource("/res/sad.png").toString()) != -1){ 
+                 		m = m.replace(client.CurveClient.class.getResource("/res/sad.png").toString(), "sad.png ");
+                 	}
+                 	if (m.indexOf(client.CurveClient.class.getResource("/res/smile.png").toString()) != -1){ 
+                 		m = m.replace(client.CurveClient.class.getResource("/res/smile.png").toString(), "smile.png ");
+                 	}
+                 	
+                	 prepareMsg(m);
                 	 textInputArea.setText(null);
                  }
                  if(e.getID() == KeyEvent.KEY_RELEASED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
@@ -314,6 +397,31 @@ public class MainFrame extends JFrame implements ActionListener{
 		else if(e.getSource().equals(sendfile)){
 	
 		}
+		
+		else if(e.getSource().equals(angelButton)){
+			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/angel.png")));
+		}
+		else if(e.getSource().equals(angryButton)){
+			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/angry.png")));
+		}
+		else if(e.getSource().equals(coolButton)){
+			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/cool.png")));
+		}
+		else if(e.getSource().equals(cryButton)){
+			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/cry.png")));
+		}
+		else if(e.getSource().equals(eatingButton)){
+			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/eating.png")));
+		}
+		else if(e.getSource().equals(embarrassButton)){
+			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/embarrass.png")));
+		}
+		else if(e.getSource().equals(sadButton)){
+			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/sad.png")));
+		}
+		else if(e.getSource().equals(smileButton)){
+			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/smile.png")));
+		}
 	}
 	 
 	public List<Element> getAllElements(JTextPane x) {
@@ -360,7 +468,32 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	 //send msg as public or whisper
     private void prepareMsg ( String msg ) {
-
+/*
+    	if (msg.indexOf(client.CurveClient.class.getResource("/res/angel.png").toString()) != -1){ 
+    		msg = msg.replace(client.CurveClient.class.getResource("/res/angel.png").toString(), "angel.png");
+    	}
+    	if (msg.indexOf(client.CurveClient.class.getResource("/res/angry.png").toString()) != -1){ 
+    		msg = msg.replace(client.CurveClient.class.getResource("/res/angry.png").toString(), "angry.png");
+    	}
+    	if (msg.indexOf(client.CurveClient.class.getResource("/res/cool.png").toString()) != -1){ 
+    		msg = msg.replace(client.CurveClient.class.getResource("/res/cool.png").toString(), "cool.png");
+    	}
+    	if (msg.indexOf(client.CurveClient.class.getResource("/res/cry.png").toString()) != -1){ 
+    		msg = msg.replace(client.CurveClient.class.getResource("/res/cry.png").toString(), "cry.png");
+    	}
+    	if (msg.indexOf(client.CurveClient.class.getResource("/res/eating.png").toString()) != -1){ 
+    		msg = msg.replace(client.CurveClient.class.getResource("/res/eating.png").toString(), "eating.png");
+    	}
+    	if (msg.indexOf(client.CurveClient.class.getResource("/res/embarrass.png").toString()) != -1){ 
+    		msg = msg.replace(client.CurveClient.class.getResource("/res/embarrass.png").toString(), "embarrass.png");
+    	}
+    	if (msg.indexOf(client.CurveClient.class.getResource("/res/sad.png").toString()) != -1){ 
+    		msg = msg.replace(client.CurveClient.class.getResource("/res/sad.png").toString(), "sad.png");
+    	}
+    	if (msg.indexOf(client.CurveClient.class.getResource("/res/smile.png").toString()) != -1){ 
+    		msg = msg.replace(client.CurveClient.class.getResource("/res/smile.png").toString(), "smile.png");
+    	}
+    	*/
         String tar = target;
         //public msg
         if ( tar == "All members" ) {
@@ -542,7 +675,7 @@ public class MainFrame extends JFrame implements ActionListener{
 
         s = doc.addStyle("system", regular);
         StyleConstants.setBold(s, true);
-        StyleConstants.setForeground(s, Color.BLUE);
+        StyleConstants.setForeground(s, Color.ORANGE);
 
         s = doc.addStyle("warn", regular);
         StyleConstants.setItalic(s, true);
@@ -579,39 +712,72 @@ public class MainFrame extends JFrame implements ActionListener{
 
     //smileys, regex's length should be 2
     protected void addSmileysToDocument(StyledDocument doc) {
-        /*Style regular = doc.getStyle("regular");
+        Style regular = doc.getStyle("regular");
 
         //icons
-        Style s = doc.addStyle("smile.png", regular);
+        Style s = doc.addStyle("angel.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
-        ImageIcon smileIcon = new javax.swing.ImageIcon("smile.png");
+        ImageIcon angelIcon = new ImageIcon(client.CurveClient.class.getResource("/res/angel.png"));
+        if (angelIcon != null) {
+            StyleConstants.setIcon(s, angelIcon);
+        }
+        smileys.add("angel.png");
+
+        s = doc.addStyle("angry.png", regular);
+        StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
+        ImageIcon angryIcon = new ImageIcon(client.CurveClient.class.getResource("/res/angry.png"));
+        if (angryIcon != null) {
+            StyleConstants.setIcon(s, angryIcon);
+        }
+        smileys.add("angry.png");
+
+        s = doc.addStyle("cool.png", regular);
+        StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
+        ImageIcon coolIcon = new ImageIcon(client.CurveClient.class.getResource("/res/cool.png"));
+        if (coolIcon != null) {
+            StyleConstants.setIcon(s, coolIcon);
+        }
+        smileys.add("cool.png");
+
+        s = doc.addStyle("cry.png", regular);
+        StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
+        ImageIcon cryIcon = new ImageIcon(client.CurveClient.class.getResource("/res/cry.png"));
+        if (cryIcon != null) {
+            StyleConstants.setIcon(s, cryIcon);
+        }
+        smileys.add("cry.png");
+        
+        s = doc.addStyle("eating.png", regular);
+        StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
+        ImageIcon eatingIcon = new ImageIcon(client.CurveClient.class.getResource("/res/eating.png"));
+        if (eatingIcon != null) {
+            StyleConstants.setIcon(s, eatingIcon);
+        }
+        smileys.add("eating.png");
+        
+        s = doc.addStyle("embarrass.png", regular);
+        StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
+        ImageIcon embarrassIcon = new ImageIcon(client.CurveClient.class.getResource("/res/embarrass.png"));
+        if (embarrassIcon != null) {
+            StyleConstants.setIcon(s, embarrassIcon);
+        }
+        smileys.add("embarrass.png");
+        
+        s = doc.addStyle("sad.png", regular);
+        StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
+        ImageIcon sadIcon = new ImageIcon(client.CurveClient.class.getResource("/res/sad.png"));
+        if (sadIcon != null) {
+            StyleConstants.setIcon(s, sadIcon);
+        }
+        smileys.add("sad.png");
+        
+        s = doc.addStyle("smile.png", regular);
+        StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
+        ImageIcon smileIcon = new ImageIcon(client.CurveClient.class.getResource("/res/smile.png"));
         if (smileIcon != null) {
             StyleConstants.setIcon(s, smileIcon);
         }
         smileys.add("smile.png");
-
-        s = doc.addStyle("saddy.png", regular);
-        StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
-        ImageIcon saddyIcon = new javax.swing.ImageIcon("saddy.png");
-        if (saddyIcon != null) {
-            StyleConstants.setIcon(s, saddyIcon);
-        }
-        smileys.add("saddy.png");
-
-        s = doc.addStyle("laugh.png", regular);
-        StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
-        ImageIcon laughIcon = new javax.swing.ImageIcon("laugh.png");
-        if (laughIcon != null) {
-            StyleConstants.setIcon(s, laughIcon);
-        }
-        smileys.add("laugh.png");
-
-        s = doc.addStyle("angry.png", regular);
-        StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
-        ImageIcon angryIcon = new javax.swing.ImageIcon("angry.png");
-        if (angryIcon != null) {
-            StyleConstants.setIcon(s, angryIcon);
-        }
-        smileys.add("angry.png");*/
+        
     }
 }
