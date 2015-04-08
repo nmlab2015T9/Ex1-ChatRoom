@@ -69,19 +69,44 @@ public class OtherHead extends JFrame{
 		
 		if(mainframe.isVisible()){
 			Timer timer = new Timer();
+			for(int i = 0; i != Rooms.size() ; i++){	
+        		Rooms.get(i).setVisible(true);
+			}
+			setVisible(true);
 			timer.scheduleAtFixedRate(new TimerTask(){  
 				@Override
 				public void run() {
-					setVisible(true);
 					if(ii<=15){
-						setLocation(p.x, p.y + ((sy + 5) * ii/15));
+						setLocation(p.x, p.y + ((sy + 5) * (Rooms.size() + 1) * ii/15));
 						ii++;
+						for(int i = 0; i != Rooms.size() ; i++){	
+			        		Rooms.get(i).setLocation(p.x, p.y + ((sy + 5)*(i+1)) * ii/15);
+						}
 					}
 					else{
 						ii = 0;
-						cancel();
+						timer.cancel();
 					}
-				}},150 ,3);
+				}},200 ,10);
+			
+			/*for(int i = 0; i != Rooms.size() ; i++){
+        		final RoomHead rm = Rooms.get(i);
+        		final int j = i;
+        		Timer timer2 = new Timer();
+            	timer2.scheduleAtFixedRate(new TimerTask(){  
+            		@Override
+            		public void run() {
+            			if(ii<=15){
+            				rm.setVisible(true);
+            				rm.setLocation(p.x, p.y + ((sy + 5)*(j+1)) * ii/15);
+            				ii++;
+            			}
+            			else{
+            				ii = 0;
+            				timer2.cancel();
+            			}
+            		}},100 ,3);
+			}*/
 		}
 		
 		else{
@@ -89,18 +114,24 @@ public class OtherHead extends JFrame{
 			timer.scheduleAtFixedRate(new TimerTask(){  
 				@Override
 				public void run() {
-					setVisible(false);
 					if(ii<=15){
-						setLocation(p.x, p.y + (sy + 5) - ((sy + 5) * ii/15));
+						setLocation(p.x, p.y + (sy + 5) * (Rooms.size() + 1) - ((sy + 5) * (Rooms.size() + 1) * ii/15));
 						ii++;
+						for(int i = 0; i != Rooms.size() ; i++){
+							Rooms.get(i).setLocation(p.x, p.y + ((sy + 5)*(i+1))  - (((sy + 5)*(i+1)) * ii/15));
+						}
 					}
 					else{
 						ii = 0;
-						cancel();
+						for(int i = 0; i != Rooms.size() ; i++){
+							Rooms.get(i).setVisible(false);
+						}
+						setVisible(false);
+						timer.cancel();
 					}
-				}},150 ,3);
+				}},200 ,10);
 			
-			for(int i = 0; i != Rooms.size() ; i++){
+			/*for(int i = 0; i != Rooms.size() ; i++){
         		RoomHead rm = Rooms.get(i);
         		int j = i;
         		Timer timer2 = new Timer();
@@ -108,18 +139,17 @@ public class OtherHead extends JFrame{
             		@Override
             		public void run() {
             			if(ii<=15){
-            				rm.setLocation(p.x, p.y + ((sy + 5)*j)  - (((sy + 5)*j) * ii/15));
+            				rm.setLocation(p.x, p.y + ((sy + 5)*(j+1))  - (((sy + 5)*(j+1)) * ii/15));
             				ii++;
             			}
             			else{
             				ii = 0;
-            				cancel();
+            				timer2.cancel();
+            				rm.setVisible(false);
             			}
             		}},10 ,3);
-			}
+			}*/
 		}
-    	
-		//setLocation(p.x, p.y + sy + 5);
 	}
 
 	
@@ -142,7 +172,7 @@ public class OtherHead extends JFrame{
         			}
         			else{
         				ii = 0;
-        				cancel();
+        				timer.cancel();
         			}
         		}},10 ,3);
     		//Rooms.get(i).setLocation(p.x, p.y + (sy + 5)*i);
