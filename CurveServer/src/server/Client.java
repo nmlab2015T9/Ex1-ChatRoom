@@ -35,7 +35,7 @@ public class Client implements Runnable
 		userColor = java.awt.Color.BLACK.getRGB();
 		
 		try {
-			face = ImageIO.read(CurveServer.class.getResource("/res/profileimg.png"));
+			face = ImageIO.read(CurveServer.class.getResource("/img/profileimg.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -61,10 +61,6 @@ public class Client implements Runnable
 		} catch (IOException e) {
 			if( e instanceof SocketException ) {
 				CurveServer.removeUser(this, clientID);
-			}
-			else {
-				System.out.println(e.toString());
-				e.printStackTrace();
 			}
 		}
 	}

@@ -12,6 +12,10 @@ import server.Client;
 public class ClientListRenderer extends JLabel implements ListCellRenderer<Client>
 {
 	private static final long serialVersionUID = 1L;
+	
+	public ClientListRenderer() {
+		setOpaque(true);
+	}
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Client> list,
 			Client client, int index, boolean isSelected, boolean cellHasFocus) {
@@ -19,6 +23,13 @@ public class ClientListRenderer extends JLabel implements ListCellRenderer<Clien
 		ImageIcon img = new ImageIcon(client.face);
 		setIcon(img);
 		setText(name);
+		if (isSelected) {
+		    setBackground(list.getSelectionBackground());
+		    setForeground(list.getSelectionForeground());
+		} else {
+		    setBackground(list.getBackground());
+		    setForeground(list.getForeground());
+		}
 		return this;
 	}
 
