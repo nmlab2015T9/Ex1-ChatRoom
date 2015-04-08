@@ -167,4 +167,10 @@ public class OtherHead extends JFrame{
     public Map<Integer, RoomHead> getMaps(){
     	return Map;
     }
+    
+    public void setUserListVectorOfRoom(Vector<String> lobbyList){
+    	 for(int i = 0; i != Rooms.size(); i++){
+    			Rooms.get(i).setUserListVectorOfRoom(lobbyList);
+    		}
+	}
 }

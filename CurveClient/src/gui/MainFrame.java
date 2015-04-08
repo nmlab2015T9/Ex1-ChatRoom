@@ -13,6 +13,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -75,7 +76,7 @@ public class MainFrame extends JFrame implements ActionListener{
        		{  0,  0,  0,  0,255,255,255,255,  0}
        		};
     
-    private Vector <String> userListVector;
+    public Vector <String> userListVector;
     private StyledDocument doc;
     private Vector <String> ChatLines;
     private Vector <String> ChatLineColor;
@@ -297,11 +298,11 @@ public class MainFrame extends JFrame implements ActionListener{
 				point.y = e.getY();
 			}
 		});
-		
+
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new KeyEventDispatcher(){
         	 public boolean dispatchKeyEvent(KeyEvent e) {
-                 if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
+                 if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible() && isFocused()){
 
                 	String m = getInputText(textInputArea);
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/angel.png").toString()) != -1){ 
@@ -344,7 +345,7 @@ public class MainFrame extends JFrame implements ActionListener{
                 	 prepareMsg(m);
                 	 textInputArea.setText(null);
                  }
-                 if(e.getID() == KeyEvent.KEY_RELEASED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
+                 if(e.getID() == KeyEvent.KEY_RELEASED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible() && isFocused()){
                 	 textInputArea.setText(null);
                  }
                  return false;
@@ -531,6 +532,7 @@ public class MainFrame extends JFrame implements ActionListener{
         StyleConstants.setForeground(s, new Color(color));
 
         addSysLine(newUser + " joined.");
+        client.CurveClient.dMgr.otherhead.setUserListVectorOfRoom(userListVector);
 	}
 	
 	public void delUser ( String user ) {

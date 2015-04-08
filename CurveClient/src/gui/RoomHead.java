@@ -12,6 +12,7 @@ import java.awt.geom.Ellipse2D;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -154,5 +155,8 @@ public class RoomHead extends JFrame{
 	
 	public void delUser(String user){
 		roomframe.delUser(user);
+	}
+	public void setUserListVectorOfRoom(Vector<String> lobbyList){
+		roomframe.setUserListVectorOfRoom(lobbyList);
 	}
 }

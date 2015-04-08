@@ -60,9 +60,9 @@ public class RoomFrame extends JFrame implements ActionListener{
 	private JButton profileImage, editColor;
 	private JButton angelButton, angryButton, coolButton, cryButton, eatingButton, embarrassButton, sadButton, smileButton; 
 	private JLabel profileNameLabel, sendingTarget;
-	private JList userList;
-	private JPopupMenu userListPopup;
-	private JMenuItem whisper, video, sendfile;
+	private JList userList, roomList;
+	private JPopupMenu userListPopup, roomListPopup;
+	private JMenuItem whisper, video, sendfile, invite;
 	private JTextPane chatArea;
 	private JTextPane textInputArea;
     private static Point point = new Point();
@@ -75,7 +75,7 @@ public class RoomFrame extends JFrame implements ActionListener{
        		{  0,  0,  0,  0,255,255,255,255,  0}
        		};
     
-    private Vector <String> userListVector;
+    private Vector <String> userListVector, roomListVector;
     private StyledDocument doc;
     private Vector <String> ChatLines;
     private Vector <String> ChatLineColor;
@@ -101,23 +101,6 @@ public class RoomFrame extends JFrame implements ActionListener{
 		setShape(new RoundRectangle2D.Double(0, 0, frameSX, frameSY, 30, 30));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		c = getContentPane();
-		
-		//client's profile image
-		profileImage = new JButton(new ImageIcon(profileBufferedImg));
-		profileImage.addActionListener(this);
-		
-		//client's profile name
-		profileNameLabel = new JLabel();
-		profileNameLabel.setText("Name: "+ clientName);
-		
-		//client's profile on the left hand side
-		JPanel profilePanel = new JPanel();
-		profilePanel.setLayout( null );
-		profileImage.setBounds(new Rectangle(0, 0, 120, 100));
-		profileNameLabel.setBounds(new Rectangle(0, 100, 120, 20));
-		profilePanel.add(profileImage);
-		profilePanel.add(profileNameLabel);
-		profilePanel.setBounds(new Rectangle(0, 0, 120, 125));
 	
 		//items that pop up when right key pressed
 		whisper = new JMenuItem("Whisper");
@@ -126,11 +109,16 @@ public class RoomFrame extends JFrame implements ActionListener{
 		video.addActionListener(this);
 		sendfile = new JMenuItem("Send File");
 		sendfile.addActionListener(this);
+		invite = new JMenuItem("Invite");
+		invite.addActionListener(this);
 		
 		userListPopup = new JPopupMenu();
-		userListPopup.add(whisper);
-		userListPopup.add(video);
-		userListPopup.add(sendfile);
+		userListPopup.add(invite);
+		
+		roomListPopup = new JPopupMenu();
+		roomListPopup.add(whisper);
+		roomListPopup.add(video);
+		roomListPopup.add(sendfile);
 		
 		//user list on the left side
 		userList = new JList();
@@ -151,7 +139,29 @@ public class RoomFrame extends JFrame implements ActionListener{
             }
         });
 		JScrollPane userListScrollPane = new JScrollPane(userList);
-		userListScrollPane.setBounds(new Rectangle(0, 125, 120, 335));
+		userListScrollPane.setBounds(new Rectangle(0, 0, 120, 230));
+		
+		roomList = new JList();
+		roomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		roomList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+            	roomList.clearSelection();
+            	Rectangle r = roomList.getCellBounds( 0, userListVector.size()-1 );
+            	if( r!=null && r.contains(e.getPoint()) ) {
+            		int index = roomList.locationToIndex(e.getPoint());
+            		roomList.setSelectedIndex(index);
+            	}
+            }
+            public void mouseReleased(MouseEvent e) {
+            	if( roomList.getSelectedIndex() != -1) {
+            		roomListPopup.show(e.getComponent(), e.getX(), e.getY());
+            	}
+            }
+        });
+		
+		JScrollPane roomListScrollPane = new JScrollPane(roomList);
+		roomListScrollPane.setBounds(new Rectangle(0, 235, 120, 225));
+		
 		
 		//chat content area on the right hand side
 		chatArea = new JTextPane();
@@ -269,8 +279,8 @@ public class RoomFrame extends JFrame implements ActionListener{
 		//left side panel
 		JPanel leftPanel = new JPanel();
 		leftPanel.setLayout(null);
-		leftPanel.add(profilePanel);
 		leftPanel.add(userListScrollPane);
+		leftPanel.add(roomListScrollPane);
 		leftPanel.setBounds(10, 10, 120, 460);
 		
 		//ride hand side panel
@@ -303,7 +313,7 @@ public class RoomFrame extends JFrame implements ActionListener{
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new KeyEventDispatcher(){
         	 public boolean dispatchKeyEvent(KeyEvent e) {
-                 if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
+                 if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible() && isFocused()){
 
                 	String m = getInputText(textInputArea);
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/angel.png").toString()) != -1){ 
@@ -346,7 +356,7 @@ public class RoomFrame extends JFrame implements ActionListener{
                 	 prepareMsg(m);
                 	 textInputArea.setText(null);
                  }
-                 if(e.getID() == KeyEvent.KEY_RELEASED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
+                 if(e.getID() == KeyEvent.KEY_RELEASED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible() && isFocused()){
                 	 textInputArea.setText(null);
                  }
                  return false;
@@ -355,7 +365,9 @@ public class RoomFrame extends JFrame implements ActionListener{
 	}
 	
 	public void initComponents(){
-		userListVector = new Vector<String>();
+		userListVector = client.CurveClient.dMgr.mainFrame.userListVector;
+		userList.setListData(userListVector);
+		roomListVector = new Vector<String>();
 		ChatLines = new Vector<String>();
         ChatLineColor = new Vector<String>();
         smileys = new Vector<String>();
@@ -397,19 +409,24 @@ public class RoomFrame extends JFrame implements ActionListener{
 		}
 		
 		else if(e.getSource().equals(whisper)){
-	        String tar = userList.getSelectedValue().toString();
+	        String tar = roomList.getSelectedValue().toString();
 	        target = tar;
 	        sendingTarget.setText("Whisper to: "+ target);
 		}
 		
 		else if(e.getSource().equals(video)){
-			String tar = userList.getSelectedValue().toString();
+			String tar = roomList.getSelectedValue().toString();
 			target = tar;
 			client.CurveClient.cMgr.sendVideo(target);
 		}
 		
 		else if(e.getSource().equals(sendfile)){
 	
+		}
+		
+		else if(e.getSource().equals(invite)){
+			String tar = userList.getSelectedValue().toString();
+			inviteUser(tar);
 		}
 		
 		else if(e.getSource().equals(angelButton)){
@@ -499,19 +516,28 @@ public class RoomFrame extends JFrame implements ActionListener{
 		profileNameLabel.setText("Name: " + clientName);
 	}
 
+	public void setUserListVectorOfRoom(Vector<String> lobbyList){
+		userListVector = lobbyList;
+		userList.setListData(userListVector);
+	}
+	
 	public void inviteUser ( String tar ) {
-		//ClientObject.sendAddRoomUser(tar, RoomID);
+		roomListVector.add(tar);
+		roomList.setListData(roomListVector);
+		userListVector.remove(tar);
+		userList.setListData(userListVector);
+		addSysLine(tar + " joined.");
 	}
 	
 	public void addNewUser(String newUser, int color){
-		userListVector.add(newUser);
+		/*userListVector.add(newUser);
 		userList.setListData(userListVector);
-		
+			
 		Style base = doc.getStyle("regular");
-        Style s = doc.addStyle(newUser, base);
-        StyleConstants.setForeground(s, new Color(color));
-
-        addSysLine(newUser + " joined.");
+		Style s = doc.addStyle(newUser, base);
+		StyleConstants.setForeground(s, new Color(color));
+		
+		addSysLine(newUser + " joined.");*/
 	}
 	
 	public void delUser ( String user ) {

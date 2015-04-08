@@ -8,7 +8,7 @@ import java.net.Socket;
 
 
 public class ClientMgr implements Runnable {
-	private String IP, name;
+	public String IP, name;
 	private int port;
 	private Socket socket;
 	private DataOutputStream output;
