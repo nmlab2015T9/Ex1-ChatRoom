@@ -71,6 +71,7 @@ public class ServerGUI extends JFrame
 		
 		// text area
 		textarea.setEditable(false);
+		JScrollPane textareaScroll = new JScrollPane(textarea);
 		Font font = new Font("Verdana", Font.BOLD, 12);
 		textarea.setFont(font);
 		textarea.setForeground(Color.GREEN);
@@ -83,7 +84,7 @@ public class ServerGUI extends JFrame
 		c.weighty = 10;
 		c.fill = GridBagConstraints.BOTH;
 		JSplitPane northSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                userscroll, textarea);
+                userscroll, textareaScroll);
 		//add(splitPane, c);
 		
 		// broadcast label
@@ -145,6 +146,8 @@ public class ServerGUI extends JFrame
 	// append the message to a new line.
 	public void addText(String s) {
 		textarea.append(s + "\n");
+		// auto scroll
+		textarea.setCaretPosition(textarea.getDocument().getLength());
 	}
 	
 	// add user to the end of the list
@@ -156,7 +159,7 @@ public class ServerGUI extends JFrame
 		userListModel.remove(id);
 	}
 	public void removeUser(Client c) {
-		System.out.println("name != null");
+		//System.out.println("bye!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		userListModel.removeElement(c);
 	}
 
