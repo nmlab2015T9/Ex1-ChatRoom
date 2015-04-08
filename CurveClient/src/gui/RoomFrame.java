@@ -544,6 +544,7 @@ public class RoomFrame extends JFrame implements ActionListener{
 	
 	public void delUser (UserData user) {
 		userListModel.removeElement(user);
+		roomListModel.removeElement(user);
 		//userList.setListData(userListVector);
 
         //doc.removeStyle(user);

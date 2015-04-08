@@ -14,10 +14,15 @@ public class UserData
 		
 		
 		try {
-			face = ImageIO.read(CurveClient.class.getResource("/res/profileimg.png"));
+			face 
+			= ImageIO.read(CurveClient.class.getResource("/res/profileimg.png"));
+			/*face.getGraphics().drawImage(tempimg, 
+					0, 0, tempimg.getWidth(), tempimg.getHeight(), 
+					0, 0, 50, 50, null);*/
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	@Override

@@ -12,9 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -276,7 +274,7 @@ public class MainHead extends JFrame{
     // "/r+" command
     public void addUser ( String user , int color , int roomID ) {
     	RoomHead room = Map.get(roomID);
-        room.addUser(user);
+        room.inviteUser(user);
     }
 
     // "/r-" command
