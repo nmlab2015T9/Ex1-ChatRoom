@@ -119,9 +119,9 @@ public class CurveServer {
 	public static void sendBroadcast(String string) {
 		sendAll(string);
 		// send to every room!!
-		for(int i = 0; i != roomList.size(); ++i)
+		/*for(int i = 0; i != roomList.size(); ++i)
 			sendRoom(i, string);
-		
+		*/
 		printMsg(string);
 	}
 	public static boolean sendPrivate(String username, String msg) {
