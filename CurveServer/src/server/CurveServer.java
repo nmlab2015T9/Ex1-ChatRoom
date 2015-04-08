@@ -157,7 +157,7 @@ public class CurveServer {
 		//thd.remove(i);
 		if( name!=null ) {
 			if(hasGUI)
-				gui.removeUser(name);
+				gui.removeUser(client);
 			//userlist.remove(name);
 			for( Room cr: roomList ) {
 				if( cr.hasClient(client) ) {

@@ -3,6 +3,7 @@ package server;
 import java.awt.image.BufferedImage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
@@ -58,10 +59,12 @@ public class Client implements Runnable
 				CurveServer.printMsg(msg);
 				parseMsg(msg);
 			}
-		} catch (IOException e) {
-			if( e instanceof SocketException ) {
+		} catch (EOFException e) {
+			//if( e instanceof SocketException ) {
 				CurveServer.removeUser(this, clientID);
-			}
+			//}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	@SuppressWarnings("unused")

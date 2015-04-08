@@ -155,8 +155,9 @@ public class ServerGUI extends JFrame
 	public void removeUser(int id) {
 		userListModel.remove(id);
 	}
-	public void removeUser(String username) {
-		userListModel.removeElement(username);
+	public void removeUser(Client c) {
+		System.out.println("name != null");
+		userListModel.removeElement(c);
 	}
 
 }
