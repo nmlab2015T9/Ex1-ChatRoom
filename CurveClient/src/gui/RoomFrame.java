@@ -1,4 +1,5 @@
 package gui;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Container;
@@ -50,8 +51,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
-
-public class MainFrame extends JFrame implements ActionListener{
+public class RoomFrame extends JFrame implements ActionListener{
 	private static String frameName = "ChatRoom";
 	public static int frameSX = 600, frameSY = 480;
 	private Container c;
@@ -85,7 +85,7 @@ public class MainFrame extends JFrame implements ActionListener{
     private client.ClientMgr user = client.CurveClient.cMgr;
    
 	
-	public MainFrame(){
+	public RoomFrame(){
 		super(frameName);
 		initFrame();
 		initComponents();
@@ -94,7 +94,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void initFrame(){
 		//frame
 		setSize(frameSX, frameSY);
-		setLocation(100, 100);
+		setLocation(500, 100);
 		setUndecorated(true);
 		setShape(new RoundRectangle2D.Double(0, 0, frameSX, frameSY, 30, 30));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -480,32 +480,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	 //send msg as public or whisper
     private void prepareMsg ( String msg ) {
-/*
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/angel.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/angel.png").toString(), "angel.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/angry.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/angry.png").toString(), "angry.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/cool.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/cool.png").toString(), "cool.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/cry.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/cry.png").toString(), "cry.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/eating.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/eating.png").toString(), "eating.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/embarrass.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/embarrass.png").toString(), "embarrass.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/sad.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/sad.png").toString(), "sad.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/smile.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/smile.png").toString(), "smile.png");
-    	}
-    	*/
         String tar = target;
         //public msg
         if ( tar == "All members" ) {
@@ -522,6 +496,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		profileNameLabel.setText("Name: " + clientName);
 	}
 
+	public void inviteUser ( String tar ) {
+		//ClientObject.sendAddRoomUser(tar, RoomID);
+	}
+	
 	public void addNewUser(String newUser, int color){
 		userListVector.add(newUser);
 		userList.setListData(userListVector);
@@ -793,3 +771,4 @@ public class MainFrame extends JFrame implements ActionListener{
         
     }
 }
+

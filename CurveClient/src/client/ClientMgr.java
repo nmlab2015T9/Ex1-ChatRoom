@@ -242,10 +242,10 @@ public class ClientMgr implements Runnable {
             mainhead.userChangeColor(splitedLine[1], Integer.parseInt(splitedLine[2]));
         }
         //add client to room:  /a <roomID>
-       /* else if (msg.startsWith("/a")) {
+       else if (msg.startsWith("/a")) {
             String[] splitedLine = msg.split(" ", 2);
-            mainhead.addTab(Integer.parseInt(splitedLine[1]));
-        }*/
+            mainhead.addRoom(Integer.parseInt(splitedLine[1]));
+        }
         //add user into room:  /r+ <roomID> [username] [texture]
        /* else if (msg.startsWith("/r+")) {
             String[] splitedLine = msg.split(" ", 4);
@@ -263,7 +263,7 @@ public class ClientMgr implements Runnable {
                                  Integer.parseInt(splitedLine[1]));
         }
         
-        // file transfer request: /v [src name] [dest name] 
+        // video transfer request: /v [src name] [dest name] 
         else if( msg.startsWith("/v") ) {
                 String srcName = msg.split(" ", 4)[1];
         }

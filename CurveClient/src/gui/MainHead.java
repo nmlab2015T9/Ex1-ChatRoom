@@ -14,6 +14,8 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -37,10 +39,15 @@ public class MainHead extends JFrame{
     private static boolean inArea;
     private MainFrame mainframe;
     private OtherHead otherhead;
+    
+    private Vector <RoomHead> Rooms;
+    private Map<Integer, RoomHead> Map;
 
     public MainHead(MainFrame mainFrame, OtherHead otherHead){
     	mainframe = mainFrame;
     	otherhead = otherHead;
+    	Rooms = otherhead.getRooms();
+    	Map = otherhead.getMaps();
     	initComponents();
 }
     
@@ -97,6 +104,7 @@ public class MainHead extends JFrame{
             	}
             	else
             		mainframe.setVisible(false);
+            	otherhead.setClickedPosition(p);
             	/*timer = new Timer();
             	timer.scheduleAtFixedRate(new TimerTask(){  
             		@Override
@@ -265,26 +273,26 @@ public class MainHead extends JFrame{
     }
 
     // "/r+" command
-    /*public void addUser ( String user , int color , int roomID ) {
-        ChatTab tab = map.get(roomID);
-        tab.addUser(user, color);
-    }*/
+    public void addUser ( String user , int color , int roomID ) {
+    	RoomHead room = Map.get(roomID);
+        room.addUser(user, color);
+    }
 
     // "/r-" command
-   /* public void delUser ( String user , int roomID ) {
-        ChatTab tab = map.get(roomID);
-        tab.delUser(user);
-    }*/
+    public void delUser ( String user , int roomID ) {
+	   RoomHead room = Map.get(roomID);
+        room.delUser(user);
+    }
 
     //add new lines
     public void addNewLine ( String text , String color , int roomID ) {
         if (roomID == 0) {
         	mainframe.addNewLine(text, color);
         }
-        //else {
-       //   ChatTab tab = map.get(roomID);
-       //    tab.addNewLine(text, color);
-       // }
+        else {
+        	RoomHead room = Map.get(roomID);
+        	room.addNewLine(text, color);
+        }
     }
 
     public void addSysLine ( String text ) {
@@ -299,36 +307,28 @@ public class MainHead extends JFrame{
         if (roomID == 0) {
         	mainframe.setTarget(name);
         }
-        //else {
-        //    ChatTab tab = map.get(roomID);
-        //    tab.setTarget(name);
-        //}
+        else {
+        	RoomHead room = Map.get(roomID);
+        	room.setTarget(name);
+        }
     }
 
     // "/a" command
-    /*public void addTab ( int roomID ) {
-        ChatTab newTab = new ChatTab(roomID, username);
-        newTab.setFrame(this);
-        newTab.setClientObject(ClientObject);
-        tabs.add(newTab);
-        map.put(roomID, newTab);
-        TabPane.add("Room "+roomID, newTab);
+    public void addRoom ( int roomID ) {
+        otherhead.addRoom(roomID);
     }
 
     // "/l" command
-    public void delTab ( int roomID ) {
-        ChatTab tab = map.get(roomID);
-        tabs.remove(tab);
-        map.remove(roomID);
-        TabPane.remove(tab);
-    }*/
+    public void delRoom ( int roomID ) {
+    	otherhead.delRoom(roomID);
+    }
 
     // "/c" command
     public void userChangeColor ( String name, int c ) {
     	mainframe.userChangeColor(name, c);
-        //for (ChatTab t:tabs) {
-        //    t.userChangeColor(name, c);
-        //}
+    	for(int i = 0; i != Rooms.size(); i++){
+    		Rooms.get(i).userChangeColor(name, c);
+    	}
     }
 
     // "/f" command

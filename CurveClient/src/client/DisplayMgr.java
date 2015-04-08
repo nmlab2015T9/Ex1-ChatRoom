@@ -8,7 +8,7 @@ public class DisplayMgr {
 	
 	public DisplayMgr(){
 		mainFrame = new gui.MainFrame();
-		otherhead = new gui.OtherHead();
+		otherhead = new gui.OtherHead(mainFrame);
 		mainHead = new gui.MainHead(mainFrame, otherhead);
 		openDialog = new gui.OpeningDialog(mainHead, otherhead);
 
