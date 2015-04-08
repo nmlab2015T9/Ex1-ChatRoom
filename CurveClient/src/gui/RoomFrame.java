@@ -83,12 +83,14 @@ public class RoomFrame extends JFrame implements ActionListener{
     private int color = Color.black.getRGB();
     
     private client.ClientMgr user = client.CurveClient.cMgr;
+    private int RoomID;
    
 	
-	public RoomFrame(){
+	public RoomFrame(int id){
 		super(frameName);
 		initFrame();
 		initComponents();
+		RoomID = id;
 	}
 	
 	public void initFrame(){
@@ -480,14 +482,15 @@ public class RoomFrame extends JFrame implements ActionListener{
 	
 	 //send msg as public or whisper
     private void prepareMsg ( String msg ) {
+            
         String tar = target;
         //public msg
         if ( tar == "All members" ) {
-        	user.sendSMsg(msg);
+        	user.sendRMsg(msg, RoomID);
         }
         //whisper msg
         else {
-            user.sendWMsg(msg, tar, 0);
+            user.sendWMsg(msg, tar, RoomID);
         }
     }
 	

@@ -247,15 +247,15 @@ public class ClientMgr implements Runnable {
             mainhead.addRoom(Integer.parseInt(splitedLine[1]));
         }
         //add user into room:  /r+ <roomID> [username] [texture]
-       /* else if (msg.startsWith("/r+")) {
+       else if (msg.startsWith("/r+")) {
             String[] splitedLine = msg.split(" ", 4);
             mainhead.addUser(splitedLine[2], Integer.parseInt(splitedLine[3]), Integer.parseInt(splitedLine[1]));
-        }*/
+        }
         //remove user from room:  /r- <roomID> <user>
-       /* else if (msg.startsWith("/r-")) {
+       else if (msg.startsWith("/r-")) {
             String[] splitedLine = msg.split(" ", 3);
             mainhead.delUser(splitedLine[2], Integer.parseInt(splitedLine[1]));
-        }*/
+        }
         //room msg:  /rs <roomID> <user> msg
         else if (msg.startsWith("/rs")) {
             String[] splitedLine = msg.split(" ", 4);

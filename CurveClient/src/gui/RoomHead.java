@@ -40,7 +40,7 @@ public class RoomHead extends JFrame{
 	}
 
 	private void initFrame(){
-		roomframe = new RoomFrame();
+		roomframe = new RoomFrame(ID);
 	}
 	
 	private void initComponents() {
@@ -51,7 +51,6 @@ public class RoomHead extends JFrame{
         setVisible(true);
         setLayout(new BorderLayout());
     	URL url = client.CurveClient.class.getResource("/res/otherhead.png");
-    	System.out.println(url);
 		ImageIcon otherheadImage = new ImageIcon(url);
         JLabel otherhead = new JLabel(otherheadImage);
         getContentPane().add(otherhead,BorderLayout.CENTER);
