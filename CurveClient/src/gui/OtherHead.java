@@ -63,6 +63,9 @@ public class OtherHead extends JFrame{
 		
 		setVisible(false);
 		//setLocation(x, y);
+		for(int i = 0; i != Rooms.size(); i++){
+			Rooms.get(i).setDraggedPosition(x,y);
+		}
 	}
 	
 	public void setClickedPosition(Point position){

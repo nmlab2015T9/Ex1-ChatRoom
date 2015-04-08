@@ -28,7 +28,7 @@ public class RoomHead extends JFrame{
     private static int height = gd.getDisplayMode().getHeight();
     private static final JFrame closeArea = new JFrame();
 	private static int i = 0;
-    private static Point point = new Point();
+    private static Point point = new Point() , pp = new Point();
     private RoomFrame roomframe;
     private int ID;
     
@@ -71,12 +71,12 @@ public class RoomHead extends JFrame{
         
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
+            	pp = getLocation();
                 point.x = e.getX();
                 point.y = e.getY();
             }
             
             public void mouseClicked(MouseEvent e){
-            	//Point p = getLocation();
             	if(!roomframe.isVisible()){
             		roomframe.setVisible(true);
             	}
@@ -103,6 +103,13 @@ public class RoomHead extends JFrame{
         
     }
     
+	
+	public void setDraggedPosition(int x, int y){
+		
+		setVisible(false);
+		//setLocation(x, y);
+	}
+	
     private void closeProcess(){
     	final Point p = getLocation();
     	Timer timer = new Timer();
@@ -125,11 +132,27 @@ public class RoomHead extends JFrame{
 	    					client.CurveClient.cMgr.sendLeaveRoom(ID);
 	    				}
 	    				else {
-	    					setLocation(point);
 	    					closeArea.setVisible(false);
 	    					closeArea.setLocation(width/2 - sx2/2, height - sy2);
-	    					cancel();
+	    					timer.cancel();
 	    					i = 0;
+	    					
+	    					Timer timer = new Timer();
+	    			    	timer.scheduleAtFixedRate(new TimerTask(){  
+	    			    		
+	    			    		@Override
+	    			    		public void run() {
+	    			    			if(i<=10){
+	    			    				
+	    			    				setLocation(p.x + (pp.x - p.x) * i/10, p.y + (pp.y - p.y) * i/10);
+	    			    				i++;
+	    			    			}
+	    			    			else{
+	    			    				timer.cancel();
+	    			    				i = 0; 				
+	    			    			}
+	    			    		}
+	    			    	},10 ,10);
 	    				}
 	    			}
 				}
