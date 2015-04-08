@@ -16,16 +16,19 @@ public class FileTX implements Runnable {
 		gui = new TXFrame();
 		
 		try {
-			ServerSocket ss = new ServerSocket( 9987 );
-			//System.out.println("Waiting for connection");
+			ServerSocket ss = new ServerSocket( 9988 );
+			System.out.println("Waiting for connection.........");
 			Socket s = ss.accept();
+			System.out.println("connection accepted!!!!!!");
 
 			File sendfile = gui.getFile();
-			//System.out.println(sendfile.getAbsoluteFile());
 			gui.setVisible(true);
+			//System.out.println(sendfile.getAbsoluteFile());
 
 			if( sendfile == null ) {
 				gui.setVisible(false);
+				s.close();
+				ss.close();
 				return;
 			}
 
@@ -46,6 +49,7 @@ public class FileTX implements Runnable {
 				out.write(bufferArray, 0, bufferArray.length);
 				out.flush();
 				out.close();
+				bis.close();
 				//System.out.println( in.readUTF() );
 				gui.done();
 				s.close();
