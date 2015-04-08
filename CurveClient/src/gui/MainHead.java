@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 public class MainHead extends JFrame{
+	private static final long serialVersionUID = 1L;
 	private static int sx = 60, sy = 60, sx2 = 80, sy2 = 80; //sx2, sy2 = cross size
 	private static int gap = 200;
 	private static int i = 0;
@@ -35,8 +36,8 @@ public class MainHead extends JFrame{
     private static int width = gd.getDisplayMode().getWidth();
     private static int height = gd.getDisplayMode().getHeight();
     private static final JFrame closeArea = new JFrame();
-    private static Timer timer;
-    private static boolean inArea;
+    //private static Timer timer;
+    //private static boolean inArea;
     private MainFrame mainframe;
     private OtherHead otherhead;
     
@@ -275,13 +276,13 @@ public class MainHead extends JFrame{
     // "/r+" command
     public void addUser ( String user , int color , int roomID ) {
     	RoomHead room = Map.get(roomID);
-        room.addUser(user, color);
+        room.addUser(user);
     }
 
     // "/r-" command
     public void delUser ( String user , int roomID ) {
-	   RoomHead room = Map.get(roomID);
-        room.delUser(user);
+    	RoomHead room = Map.get(roomID);
+    	room.delUser(user);
     }
 
     //add new lines

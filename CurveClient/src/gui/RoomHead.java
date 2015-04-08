@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -16,12 +15,13 @@ import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
+
+import client.CurveClient;
+import client.UserData;
 
 public class RoomHead extends JFrame{
-    private static int sx = 60, sy = 60, sx2 = 80, sy2 = 80;
+	private static final long serialVersionUID = 1L;
+	private static int sx = 60, sy = 60, sx2 = 80, sy2 = 80;
     private static Ellipse2D ellipse = new Ellipse2D.Double(0, 0, sx, sy), ellipse2 = new Ellipse2D.Double(0, 0, sx2, sy2); 
     private static GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private static int width = gd.getDisplayMode().getWidth();
@@ -76,7 +76,7 @@ public class RoomHead extends JFrame{
             }
             
             public void mouseClicked(MouseEvent e){
-            	Point p = getLocation();
+            	//Point p = getLocation();
             	if(!roomframe.isVisible()){
             		roomframe.setVisible(true);
             	}
@@ -148,11 +148,22 @@ public class RoomHead extends JFrame{
 		roomframe.userChangeColor(name, c);
 	}
 	
-	public void addUser(String user, int color){
-		roomframe.addNewUser(user, color);
+	public void addUser(UserData user){
+		roomframe.addNewUser(user);
+	}
+	public void addUser(String username) {
+		int idx = CurveClient.dMgr.mainFrame.searchUserByName(username);
+		addUser(CurveClient.dMgr.mainFrame.mainUserListModel.get(idx));
 	}
 	
-	public void delUser(String user){
+	public void delUser(UserData user){
 		roomframe.delUser(user);
 	}
+	public void delUser(String username) {
+		int idx = CurveClient.dMgr.mainFrame.searchUserByName(username);
+		delUser(CurveClient.dMgr.mainFrame.mainUserListModel.get(idx));
+	}
+	/*public void setUserListVectorOfRoom(DefaultListModel<UserData> lobbyList){
+		roomframe.setUserListVectorOfRoom(lobbyList);
+	}*/
 }

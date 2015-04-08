@@ -18,15 +18,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import client.UserData;
+
 public class OtherHead extends JFrame{
+	private static final long serialVersionUID = 1L;
 	private MainFrame mainframe;
-	private String username;
-    private int RoomID, positionNum = 0;
     private static int sx = 60, sy = 60;
     private static Ellipse2D ellipse = new Ellipse2D.Double(0, 0, sx, sy); 
     private static GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private static int width = gd.getDisplayMode().getWidth();
-    private static int height = gd.getDisplayMode().getHeight();
+    //private static int height = gd.getDisplayMode().getHeight();
     private static int ii;
 
     public Vector <RoomHead> Rooms;
@@ -167,4 +168,16 @@ public class OtherHead extends JFrame{
     public Map<Integer, RoomHead> getMaps(){
     	return Map;
     }
+    
+    public void addNewUserToEveryRoom(UserData user){
+    	 for(int i = 0; i != Rooms.size(); i++){
+    			Rooms.get(i).addUser(user);
+    		}
+	}
+    public void delUserToEveryRoom(UserData user){
+   	 	for(int i = 0; i != Rooms.size(); i++){
+   			Rooms.get(i).delUser(user);
+   		}
+	}
+
 }

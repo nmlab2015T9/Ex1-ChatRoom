@@ -51,10 +51,12 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
+import client.CurveClient;
 import client.UserData;
 
 
 public class MainFrame extends JFrame implements ActionListener{
+	private static final long serialVersionUID = 1L;
 	private static String frameName = "ChatRoom";
 	public static int frameSX = 600, frameSY = 480;
 	private Container c;
@@ -78,7 +80,7 @@ public class MainFrame extends JFrame implements ActionListener{
        		{  0,  0,  0,  0,255,255,255,255,  0}
        		};
     
-    private DefaultListModel<UserData> userListModel;
+    public DefaultListModel<UserData> mainUserListModel;
     private StyledDocument doc;
     private Vector <String> ChatLines;
     private Vector <String> ChatLineColor;
@@ -134,14 +136,14 @@ public class MainFrame extends JFrame implements ActionListener{
 		userListPopup.add(sendfile);
 		
 		//user list on the left side
-		userListModel = new DefaultListModel<>();
-		userList = new JList<>(userListModel);
+		mainUserListModel = new DefaultListModel<>();
+		userList = new JList<>(mainUserListModel);
 		userList.setCellRenderer(new UserDataListRenderer());
 		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		userList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(MouseEvent e) {
             	userList.clearSelection();
-            	Rectangle r = userList.getCellBounds( 0, userListModel.size()-1 );
+            	Rectangle r = userList.getCellBounds( 0, mainUserListModel.size()-1 );
             	if( r!=null && r.contains(e.getPoint()) ) {
             		int index = userList.locationToIndex(e.getPoint());
             		userList.setSelectedIndex(index);
@@ -302,11 +304,11 @@ public class MainFrame extends JFrame implements ActionListener{
 				point.y = e.getY();
 			}
 		});
-		
+
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new KeyEventDispatcher(){
         	 public boolean dispatchKeyEvent(KeyEvent e) {
-                 if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
+                 if(e.getID() == KeyEvent.KEY_PRESSED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible() && isFocused()){
 
                 	String m = getInputText(textInputArea);
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/angel.png").toString()) != -1){ 
@@ -349,7 +351,7 @@ public class MainFrame extends JFrame implements ActionListener{
                 	 prepareMsg(m);
                 	 textInputArea.setText(null);
                  }
-                 if(e.getID() == KeyEvent.KEY_RELEASED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible()){
+                 if(e.getID() == KeyEvent.KEY_RELEASED && (e.getKeyCode() == KeyEvent.VK_ENTER) && isVisible() && isFocused()){
                 	 textInputArea.setText(null);
                  }
                  return false;
@@ -527,34 +529,43 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 
 	public void addNewUser(String newUser, int color){
-		userListModel.addElement(new UserData(newUser));
+		UserData newUserData = new UserData(newUser);
+		mainUserListModel.addElement(newUserData);
 		//userList.setListData(userListVector);
 		
 		Style base = doc.getStyle("regular");
         Style s = doc.addStyle(newUser, base);
         StyleConstants.setForeground(s, new Color(color));
+        
+        // add to every room
+        CurveClient.dMgr.otherhead.addNewUserToEveryRoom(newUserData);
 
         addSysLine(newUser + " joined.");
+        //client.CurveClient.dMgr.otherhead.setUserListVectorOfRoom(userListModel);
 	}
 	
 	public void delUser ( String user ) {
-		int idx = serchUserByName(user);
+		UserData newUserData = new UserData(user);
+		int idx = searchUserByName(user);
 		if(idx != -1) {
-			userListModel.remove(idx);
+			mainUserListModel.remove(idx);
 		}
 		//userList.setListData(userListVector);
 
         doc.removeStyle(user);
+        
+        // del to every room
+        CurveClient.dMgr.otherhead.delUserToEveryRoom(newUserData);
 
         addSysLine(user + " left.");
     }
 	
-	// This method is used only to search thru "userListModel"
+	// This method is used only to search thru "mainUserListModel"
 	// to see if it contains "user", if does, it returns the index,
 	// if not, returns -1.
-	private int serchUserByName(String user) {
-		for(int i = 0; i != userListModel.getSize(); ++i) {
-			if(userListModel.get(i).username.equals(user))
+	public int searchUserByName(String user) {
+		for(int i = 0; i != mainUserListModel.getSize(); ++i) {
+			if(mainUserListModel.get(i).username.equals(user))
 				return i;
 		}
 		return -1;
@@ -667,11 +678,11 @@ public class MainFrame extends JFrame implements ActionListener{
     }
     
     public void clear () {
-        for (int i = 0; i != userListModel.getSize(); ++i) {
-        	String u = userListModel.get(i).username;
+        for (int i = 0; i != mainUserListModel.getSize(); ++i) {
+        	String u = mainUserListModel.get(i).username;
             doc.removeStyle(u);
         }
-        userListModel.clear();
+        mainUserListModel.clear();
         //userList.setListData(userListVector);
 
         color = Color.black.getRGB();
