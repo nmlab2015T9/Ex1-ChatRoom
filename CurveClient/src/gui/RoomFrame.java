@@ -52,7 +52,7 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 public class RoomFrame extends JFrame implements ActionListener{
-	private static String frameName = "ChatRoom";
+	private static String frameName = "SmallRoom";
 	public static int frameSX = 600, frameSY = 480;
 	private Container c;
 	private BufferedImage profileBufferedImg = OpeningDialog.profileBufferedImg;
@@ -131,7 +131,7 @@ public class RoomFrame extends JFrame implements ActionListener{
 		userListPopup.add(sendfile);
 		
 		//user list on the left side
-		userList = new JList(userListVector);
+		userList = new JList();
 		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		userList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(MouseEvent e) {

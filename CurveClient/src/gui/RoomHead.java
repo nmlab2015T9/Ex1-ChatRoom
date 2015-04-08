@@ -51,6 +51,7 @@ public class RoomHead extends JFrame{
         setVisible(true);
         setLayout(new BorderLayout());
     	URL url = client.CurveClient.class.getResource("/res/otherhead.png");
+    	System.out.println(url);
 		ImageIcon otherheadImage = new ImageIcon(url);
         JLabel otherhead = new JLabel(otherheadImage);
         getContentPane().add(otherhead,BorderLayout.CENTER);
@@ -107,10 +108,7 @@ public class RoomHead extends JFrame{
     	final Point p = getLocation();
     	Timer timer = new Timer();
     	timer.scheduleAtFixedRate(new TimerTask(){  
-    		public void run(){  
-    			SwingUtilities.invokeLater(new Runnable(){
     		
-    			
 				@Override
 				public void run() {
 					if(i<=50){
@@ -122,9 +120,10 @@ public class RoomHead extends JFrame{
 	    			}
 	    			else{
 	    				if(p.x > (width/2 - sx2/2) && p.x < (width/2 + sx2/2) && p.y > (height - sy2)){
-	    					client.CurveClient.cMgr.sendLeaveRoom(ID);
 	    					roomframe.dispose();
 	    					dispose();
+	    					cancel();
+	    					client.CurveClient.cMgr.sendLeaveRoom(ID);
 	    				}
 	    				else {
 	    					setLocation(point);
@@ -135,8 +134,7 @@ public class RoomHead extends JFrame{
 	    				}
 	    			}
 				}
-    		});
-    			}},10 ,10);
+    		},10 ,10);
 	}
 	
     public void addNewLine ( String text , String color) {
