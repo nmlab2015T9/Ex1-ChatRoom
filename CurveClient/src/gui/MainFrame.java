@@ -29,6 +29,7 @@ import java.util.Vector;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -50,6 +51,8 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
+import client.UserData;
+
 
 public class MainFrame extends JFrame implements ActionListener{
 	private static String frameName = "ChatRoom";
@@ -60,7 +63,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JButton profileImage, editColor;
 	private JButton angelButton, angryButton, coolButton, cryButton, eatingButton, embarrassButton, sadButton, smileButton; 
 	private JLabel profileNameLabel, sendingTarget;
-	private JList userList;
+	private JList<UserData> userList;
 	private JPopupMenu userListPopup;
 	private JMenuItem whisper, video, sendfile;
 	private JTextPane chatArea;
@@ -75,7 +78,7 @@ public class MainFrame extends JFrame implements ActionListener{
        		{  0,  0,  0,  0,255,255,255,255,  0}
        		};
     
-    private Vector <String> userListVector;
+    private DefaultListModel<UserData> userListModel;
     private StyledDocument doc;
     private Vector <String> ChatLines;
     private Vector <String> ChatLineColor;
@@ -131,12 +134,14 @@ public class MainFrame extends JFrame implements ActionListener{
 		userListPopup.add(sendfile);
 		
 		//user list on the left side
-		userList = new JList(userListVector);
+		userListModel = new DefaultListModel<>();
+		userList = new JList<>(userListModel);
+		userList.setCellRenderer(new UserDataListRenderer());
 		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		userList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(MouseEvent e) {
             	userList.clearSelection();
-            	Rectangle r = userList.getCellBounds( 0, userListVector.size()-1 );
+            	Rectangle r = userList.getCellBounds( 0, userListModel.size()-1 );
             	if( r!=null && r.contains(e.getPoint()) ) {
             		int index = userList.locationToIndex(e.getPoint());
             		userList.setSelectedIndex(index);
@@ -353,7 +358,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	public void initComponents(){
-		userListVector = new Vector<String>();
 		ChatLines = new Vector<String>();
         ChatLineColor = new Vector<String>();
         smileys = new Vector<String>();
@@ -523,8 +527,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 
 	public void addNewUser(String newUser, int color){
-		userListVector.add(newUser);
-		userList.setListData(userListVector);
+		userListModel.addElement(new UserData(newUser));
+		//userList.setListData(userListVector);
 		
 		Style base = doc.getStyle("regular");
         Style s = doc.addStyle(newUser, base);
@@ -534,14 +538,28 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	public void delUser ( String user ) {
-		userListVector.remove(user);
-		userList.setListData(userListVector);
+		int idx = serchUserByName(user);
+		if(idx != -1) {
+			userListModel.remove(idx);
+		}
+		//userList.setListData(userListVector);
 
         doc.removeStyle(user);
 
         addSysLine(user + " left.");
     }
 	
+	// This method is used only to search thru "userListModel"
+	// to see if it contains "user", if does, it returns the index,
+	// if not, returns -1.
+	private int serchUserByName(String user) {
+		for(int i = 0; i != userListModel.getSize(); ++i) {
+			if(userListModel.get(i).username.equals(user))
+				return i;
+		}
+		return -1;
+	}
+
 	public void addNewLine ( String text , String color ) {
 		ChatLines.add(text + "\n");
 		ChatLineColor.add(color);
@@ -649,11 +667,12 @@ public class MainFrame extends JFrame implements ActionListener{
     }
     
     public void clear () {
-        for (String u : userListVector) {
+        for (int i = 0; i != userListModel.getSize(); ++i) {
+        	String u = userListModel.get(i).username;
             doc.removeStyle(u);
         }
-        userListVector.clear();
-        userList.setListData(userListVector);
+        userListModel.clear();
+        //userList.setListData(userListVector);
 
         color = Color.black.getRGB();
         //NameLabel.setForeground(Color.black);
