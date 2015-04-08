@@ -23,6 +23,7 @@ import client.UserData;
 public class OtherHead extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private MainFrame mainframe;
+	private MainHead mainhead;
     private static int sx = 60, sy = 60;
     private static Ellipse2D ellipse = new Ellipse2D.Double(0, 0, sx, sy); 
     private static GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -78,77 +79,66 @@ public class OtherHead extends JFrame{
 				public void run() {
 					if(ii<=15){
 						setLocation(p.x, p.y + ((sy + 5) * (Rooms.size() + 1) * ii/15));
-						ii++;
-						for(int i = 0; i != Rooms.size() ; i++){	
-			        		Rooms.get(i).setLocation(p.x, p.y + ((sy + 5)*(i+1)) * ii/15);
-						}
+						ii++;	
 					}
 					else{
 						ii = 0;
 						timer.cancel();
 					}
-				}},200 ,10);
+				}},500 ,10);
 			
-			/*for(int i = 0; i != Rooms.size() ; i++){
-        		final RoomHead rm = Rooms.get(i);
-        		final int j = i;
-        		Timer timer2 = new Timer();
-            	timer2.scheduleAtFixedRate(new TimerTask(){  
-            		@Override
-            		public void run() {
-            			if(ii<=15){
-            				rm.setVisible(true);
-            				rm.setLocation(p.x, p.y + ((sy + 5)*(j+1)) * ii/15);
-            				ii++;
-            			}
-            			else{
-            				ii = 0;
-            				timer2.cancel();
-            			}
-            		}},100 ,3);
-			}*/
+			Timer t = new Timer();
+			t.scheduleAtFixedRate(new TimerTask(){  
+				@Override
+				public void run() {
+					if(ii<=15){
+						for(int i = 0; i != Rooms.size() ; i++){	
+			        		Rooms.get(i).setLocation(p.x, p.y + ((sy + 5)*(i+1)) * ii/15);
+							ii++;
+						}
+					}
+					else{
+						ii = 0;
+						t.cancel();
+					}
+				}},200 ,10);
 		}
 		
-		else{
+		else{		
 			Timer timer = new Timer();
 			timer.scheduleAtFixedRate(new TimerTask(){  
 				@Override
 				public void run() {
 					if(ii<=15){
-						setLocation(p.x, p.y + (sy + 5) * (Rooms.size() + 1) - ((sy + 5) * (Rooms.size() + 1) * ii/15));
+						setLocation(p.x, p.y + ((sy + 5) * (Rooms.size() + 1) - ((sy + 5) * (Rooms.size() + 1) * ii/15)));
 						ii++;
-						for(int i = 0; i != Rooms.size() ; i++){
-							Rooms.get(i).setLocation(p.x, p.y + ((sy + 5)*(i+1))  - (((sy + 5)*(i+1)) * ii/15));
+						
+					}
+					else{
+						ii = 0;
+						timer.cancel();
+						setVisible(false);
+					}
+				}},500 ,10);
+			
+			Timer t = new Timer();
+			t.scheduleAtFixedRate(new TimerTask(){  
+				@Override
+				public void run() {
+					if(ii<=15){
+						for(int i = 0; i != Rooms.size() ; i++){	
+			        		Rooms.get(i).setLocation(p.x, p.y + ((sy + 5)*(i+1)) - (((sy + 5)*(i+1)) * ii/15));
+							ii++;
 						}
 					}
 					else{
 						ii = 0;
-						for(int i = 0; i != Rooms.size() ; i++){
-							Rooms.get(i).setVisible(false);
+						t.cancel();
+						for(int i = 0; i != Rooms.size() ; i++){	
+			        		Rooms.get(i).setVisible(false);
 						}
-						setVisible(false);
-						timer.cancel();
 					}
 				}},200 ,10);
-			
-			/*for(int i = 0; i != Rooms.size() ; i++){
-        		RoomHead rm = Rooms.get(i);
-        		int j = i;
-        		Timer timer2 = new Timer();
-            	timer2.scheduleAtFixedRate(new TimerTask(){  
-            		@Override
-            		public void run() {
-            			if(ii<=15){
-            				rm.setLocation(p.x, p.y + ((sy + 5)*(j+1))  - (((sy + 5)*(j+1)) * ii/15));
-            				ii++;
-            			}
-            			else{
-            				ii = 0;
-            				timer2.cancel();
-            				rm.setVisible(false);
-            			}
-            		}},10 ,3);
-			}*/
 		}
 	}
 
@@ -158,7 +148,9 @@ public class OtherHead extends JFrame{
 		RoomHead room = new RoomHead(roomID);
 		Rooms.add(room);
         Map.put(roomID, room);
-    	for(int i = 0; i != Rooms.size(); i++){
+        mainframe.setVisible(true);
+        setClickedPosition(mainhead.getLocation());
+    	/*for(int i = 0; i != Rooms.size(); i++){
     		RoomHead rm = Rooms.get(i);
     		int j = i;
     		Timer timer = new Timer();
@@ -209,5 +201,9 @@ public class OtherHead extends JFrame{
    			Rooms.get(i).delUser(user);
    		}
 	}
+    
+    public void setMainHead(MainHead mh){
+    	mainhead = mh;
+    }
 
 }
