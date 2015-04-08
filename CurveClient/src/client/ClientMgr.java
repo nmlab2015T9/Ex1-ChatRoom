@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import file.FileRX;
+import file.FileTX;
+
 
 public class ClientMgr implements Runnable {
 	public String IP, name;
@@ -186,12 +189,12 @@ public class ClientMgr implements Runnable {
 	 }
 
 	 //send file
-	 /*public void sendFile( String src, String dest ) {
+	 public void sendFile(String dest ) {
 	        // send file request: /f [src name] [dest name]
-	        send( "/f "+src+" "+dest );
-	        Thread fsthd = new Thread( new FileSend() );
+	        send( "/f "+name+" "+dest );
+	        Thread fsthd = new Thread( new FileTX() );
 	        fsthd.start();
-	    }*/
+	    }
 	
 	private void readInput(String msg) {
 		//add user:  /q+ <user> <texture>
@@ -268,11 +271,11 @@ public class ClientMgr implements Runnable {
                 String srcName = msg.split(" ", 4)[1];
         }
         // file transfer request: /f [src name] [dest name] [src IP]
-        /*else if( msg.startsWith("/f") ) {
+        else if( msg.startsWith("/f") ) {
                 String srcName = msg.split(" ", 4)[1];
                 String srcAddr = msg.split(" ", 4)[3];
-                Thread recvThd = new Thread( new FileRecv( srcAddr, srcName ) );
+                Thread recvThd = new Thread( new FileRX( srcAddr, srcName ) );
                 recvThd.start();
-        }*/
+        }
 	}
 }
