@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 
 import javax.imageio.ImageIO;
 
@@ -60,8 +61,10 @@ public class Client implements Runnable
 			}
 		} catch (EOFException e) {
 			//if( e instanceof SocketException ) {
-				CurveServer.removeUser(this, clientID);
+			CurveServer.removeUser(this, clientID);
 			//}
+		} catch (SocketException e) {
+			CurveServer.removeUser(this, clientID);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
