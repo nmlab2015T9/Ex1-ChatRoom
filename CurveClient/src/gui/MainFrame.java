@@ -86,7 +86,6 @@ public class MainFrame extends JFrame implements ActionListener{
     private Vector <String> ChatLineColor;
     private Vector <String> smileys;
     private int color = Color.black.getRGB();
-    
     private client.ClientMgr user = client.CurveClient.cMgr;
    
 	
@@ -413,7 +412,8 @@ public class MainFrame extends JFrame implements ActionListener{
 		}
 		
 		else if(e.getSource().equals(sendfile)){
-	
+			String tar = userList.getSelectedValue().toString();
+	        client.CurveClient.cMgr.sendFile(tar);
 		}
 		
 		else if(e.getSource().equals(angelButton)){
