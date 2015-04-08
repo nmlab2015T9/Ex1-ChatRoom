@@ -35,7 +35,7 @@ public class Client implements Runnable
 		userColor = java.awt.Color.BLACK.getRGB();
 		
 		try {
-			face = ImageIO.read(CurveServer.class.getResource("profileimg.png"));
+			face = ImageIO.read(CurveServer.class.getResource("/res/profileimg.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
