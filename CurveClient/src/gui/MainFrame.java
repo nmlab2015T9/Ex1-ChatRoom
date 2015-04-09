@@ -421,7 +421,12 @@ public class MainFrame extends JFrame implements ActionListener{
 			target = tar;
 			client.CurveClient.cMgr.sendVideo(target);
             String [] arg = new String[1];
+<<<<<<< HEAD
             arg[0] = "140.112.18.200/1234";
+=======
+            // this is receive, yourself
+            arg[0] = "140.112.18.199/1236";
+>>>>>>> origin/master
             //arg[1] = "224.112.112.112/1236";
             AVReceive2 avReceive = new AVReceive2(arg);
             if (!avReceive.initialize()) {
