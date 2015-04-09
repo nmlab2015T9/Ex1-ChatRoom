@@ -53,6 +53,7 @@ import javax.swing.text.StyledDocument;
 
 import client.CurveClient;
 import client.UserData;
+import rtp.AVReceive2;
 
 
 public class MainFrame extends JFrame implements ActionListener{
@@ -135,8 +136,8 @@ public class MainFrame extends JFrame implements ActionListener{
 		userListPopup.add(sendfile);
 		
 		//user list on the left side
-		mainUserListModel = new DefaultListModel<>();
-		userList = new JList<>(mainUserListModel);
+		mainUserListModel = new DefaultListModel<UserData>();
+		userList = new JList<UserData>(mainUserListModel);
 		userList.setCellRenderer(new UserDataListRenderer());
 		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		userList.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -409,6 +410,22 @@ public class MainFrame extends JFrame implements ActionListener{
 			String tar = userList.getSelectedValue().toString();
 			target = tar;
 			client.CurveClient.cMgr.sendVideo(target);
+            String [] arg = new String[2];
+            arg[0] = "224.112.112.112/1234";
+            arg[1] = "224.112.112.112/1236";
+            AVReceive2 avReceive = new AVReceive2(arg);
+            if (!avReceive.initialize()) {
+                System.err.println("Failed to initialize the sessions.");
+                System.exit(-1);
+            }
+
+            // Check to see if AVReceive2 is done.
+            /*try {
+                while (!avReceive.isDone())
+                    Thread.sleep(1000);
+            } catch (Exception ex) {}
+
+            System.err.println("Exiting AVReceive2");*/
 		}
 		
 		else if(e.getSource().equals(sendfile)){

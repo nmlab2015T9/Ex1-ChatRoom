@@ -35,7 +35,7 @@ public class ServerGUI extends JFrame
 	//private ServerSocket ss;
 	private JTextArea textarea = new JTextArea(30, 50);
 	private JList<Client> userList;
-	private DefaultListModel<Client> userListModel = new DefaultListModel<>();
+	private DefaultListModel<Client> userListModel = new DefaultListModel<Client>();
 	private JTextField broadcastT = new JTextField();
 	
 	public ServerGUI() {
@@ -59,7 +59,7 @@ public class ServerGUI extends JFrame
 		GridBagConstraints c = new GridBagConstraints();
 		
 		// user list
-		userList = new JList<>(userListModel);
+		userList = new JList<Client>(userListModel);
 		userList.setCellRenderer(new ClientListRenderer());
 		c.gridx = 0;
 		c.gridy = 0;

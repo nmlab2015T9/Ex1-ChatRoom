@@ -126,14 +126,14 @@ public class RoomFrame extends JFrame implements ActionListener{
 		roomListPopup.add(sendfile);
 		
 		//user list on the left top side
-		userListModel = new DefaultListModel<>();
+		userListModel = new DefaultListModel<UserData>();
 		
 		// clone the mainUserListModel's guts to userListModel
 		for(int i = 0; i != CurveClient.dMgr.mainFrame.mainUserListModel.getSize(); ++i) {  
 			userListModel.addElement(CurveClient.dMgr.mainFrame.mainUserListModel.get(i));  
 		}
 		
-		userList = new JList<>(userListModel);
+		userList = new JList<UserData>(userListModel);
 		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		userList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -154,8 +154,8 @@ public class RoomFrame extends JFrame implements ActionListener{
 		userListScrollPane.setBounds(new Rectangle(0, 0, 120, 230));
 		
 		// room list on the left bottom
-		roomListModel = new DefaultListModel<>();
-		roomList = new JList<>(roomListModel);
+		roomListModel = new DefaultListModel<UserData>();
+		roomList = new JList<UserData>(roomListModel);
 		roomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		roomList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(MouseEvent e) {

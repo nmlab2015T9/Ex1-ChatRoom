@@ -103,7 +103,7 @@ public class AVReceive2 implements ReceiveStreamListener, SessionListener,
         // Wait for data to arrive before moving on.
 
         long then = System.currentTimeMillis();
-        long waitingPeriod = 30000;  // wait for a maximum of 30 secs.
+        long waitingPeriod = 15000;  // wait for a maximum of 30 secs.
 
         try{
             synchronized (dataSync) {
@@ -231,6 +231,7 @@ public class AVReceive2 implements ReceiveStreamListener, SessionListener,
                 p.realize();
                 PlayerWindow pw = new PlayerWindow(p, stream);
                 playerWindows.addElement(pw);
+                pw.addClose();
 
                 // Notify intialize() that a new stream had arrived.
                 synchronized (dataSync) {
@@ -242,6 +243,8 @@ public class AVReceive2 implements ReceiveStreamListener, SessionListener,
                 System.err.println("NewReceiveStreamEvent exception " + e.getMessage());
                 return;
             }
+
+
 
         }
 
@@ -383,7 +386,7 @@ public class AVReceive2 implements ReceiveStreamListener, SessionListener,
     /**
      * GUI classes for the Player.
      */
-    class PlayerWindow extends Frame {
+    /*class PlayerWindow extends Frame {
 
         Player player;
         ReceiveStream stream;
@@ -407,13 +410,13 @@ public class AVReceive2 implements ReceiveStreamListener, SessionListener,
             super.addNotify();
             pack();
         }
-    }
+    }*/
 
 
     /**
      * GUI classes for the Player.
      */
-    class PlayerPanel extends Panel {
+    /*class PlayerPanel extends Panel {
 
         Component vc, cc;
 
@@ -442,7 +445,7 @@ public class AVReceive2 implements ReceiveStreamListener, SessionListener,
                 w = 160;
             return new Dimension(w, h);
         }
-    }
+    }*/
 
 
     /*public static void main(String argv[]) {
