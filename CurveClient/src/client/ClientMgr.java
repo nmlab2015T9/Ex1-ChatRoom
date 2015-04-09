@@ -43,6 +43,8 @@ public class ClientMgr implements Runnable {
         }
         catch (Exception e) {
         	mainhead.addWarnLine("Failed: " + IP + ":" + port);
+
+			System.out.println("connectionBegin");
             interrupt();
             e.printStackTrace();
         }
@@ -126,20 +128,21 @@ public class ClientMgr implements Runnable {
 		catch (Exception e) {
 			interrupt();
 			e.printStackTrace();
-			System.out.println("GG!!");
+			System.out.println("run");
 		}		
 	}
 
 	 public void send ( String msg ) {
-	        try{
-	        	output.writeUTF(msg);
-	            System.out.println("Send: " + msg);
-		}
-		catch (Exception e) {
-	            interrupt();
-	            e.printStackTrace();
-		}
-	 }
+		 try{
+			 output.writeUTF(msg);
+			 System.out.println("Send: " + msg);
+		 }
+		 catch (Exception e) {
+			 System.out.println("send");
+			 interrupt();
+			 e.printStackTrace();
+		 }
+	 }	
 
 	 public void sendDelUser(){
 		 send("/q- " + name);

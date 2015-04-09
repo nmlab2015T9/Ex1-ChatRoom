@@ -704,6 +704,7 @@ public class MainFrame extends JFrame implements ActionListener{
     
     public void setTarget(String t){
     	target = t;
+    	sendingTarget.setText("Whisper to: "+ target);
     }
     
     public void clear () {
