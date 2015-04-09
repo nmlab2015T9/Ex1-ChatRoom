@@ -149,6 +149,8 @@ public class CurveServer {
 			gui.addUser(c);
 	}
 	public static void removeUser(Client client, int id) {
+		if(client == null) return;
+		if(client.username == "") return;
 		printMsg("Removing user: " + client.username + ", id: "+id);
 		String name = client.username;
 		//int i = cli.indexOf(c);
