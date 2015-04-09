@@ -107,7 +107,7 @@ public class RoomHead extends JFrame{
 	public void setDraggedPosition(int x, int y){
 		
 		setVisible(false);
-		//setLocation(x, y);
+		setLocation(x, y);
 	}
 	
     private void closeProcess(){

@@ -62,7 +62,7 @@ public class OtherHead extends JFrame{
 	public void setDraggedPosition(int x, int y){
 		
 		setVisible(false);
-		//setLocation(x, y);
+		setLocation(x, y);
 		for(int i = 0; i != Rooms.size(); i++){
 			Rooms.get(i).setDraggedPosition(x,y);
 		}
@@ -72,21 +72,21 @@ public class OtherHead extends JFrame{
 		Point p = position;
 		
 		if(mainframe.isVisible()){
-			Timer timer = new Timer();
 			for(int i = 0; i != Rooms.size() ; i++){	
         		Rooms.get(i).setVisible(true);
 			}
 			setVisible(true);
+			Timer timer = new Timer();
 			timer.scheduleAtFixedRate(new TimerTask(){  
 				@Override
 				public void run() {
 					if(ii<=15){
 						setLocation(p.x, p.y + ((sy + 5) * (Rooms.size() + 1) * ii/15));
-						ii++;	
-					}
-					else{
-						ii = 0;
-						timer.cancel();
+						++ii;
+						if (ii == 16){
+							timer.cancel();
+							ii = 0;
+						}
 					}
 				}},500 ,10);
 			
@@ -96,13 +96,13 @@ public class OtherHead extends JFrame{
 				public void run() {
 					if(ii<=15){
 						for(int i = 0; i != Rooms.size() ; i++){	
-			        		Rooms.get(i).setLocation(p.x, p.y + ((sy + 5)*(i+1)) * ii/15);
-							ii++;
+			        		Rooms.get(i).setLocation(p.x, p.y + ((sy + 5)*(i+1)) * ii/15);						
 						}
-					}
-					else{
-						ii = 0;
-						t.cancel();
+						ii++;
+						if (ii == 16){
+							t.cancel();
+							ii = 0;
+						}
 					}
 				}},200 ,10);
 		}
@@ -114,13 +114,12 @@ public class OtherHead extends JFrame{
 				public void run() {
 					if(ii<=15){
 						setLocation(p.x, p.y + ((sy + 5) * (Rooms.size() + 1) - ((sy + 5) * (Rooms.size() + 1) * ii/15)));
-						ii++;
-						
-					}
-					else{
-						ii = 0;
-						timer.cancel();
-						setVisible(false);
+						++ii;
+						if (ii == 16){
+							timer.cancel();
+							ii = 0;
+							setVisible(false);
+						}						
 					}
 				}},500 ,10);
 			
@@ -131,14 +130,11 @@ public class OtherHead extends JFrame{
 					if(ii<=15){
 						for(int i = 0; i != Rooms.size() ; i++){	
 			        		Rooms.get(i).setLocation(p.x, p.y + ((sy + 5)*(i+1)) - (((sy + 5)*(i+1)) * ii/15));
-							ii++;
 						}
-					}
-					else{
-						ii = 0;
-						t.cancel();
-						for(int i = 0; i != Rooms.size() ; i++){	
-			        		Rooms.get(i).setVisible(false);
+						ii++;
+						if (ii == 16){
+							t.cancel();
+							ii = 0;
 						}
 					}
 				}},200 ,10);
@@ -180,10 +176,10 @@ public class OtherHead extends JFrame{
 	}
 	
 	public void delRoom(int roomID){
-		/*ChatTab tab = map.get(roomID);
-        tabs.remove(tab);
-        map.remove(roomID);
-        TabPane.remove(tab);*/
+		RoomHead room = Map.get(roomID);		
+        Rooms.remove(room);
+        Map.remove(roomID);
+        setClickedPosition(mainhead.getLocation());
 	}
 
 	public Vector <RoomHead> getRooms(){

@@ -88,6 +88,7 @@ public class TXFrame extends JFrame {
 
 	public File getFile() {
 		JFileChooser fc = new JFileChooser();
+		System.out.println("showOpenDialog");
 		int result = fc.showOpenDialog(new JFrame());
 		File sendfile;
 		if (result == JFileChooser.APPROVE_OPTION) {
