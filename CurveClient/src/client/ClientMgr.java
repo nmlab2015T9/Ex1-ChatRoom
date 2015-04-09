@@ -252,8 +252,10 @@ public class ClientMgr implements Runnable {
         }
         //add user into room:  /r+ <roomID> [username] [texture]
        else if (msg.startsWith("/r+")) {
-            String[] splitedLine = msg.split(" ", 4);
-            mainhead.addUser(splitedLine[2], Integer.parseInt(splitedLine[3]), Integer.parseInt(splitedLine[1]));
+		   String[] splitedLine = msg.split(" ", 4);
+    	   if(msg.indexOf(name) == -1){
+    		   mainhead.addUser(splitedLine[2], Integer.parseInt(splitedLine[3]), Integer.parseInt(splitedLine[1]));
+    	   }
         }
         //remove user from room:  /r- <roomID> <user>
        else if (msg.startsWith("/r-")) {
@@ -261,22 +263,22 @@ public class ClientMgr implements Runnable {
             mainhead.delUser(splitedLine[2], Integer.parseInt(splitedLine[1]));
         }
         //room msg:  /rs <roomID> <user> msg
-        else if (msg.startsWith("/rs")) {
-            String[] splitedLine = msg.split(" ", 4);
-            mainhead.addNewLine(splitedLine[2] + " says: " + splitedLine[3], splitedLine[2],
-                                 Integer.parseInt(splitedLine[1]));
-        }
+       else if (msg.startsWith("/rs")) {
+    	   String[] splitedLine = msg.split(" ", 4);
+    	   mainhead.addNewLine(splitedLine[2] + " says: " + splitedLine[3], splitedLine[2],
+    			   Integer.parseInt(splitedLine[1]));
+       }
         
         // video transfer request: /v [src name] [dest name] 
-        else if( msg.startsWith("/v") ) {
-                String srcName = msg.split(" ", 4)[1];
-        }
+       else if( msg.startsWith("/v") ) {
+    	   String srcName = msg.split(" ", 4)[1];
+       }
         // file transfer request: /f [src name] [dest name] [src IP]
-        else if( msg.startsWith("/f") ) {
-                String srcName = msg.split(" ", 4)[1];
-                String srcAddr = msg.split(" ", 4)[3];
-                Thread recvThd = new Thread( new FileRX( srcAddr, srcName ) );
-                recvThd.start();
-        }
+       else if( msg.startsWith("/f") ) {
+    	   String srcName = msg.split(" ", 4)[1];
+    	   String srcAddr = msg.split(" ", 4)[3];
+    	   Thread recvThd = new Thread( new FileRX( srcAddr, srcName ) );
+    	   recvThd.start();
+       }
 	}
 }

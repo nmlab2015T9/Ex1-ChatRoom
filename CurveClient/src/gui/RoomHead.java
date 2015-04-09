@@ -130,6 +130,7 @@ public class RoomHead extends JFrame{
 	    					dispose();
 	    					cancel();
 	    					client.CurveClient.cMgr.sendLeaveRoom(ID);
+	    					client.CurveClient.dMgr.mainHead.delRoom(ID);
 	    				}
 	    				else {
 	    					closeArea.setVisible(false);
