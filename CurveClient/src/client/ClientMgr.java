@@ -259,7 +259,7 @@ public class ClientMgr implements Runnable {
         //remove user from room:  /r- <roomID> <user>
        else if (msg.startsWith("/r-")) {
             String[] splitedLine = msg.split(" ", 3);
-            mainhead.delUser(splitedLine[2], Integer.parseInt(splitedLine[1]));
+            mainhead.kickUser(splitedLine[2], Integer.parseInt(splitedLine[1]));
         }
         //room msg:  /rs <roomID> <user> msg
        else if (msg.startsWith("/rs")) {

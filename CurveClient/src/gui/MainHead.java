@@ -269,6 +269,10 @@ public class MainHead extends JFrame{
     // "/q-" command
     public void delUser ( String user ) {
     	mainframe.delUser(user);
+    	for(int i = 0; i != Rooms.size(); i++){
+    		Rooms.get(i).delUser(user);
+    	}
+    	
     }
 
     // "/r+" command
@@ -278,9 +282,9 @@ public class MainHead extends JFrame{
     }
 
     // "/r-" command
-    public void delUser ( String user , int roomID ) {
+    public void kickUser ( String user , int roomID ) {
     	RoomHead room = Map.get(roomID);
-    	room.delUser(user);
+    	room.kickUser(user);
     }
 
     //add new lines

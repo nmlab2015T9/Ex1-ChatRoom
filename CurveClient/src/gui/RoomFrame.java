@@ -63,7 +63,7 @@ public class RoomFrame extends JFrame implements ActionListener{
 	private BufferedImage profileBufferedImg = OpeningDialog.profileBufferedImg;
 	private String clientName, target = "All members";
 	private JButton profileImage, editColor;
-	private JButton angelButton, angryButton, coolButton, cryButton, eatingButton, embarrassButton, sadButton, smileButton; 
+	private JButton angelButton, angryButton, coolButton, cryButton, eatingButton, embarrassButton, sadButton, smileButton, sendToAllButton; 
 	private JLabel profileNameLabel, sendingTarget;
 	private JList<UserData> userList, roomList;
 	private JPopupMenu userListPopup, roomListPopup;
@@ -268,7 +268,15 @@ public class RoomFrame extends JFrame implements ActionListener{
 		//smileysPanel.add(embarrassButton);
 		//smileysPanel.add(sadButton);
 		smileysPanel.add(smileButton);
-		smileysPanel.setBounds(0, 370, 200, 20);
+		smileysPanel.setBounds(125, 370, 100, 20);
+		
+		sendToAllButton = new JButton("Send to all");
+		sendToAllButton.setBounds(0, 0, 120, 30);
+		sendToAllButton.addActionListener(this);
+		JPanel sendToAllPanel = new JPanel();
+		sendToAllPanel.setLayout(null);
+		sendToAllPanel.add(sendToAllButton);
+		sendToAllPanel.setBounds(0, 365, 120, 30);
 		
 		sendingTarAndColorPanel.add(editColor);
 		sendingTarAndColorPanel.add(sendingTarget);
@@ -303,6 +311,7 @@ public class RoomFrame extends JFrame implements ActionListener{
 		rightPanel.add(chatAreaScrollPane);
 		rightPanel.add(sendingTarAndColorPanel);
 		rightPanel.add(smileysPanel);
+		rightPanel.add(sendToAllPanel);
 		rightPanel.add(textInputAreaScrollPane);
 		rightPanel.setBounds(140, 10, 450, 460);
 		
@@ -467,6 +476,10 @@ public class RoomFrame extends JFrame implements ActionListener{
 		else if(e.getSource().equals(smileButton)){
 			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/smile.png")));
 		}
+		else if(e.getSource().equals(sendToAllButton)){
+			target = "All members";
+			sendingTarget.setText("Send to: "+ target);
+		}
 	}
 	 
 	public List<Element> getAllElements(JTextPane x) {
@@ -531,13 +544,16 @@ public class RoomFrame extends JFrame implements ActionListener{
 	}
 
 	
-	public void inviteUser ( UserData tar ) {
+	public void inviteUser ( UserData tar , int c) {
 		
 		roomListModel.addElement(tar);
 		//roomList.setListData(roomListVector);
 		userListModel.removeElement(tar);
 		//userList.setListData(userListVector);
 		addSysLine(tar.toString() + " joined.");
+		Style base = doc.getStyle("regular");
+        Style s = doc.addStyle(tar.username, base);
+        StyleConstants.setForeground(s, new Color(c));
 	}
 	
 	public void addNewUser(UserData user){
@@ -550,9 +566,9 @@ public class RoomFrame extends JFrame implements ActionListener{
 		roomListModel.removeElement(user);
 		//userList.setListData(userListVector);
 
-        //doc.removeStyle(user);
+        doc.removeStyle(user.username);
 
-        //addSysLine(user + " left.");
+        addSysLine(user.username + " left.");
     }
 	
 	public void addNewLine ( String text , String color ) {
@@ -640,6 +656,7 @@ public class RoomFrame extends JFrame implements ActionListener{
     public void userChangeColor ( String name, int c ) {
         Style s = doc.getStyle(name);
         StyleConstants.setForeground(s, new Color(c));
+        textInputArea.setForeground(new Color(c));
     }
 
 
@@ -805,5 +822,15 @@ public class RoomFrame extends JFrame implements ActionListener{
         smileys.add("smile.png");
         
     }
+
+	public void kickUser(UserData tar) {
+		userListModel.addElement(tar);
+		//roomList.setListData(roomListVector);
+		roomListModel.removeElement(tar);
+		//userList.setListData(userListVector);
+		doc.removeStyle(tar.username);
+
+        addSysLine(tar.username + " left.");
+	}
 }
 

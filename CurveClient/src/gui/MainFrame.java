@@ -64,7 +64,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private BufferedImage profileBufferedImg = OpeningDialog.profileBufferedImg;
 	private String clientName, target = "All members";
 	private JButton profileImage, editColor;
-	private JButton angelButton, angryButton, coolButton, cryButton, eatingButton, embarrassButton, sadButton, smileButton; 
+	private JButton angelButton, angryButton, coolButton, cryButton, eatingButton, embarrassButton, sadButton, smileButton, sendToAllButton; 
 	private JLabel profileNameLabel, sendingTarget;
 	private JList<UserData> userList;
 	private JPopupMenu userListPopup;
@@ -249,7 +249,16 @@ public class MainFrame extends JFrame implements ActionListener{
 		//smileysPanel.add(embarrassButton);
 		//smileysPanel.add(sadButton);
 		smileysPanel.add(smileButton);
-		smileysPanel.setBounds(0, 370, 200, 20);
+		smileysPanel.setBounds(125, 370, 100, 20);
+		
+		sendToAllButton = new JButton("Send to all");
+		sendToAllButton.setBounds(0, 0, 120, 30);
+		sendToAllButton.addActionListener(this);
+		JPanel sendToAllPanel = new JPanel();
+		sendToAllPanel.setLayout(null);
+		sendToAllPanel.add(sendToAllButton);
+		sendToAllPanel.setBounds(0, 365, 120, 30);
+		
 		
 		sendingTarAndColorPanel.add(editColor);
 		sendingTarAndColorPanel.add(sendingTarget);
@@ -284,6 +293,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		rightPanel.add(chatAreaScrollPane);
 		rightPanel.add(sendingTarAndColorPanel);
 		rightPanel.add(smileysPanel);
+		rightPanel.add(sendToAllPanel);
 		rightPanel.add(textInputAreaScrollPane);
 		rightPanel.setBounds(140, 10, 450, 460);
 		
@@ -457,6 +467,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		else if(e.getSource().equals(smileButton)){
 			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/smile.png")));
 		}
+		else if(e.getSource().equals(sendToAllButton)){
+			target = "All members";
+			sendingTarget.setText("Send to: "+ target);
+		}
 	}
 	 
 	public List<Element> getAllElements(JTextPane x) {
@@ -546,7 +560,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 
 	public void addNewUser(String newUser, int color){
-		UserData newUserData = new UserData(newUser);
+		UserData newUserData = new UserData(newUser, color);
 		mainUserListModel.addElement(newUserData);
 		//userList.setListData(userListVector);
 		
@@ -562,17 +576,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	public void delUser ( String user ) {
-		UserData newUserData = new UserData(user);
 		int idx = searchUserByName(user);
 		if(idx != -1) {
+			UserData bye = mainUserListModel.get(idx);
+			CurveClient.dMgr.otherhead.delUserToEveryRoom(bye);
 			mainUserListModel.remove(idx);
 		}
-		//userList.setListData(userListVector);
 
         doc.removeStyle(user);
-        
-        // del to every room
-        CurveClient.dMgr.otherhead.delUserToEveryRoom(newUserData);
 
         addSysLine(user + " left.");
     }
@@ -673,6 +684,7 @@ public class MainFrame extends JFrame implements ActionListener{
     public void userChangeColor ( String name, int c ) {
         Style s = doc.getStyle(name);
         StyleConstants.setForeground(s, new Color(c));
+        textInputArea.setForeground(new Color(c));
     }
 
 

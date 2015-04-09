@@ -68,13 +68,22 @@ public class OtherHead extends JFrame{
 		}
 	}
 	
+	public void setReleasedPosition(int x, int y){
+		setLocation(x, y);
+		for(int i = 0; i != Rooms.size(); i++){
+			Rooms.get(i).setDraggedPosition(x,y);
+		}
+	}
+	
 	public void setClickedPosition(Point position){
 		final Point p = position;
 		
 		if(mainframe.isVisible()){
 			for(int i = 0; i != Rooms.size() ; i++){	
+				Rooms.get(i).setLocation(p);
         		Rooms.get(i).setVisible(true);
 			}
+			setLocation(p);
 			setVisible(true);
 			Timer timer = new Timer();
 			timer.scheduleAtFixedRate(new TimerTask(){  
@@ -146,6 +155,7 @@ public class OtherHead extends JFrame{
 	public void addRoom(int roomID){
 		final Point p = getLocation();
 		RoomHead room = new RoomHead(roomID);
+		room.setLocation(p);
 		Rooms.add(room);
         Map.put(roomID, room);
 
