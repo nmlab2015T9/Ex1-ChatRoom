@@ -71,7 +71,7 @@ public class ClientMgr implements Runnable {
 	}
 	
 	private void interrupt() {
-		
+		System.out.println("========INTERRUPT========");
 		mainhead.addWarnLine("Interrupt!");
 		mainhead.clear();
         reconnect();
@@ -124,7 +124,7 @@ public class ClientMgr implements Runnable {
 			}
 		}
 		catch (Exception e) {
-			//interrupt();
+			interrupt();
 			e.printStackTrace();
 			System.out.println("GG!!");
 		}		

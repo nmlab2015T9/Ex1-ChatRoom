@@ -64,8 +64,14 @@ public class Client implements Runnable
 			//if( e instanceof SocketException ) {
 			//CurveServer.removeUser(this, clientID);
 			//}
+			System.out.println("EOFException");
+			if(CurveServer.clientList.contains(this))
+				CurveServer.removeUser(this, clientID);
 		} catch (SocketException e) {
 			//CurveServer.removeUser(this, clientID);
+			System.out.println("SocketException");
+			if(CurveServer.clientList.contains(this))
+				CurveServer.removeUser(this, clientID);
 		} catch (IOException e) {
 			//e.printStackTrace();
 		}
