@@ -253,9 +253,8 @@ public class ClientMgr implements Runnable {
         //add user into room:  /r+ <roomID> [username] [texture]
        else if (msg.startsWith("/r+")) {
 		   String[] splitedLine = msg.split(" ", 4);
-    	   if(msg.indexOf(name) == -1){
-    		   mainhead.addUser(splitedLine[2], Integer.parseInt(splitedLine[3]), Integer.parseInt(splitedLine[1]));
-    	   }
+		   mainhead.inviteUser(splitedLine[2], Integer.parseInt(splitedLine[3]), Integer.parseInt(splitedLine[1]));
+    	   
         }
         //remove user from room:  /r- <roomID> <user>
        else if (msg.startsWith("/r-")) {
@@ -273,6 +272,7 @@ public class ClientMgr implements Runnable {
        else if( msg.startsWith("/v") ) {
     	   String srcName = msg.split(" ", 4)[1];
        }
+        
         // file transfer request: /f [src name] [dest name] [src IP]
        else if( msg.startsWith("/f") ) {
     	   String srcName = msg.split(" ", 4)[1];

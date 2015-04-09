@@ -275,7 +275,6 @@ public class MainHead extends JFrame{
     public void addUser ( String user , int color , int roomID ) {
     	RoomHead room = Map.get(roomID);
         room.addUser(user);
-        otherhead.addRoom(roomID);
     }
 
     // "/r-" command
@@ -340,5 +339,10 @@ public class MainHead extends JFrame{
     public void clear () {
     	mainframe.clear();
     }
+
+	public void inviteUser(String name, int c, int roomID) {
+		RoomHead room = Map.get(roomID);
+		room.inviteUser(name, c);
+	}
     
 }

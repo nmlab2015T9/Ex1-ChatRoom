@@ -180,7 +180,8 @@ public class RoomHead extends JFrame{
 		addUser(CurveClient.dMgr.mainFrame.mainUserListModel.get(idx));
 	}
 	
-	public void inviteUser(String username){
+	public void inviteUser(String username, int c){
+		//c????
 		int idx = CurveClient.dMgr.mainFrame.searchUserByName(username);
 		roomframe.inviteUser(CurveClient.dMgr.mainFrame.mainUserListModel.get(idx));
 	}

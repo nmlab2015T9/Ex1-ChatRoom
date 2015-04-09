@@ -438,7 +438,9 @@ public class RoomFrame extends JFrame implements ActionListener{
 		
 		else if(e.getSource().equals(invite)){
 			UserData tar = userList.getSelectedValue();
-			inviteUser(tar);
+			//inviteUser(tar);
+			client.CurveClient.cMgr.sendAddRoomUser(tar.username, RoomID);
+			
 		}
 		
 		else if(e.getSource().equals(angelButton)){
@@ -535,12 +537,11 @@ public class RoomFrame extends JFrame implements ActionListener{
 		//roomList.setListData(roomListVector);
 		userListModel.removeElement(tar);
 		//userList.setListData(userListVector);
-		client.CurveClient.cMgr.sendAddRoomUser(tar.username, RoomID);
 		addSysLine(tar.toString() + " joined.");
 	}
 	
 	public void addNewUser(UserData user){
-		//userListModel.addElement(user);
+		userListModel.addElement(user);
 		//inviteUser(user);
 	}
 	
