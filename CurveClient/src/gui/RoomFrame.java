@@ -442,7 +442,7 @@ public class RoomFrame extends JFrame implements ActionListener{
 		}
 		
 		else if(e.getSource().equals(sendfile)){
-			String tar = userList.getSelectedValue().toString();
+			String tar = roomList.getSelectedValue().toString();
 	        client.CurveClient.cMgr.sendFile(tar);
 		}
 		

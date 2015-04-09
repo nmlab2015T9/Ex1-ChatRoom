@@ -7,7 +7,17 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class RXFrame extends JFrame {
+	private String filename;
+	private int filesize;
+	private String srcname;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel sendLabel;
+    private javax.swing.JLabel conditionLabel;
+    private javax.swing.JButton okButton;
+    private javax.swing.JProgressBar progress;
+    // End of variables declaration//GEN-END:variables
 
+	
     public RXFrame() {
         initComponents();
     }
@@ -22,14 +32,14 @@ public class RXFrame extends JFrame {
     private void initComponents() {
 
         progress = new javax.swing.JProgressBar();
-        jLabel1 = new javax.swing.JLabel();
+        sendLabel = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        conditionLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(262, 123));
 
-        jLabel1.setText("Send! ");
+        sendLabel.setText("Send! ");
 
         okButton.setText("Finished!");
         okButton.setEnabled(false);
@@ -39,7 +49,7 @@ public class RXFrame extends JFrame {
             }
         });
 
-        jLabel2.setText("Already Finished: 0 bytes / 0 bytes");
+        conditionLabel.setText("Already Finished: 0 bytes / 0 bytes");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -50,8 +60,8 @@ public class RXFrame extends JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                            .addComponent(conditionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                            .addComponent(sendLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                             .addComponent(progress, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(96, 96, 96)
@@ -62,9 +72,9 @@ public class RXFrame extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(sendLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(2, 2, 2)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(conditionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
@@ -80,7 +90,7 @@ public class RXFrame extends JFrame {
 	}//GEN-LAST:event_okButtonActionPerformed
 
 	public void showProgress( int current ) {
-		jLabel2.setText("Already Finished: " + current + " bytes / " + filesize + " bytes");
+		conditionLabel.setText("Already Finished: " + current + " bytes / " + filesize + " bytes");
 		progress.setValue( current*100/filesize );
 	}
 
@@ -97,8 +107,8 @@ public class RXFrame extends JFrame {
 			recvfile = fc.getSelectedFile();
 			filename = recvfile.getAbsolutePath();
 			//System.out.println( filename );
-			jLabel1.setText("Received" + filename);
-			jLabel2.setText("Already Finished 0 bytes / " + filesize + " bytes");
+			sendLabel.setText("Received" + filename);
+			conditionLabel.setText("Already Finished 0 bytes / " + filesize + " bytes");
 			return recvfile;
 		}
 		else return null;
@@ -112,20 +122,11 @@ public class RXFrame extends JFrame {
 	}
 	public boolean confirm() {
 		int n = JOptionPane.showConfirmDialog(this,
-			srcname+"wants to send "+filename+"(Size: "+filesize+"bytes), do you want to receive？",
+			srcname+" wants to send "+filename+"(Size: "+filesize+"bytes), do you want to receive?",
 			"Please confirm!", JOptionPane.YES_NO_OPTION);
 		if( n==JOptionPane.YES_OPTION ) return true;
 		else return false;
 	}
 
-	private String filename;
-	private int filesize;
-	private String srcname;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JButton okButton;
-    private javax.swing.JProgressBar progress;
-    // End of variables declaration//GEN-END:variables
-
+	
 }
