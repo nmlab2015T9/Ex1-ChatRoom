@@ -421,7 +421,7 @@ public class MainFrame extends JFrame implements ActionListener{
 			target = tar;
 			client.CurveClient.cMgr.sendVideo(target);
             String [] arg = new String[1];
-            arg[0] = "140.112.18.199/1236";
+            arg[0] = "140.112.18.200/1234";
             //arg[1] = "224.112.112.112/1236";
             AVReceive2 avReceive = new AVReceive2(arg);
             if (!avReceive.initialize()) {
@@ -499,7 +499,7 @@ public class MainFrame extends JFrame implements ActionListener{
                 Icon icon = StyleConstants.getIcon(el.getAttributes());
                 if(icon != null) {
                         String tmp = ((ImageIcon)icon).getDescription();
-                        // 假设 icon中的desc存放它的 filePath
+                        // ��挽 icon銝剔�esc摮摰�� filePath
                         mp.put(el.getStartOffset(), tmp);
                 }
         }
