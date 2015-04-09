@@ -102,7 +102,7 @@ public class AVReceive2 implements ReceiveStreamListener, SessionListener,
 
         String [] args = new String[3];
         args[0] = "vfw://0";
-        args[1] = "140.112.18.200";
+        args[1] = "140.112.18.200"; // target
         args[2] = "1234";
 
         Format fmt = null;
