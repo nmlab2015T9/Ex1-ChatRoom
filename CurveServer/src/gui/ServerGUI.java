@@ -123,6 +123,7 @@ public class ServerGUI extends JFrame
 		
 		JSplitPane southSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 northSplitPane, southPane);
+		southSplitPane.setResizeWeight(1d);
 		
 		add(southSplitPane, BorderLayout.CENTER);
 		
