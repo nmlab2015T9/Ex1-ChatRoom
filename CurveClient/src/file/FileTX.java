@@ -16,7 +16,7 @@ public class FileTX implements Runnable {
 		gui = new TXFrame();
 		
 		try {
-			ServerSocket ss = new ServerSocket( 9987 );
+			ServerSocket ss = new ServerSocket( 9988 );
 			//System.out.println("Waiting for connection");
 			Socket s = ss.accept();
 

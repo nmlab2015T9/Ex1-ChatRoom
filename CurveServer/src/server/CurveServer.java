@@ -111,7 +111,7 @@ public class CurveServer {
 	public static void sendAll(String str) {
 		for( Client c : clientList ) {
 			c.send(str);
-		}		
+		}
 	}
 	public static void sendPublic(String msg) {
 		sendAll(msg);

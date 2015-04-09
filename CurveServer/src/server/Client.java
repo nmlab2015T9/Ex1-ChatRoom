@@ -121,7 +121,9 @@ public class Client implements Runnable
 			// /f [src name] [dest name]
 			String src = msg.split(" ", 3)[1];
 			String dest = msg.split(" ", 3)[2];
-			CurveServer.sendPrivate(dest, msg+" "+sock.getInetAddress().getHostName());
+			CurveServer.printMsg("\nSEND FILE!!!!\nsock.getInetAddress = " + sock.getInetAddress());
+			CurveServer.printMsg("sock.getInetAddress().getHostAddress() = " + sock.getInetAddress().getHostAddress() + "\n");
+			CurveServer.sendPrivate(dest, msg+" "+sock.getInetAddress().getHostAddress());
 		}
 		else if( msg.startsWith("/q-")) { // remove user
 			// /q- [username]
