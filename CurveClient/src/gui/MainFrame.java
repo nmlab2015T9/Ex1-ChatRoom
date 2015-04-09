@@ -658,7 +658,8 @@ public class MainFrame extends JFrame implements ActionListener{
     public void userChangeColor ( String name, int c ) {
         Style s = doc.getStyle(name);
         StyleConstants.setForeground(s, new Color(c));
-        textInputArea.setForeground(new Color(c));
+        if(name == user.name)
+            textInputArea.setForeground(new Color(c));
     }
 
 

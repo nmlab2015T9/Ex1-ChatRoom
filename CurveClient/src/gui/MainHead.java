@@ -310,7 +310,7 @@ public class MainHead extends JFrame{
     }
 
     // "/c" command
-    public void userChangeColor ( String name, int c ) {
+    public synchronized void userChangeColor ( String name, int c ) {
     	mainframe.userChangeColor(name, c);
     	for(int i = 0; i != Rooms.size(); i++){
     		Rooms.get(i).userChangeColor(name, c);
