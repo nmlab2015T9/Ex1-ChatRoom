@@ -44,7 +44,7 @@ public class ClientMgr implements Runnable {
         catch (Exception e) {
         	mainhead.addWarnLine("Failed: " + IP + ":" + port);
 
-			System.out.println("connectionBegin");
+			System.err.println("connectionBegin");
             interrupt();
             e.printStackTrace();
         }
@@ -73,7 +73,7 @@ public class ClientMgr implements Runnable {
 	}
 	
 	private void interrupt() {
-		System.out.println("========INTERRUPT========");
+		System.err.println("========INTERRUPT========");
 		mainhead.addWarnLine("Interrupt!");
 		mainhead.clear();
         reconnect();
@@ -126,9 +126,9 @@ public class ClientMgr implements Runnable {
 			}
 		}
 		catch (Exception e) {
-			interrupt();
+			System.err.println("run");
 			e.printStackTrace();
-			System.out.println("run");
+			interrupt();
 		}		
 	}
 
@@ -138,7 +138,7 @@ public class ClientMgr implements Runnable {
 			 System.out.println("Send: " + msg);
 		 }
 		 catch (Exception e) {
-			 System.out.println("send");
+			 System.err.println("send");
 			 interrupt();
 			 e.printStackTrace();
 		 }
