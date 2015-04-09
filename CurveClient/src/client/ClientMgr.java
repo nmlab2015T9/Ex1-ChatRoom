@@ -35,8 +35,8 @@ public class ClientMgr implements Runnable {
 
             output = new DataOutputStream(socket.getOutputStream());
             input = new DataInputStream(socket.getInputStream());
-            this.output = new DataOutputStream(output); //?
-            this.input = new DataInputStream(input); //?
+            this.output = new DataOutputStream(output); 
+            this.input = new DataInputStream(input); 
 
             thread = new Thread(this);
             thread.start();  //call run()
