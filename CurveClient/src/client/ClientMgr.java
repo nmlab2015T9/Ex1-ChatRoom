@@ -71,6 +71,7 @@ public class ClientMgr implements Runnable {
 	}
 	
 	private void interrupt() {
+		
 		mainhead.addWarnLine("Interrupt!");
 		mainhead.clear();
         reconnect();
@@ -115,16 +116,17 @@ public class ClientMgr implements Runnable {
 
 	@Override
 	public void run() {
-		 try {
-	            while (true) {
+		try {
+			while (true) {
 			String TransferLine = input.readUTF();
-	                System.out.println("Recv: " + TransferLine);
-
-	                readInput(TransferLine);
-	            }
+			System.out.println("Recv: " + TransferLine);
+			readInput(TransferLine);
+			}
 		}
-	        catch (Exception e) {
-	            interrupt();
+		catch (Exception e) {
+			//interrupt();
+			e.printStackTrace();
+			System.out.println("GG!!");
 		}		
 	}
 
@@ -135,8 +137,9 @@ public class ClientMgr implements Runnable {
 		}
 		catch (Exception e) {
 	            interrupt();
+	            e.printStackTrace();
 		}
-	    }
+	 }
 
 	 public void sendDelUser(){
 		 send("/q- " + name);

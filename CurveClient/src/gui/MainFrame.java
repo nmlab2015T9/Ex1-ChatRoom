@@ -234,7 +234,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		sadButton.addActionListener(this);
 
 		smileButton = new JButton(new ImageIcon(client.CurveClient.class.getResource("/res/smile.png")));
-		smileButton.setBounds(50, 0, 20, 20);
+		smileButton.setBounds(200, 0, 20, 20);
 		smileButton.setBorderPainted(false);
 		smileButton.addActionListener(this);
 
@@ -243,13 +243,13 @@ public class MainFrame extends JFrame implements ActionListener{
 		smileysPanel.setLayout(null);
 		smileysPanel.add(angelButton);
 		smileysPanel.add(angryButton);
-		//smileysPanel.add(coolButton);
-		//smileysPanel.add(cryButton);
-		//smileysPanel.add(eatingButton);
-		//smileysPanel.add(embarrassButton);
-		//smileysPanel.add(sadButton);
+		smileysPanel.add(coolButton);
+		smileysPanel.add(cryButton);
+		smileysPanel.add(eatingButton);
+		smileysPanel.add(embarrassButton);
+		smileysPanel.add(sadButton);
 		smileysPanel.add(smileButton);
-		smileysPanel.setBounds(125, 370, 100, 20);
+		smileysPanel.setBounds(125, 370, 200, 20);
 		
 		sendToAllButton = new JButton("Send to all");
 		sendToAllButton.setBounds(0, 0, 120, 30);

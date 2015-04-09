@@ -268,11 +268,11 @@ public class MainHead extends JFrame{
 
     // "/q-" command
     public void delUser ( String user ) {
-    	mainframe.delUser(user);
     	for(int i = 0; i != Rooms.size(); i++){
     		Rooms.get(i).delUser(user);
     	}
-    	
+    	mainframe.delUser(user);
+
     }
 
     // "/r+" command

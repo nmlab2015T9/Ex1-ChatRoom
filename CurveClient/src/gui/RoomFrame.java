@@ -566,10 +566,18 @@ public class RoomFrame extends JFrame implements ActionListener{
 		roomListModel.removeElement(user);
 		//userList.setListData(userListVector);
 
-        doc.removeStyle(user.username);
-
-        addSysLine(user.username + " left.");
+        //doc.removeStyle(user.username);
     }
+	
+	public void kickUser(UserData tar) {
+		userListModel.addElement(tar);
+		//roomList.setListData(roomListVector);
+		roomListModel.removeElement(tar);
+		//userList.setListData(userListVector);
+		doc.removeStyle(tar.username);
+
+        addSysLine(tar.username + " left.");
+	}
 	
 	public void addNewLine ( String text , String color ) {
 		ChatLines.add(text + "\n");
@@ -822,15 +830,5 @@ public class RoomFrame extends JFrame implements ActionListener{
         smileys.add("smile.png");
         
     }
-
-	public void kickUser(UserData tar) {
-		userListModel.addElement(tar);
-		//roomList.setListData(roomListVector);
-		roomListModel.removeElement(tar);
-		//userList.setListData(userListVector);
-		doc.removeStyle(tar.username);
-
-        addSysLine(tar.username + " left.");
-	}
 }
 
