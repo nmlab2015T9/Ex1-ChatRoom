@@ -128,7 +128,7 @@ public class RoomHead extends JFrame{
 	    					roomframe.dispose();
 	    					closeArea.dispose();
 	    					dispose();
-	    					cancel();
+	    					timer.cancel();
 	    					client.CurveClient.cMgr.sendLeaveRoom(ID);
 	    					client.CurveClient.dMgr.mainHead.delRoom(ID);
 	    				}

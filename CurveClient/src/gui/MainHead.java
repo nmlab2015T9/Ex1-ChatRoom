@@ -104,23 +104,6 @@ public class MainHead extends JFrame{
             	else
             		mainframe.setVisible(false);
             	otherhead.setClickedPosition(p);
-            	/*timer = new Timer();
-            	timer.scheduleAtFixedRate(new TimerTask(){  
-            		@Override
-            		public void run() {
-            			if(i<=20){
-            				if(p.y > 20)
-            					setLocation(p.x + ((width - sx) - p.x)*i/20, p.y - (p.y - 20)*i/20);
-            				else if(p.y < 20)
-            					setLocation(p.x + ((width - sx) - p.x)*i/20, p.y + (20 - p.y)*i/20);
-            				i++;
-            				mainframe.setSize(gui.MainFrame.frameSX*i/20, gui.MainFrame.frameSY*i/20);
-            			}
-            			else{
-            					timer.cancel();
-            					i = 0;
-            			}
-            		}},10 ,1);*/
             }
             
             public void mouseReleased(MouseEvent e){
@@ -252,7 +235,7 @@ public class MainHead extends JFrame{
 	    				else {
 	    					closeArea.setVisible(false);
 	    					closeArea.setLocation(width/2 - sx2/2, height - sy2);
-	    					cancel();
+	    					timer.cancel();
 	    					i = 0;
 	    				}
 	    			}
