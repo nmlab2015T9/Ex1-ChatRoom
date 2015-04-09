@@ -104,23 +104,6 @@ public class MainHead extends JFrame{
             	else
             		mainframe.setVisible(false);
             	otherhead.setClickedPosition(p);
-            	/*timer = new Timer();
-            	timer.scheduleAtFixedRate(new TimerTask(){  
-            		@Override
-            		public void run() {
-            			if(i<=20){
-            				if(p.y > 20)
-            					setLocation(p.x + ((width - sx) - p.x)*i/20, p.y - (p.y - 20)*i/20);
-            				else if(p.y < 20)
-            					setLocation(p.x + ((width - sx) - p.x)*i/20, p.y + (20 - p.y)*i/20);
-            				i++;
-            				mainframe.setSize(gui.MainFrame.frameSX*i/20, gui.MainFrame.frameSY*i/20);
-            			}
-            			else{
-            					timer.cancel();
-            					i = 0;
-            			}
-            		}},10 ,1);*/
             }
             
             public void mouseReleased(MouseEvent e){
@@ -252,7 +235,7 @@ public class MainHead extends JFrame{
 	    				else {
 	    					closeArea.setVisible(false);
 	    					closeArea.setLocation(width/2 - sx2/2, height - sy2);
-	    					cancel();
+	    					timer.cancel();
 	    					i = 0;
 	    				}
 	    			}
@@ -268,19 +251,23 @@ public class MainHead extends JFrame{
 
     // "/q-" command
     public void delUser ( String user ) {
+    	for(int i = 0; i != Rooms.size(); i++){
+    		Rooms.get(i).delUser(user);
+    	}
     	mainframe.delUser(user);
+
     }
 
     // "/r+" command
     public void addUser ( String user , int color , int roomID ) {
     	RoomHead room = Map.get(roomID);
-        room.inviteUser(user);
+        room.addUser(user);
     }
 
     // "/r-" command
-    public void delUser ( String user , int roomID ) {
+    public void kickUser ( String user , int roomID ) {
     	RoomHead room = Map.get(roomID);
-    	room.delUser(user);
+    	room.kickUser(user);
     }
 
     //add new lines
@@ -339,5 +326,10 @@ public class MainHead extends JFrame{
     public void clear () {
     	mainframe.clear();
     }
+
+	public void inviteUser(String name, int c, int roomID) {
+		RoomHead room = Map.get(roomID);
+		room.inviteUser(name, c);
+	}
     
 }

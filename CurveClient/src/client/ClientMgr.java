@@ -35,14 +35,16 @@ public class ClientMgr implements Runnable {
 
             output = new DataOutputStream(socket.getOutputStream());
             input = new DataInputStream(socket.getInputStream());
-            this.output = new DataOutputStream(output); //?
-            this.input = new DataInputStream(input); //?
+            this.output = new DataOutputStream(output); 
+            this.input = new DataInputStream(input); 
 
             thread = new Thread(this);
             thread.start();  //call run()
         }
         catch (Exception e) {
         	mainhead.addWarnLine("Failed: " + IP + ":" + port);
+
+			System.err.println("connectionBegin");
             interrupt();
             e.printStackTrace();
         }
@@ -71,6 +73,7 @@ public class ClientMgr implements Runnable {
 	}
 	
 	private void interrupt() {
+		System.err.println("========INTERRUPT========");
 		mainhead.addWarnLine("Interrupt!");
 		mainhead.clear();
         reconnect();
@@ -115,28 +118,31 @@ public class ClientMgr implements Runnable {
 
 	@Override
 	public void run() {
-		 try {
-	            while (true) {
+		try {
+			while (true) {
 			String TransferLine = input.readUTF();
-	                System.out.println("Recv: " + TransferLine);
-
-	                readInput(TransferLine);
-	            }
+			System.out.println("Recv: " + TransferLine);
+			readInput(TransferLine);
+			}
 		}
-	        catch (Exception e) {
-	            interrupt();
+		catch (Exception e) {
+			System.err.println("run");
+			e.printStackTrace();
+			interrupt();
 		}		
 	}
 
 	 public void send ( String msg ) {
-	        try{
-	        	output.writeUTF(msg);
-	            System.out.println("Send: " + msg);
-		}
-		catch (Exception e) {
-	            interrupt();
-		}
-	    }
+		 try{
+			 output.writeUTF(msg);
+			 System.out.println("Send: " + msg);
+		 }
+		 catch (Exception e) {
+			 System.err.println("send");
+			 interrupt();
+			 e.printStackTrace();
+		 }
+	 }	
 
 	 public void sendDelUser(){
 		 send("/q- " + name);
@@ -252,31 +258,33 @@ public class ClientMgr implements Runnable {
         }
         //add user into room:  /r+ <roomID> [username] [texture]
        else if (msg.startsWith("/r+")) {
-            String[] splitedLine = msg.split(" ", 4);
-            mainhead.addUser(splitedLine[2], Integer.parseInt(splitedLine[3]), Integer.parseInt(splitedLine[1]));
+		   String[] splitedLine = msg.split(" ", 4);
+		   mainhead.inviteUser(splitedLine[2], Integer.parseInt(splitedLine[3]), Integer.parseInt(splitedLine[1]));
+    	   
         }
         //remove user from room:  /r- <roomID> <user>
        else if (msg.startsWith("/r-")) {
             String[] splitedLine = msg.split(" ", 3);
-            mainhead.delUser(splitedLine[2], Integer.parseInt(splitedLine[1]));
+            mainhead.kickUser(splitedLine[2], Integer.parseInt(splitedLine[1]));
         }
         //room msg:  /rs <roomID> <user> msg
-        else if (msg.startsWith("/rs")) {
-            String[] splitedLine = msg.split(" ", 4);
-            mainhead.addNewLine(splitedLine[2] + " says: " + splitedLine[3], splitedLine[2],
-                                 Integer.parseInt(splitedLine[1]));
-        }
+       else if (msg.startsWith("/rs")) {
+    	   String[] splitedLine = msg.split(" ", 4);
+    	   mainhead.addNewLine(splitedLine[2] + " says: " + splitedLine[3], splitedLine[2],
+    			   Integer.parseInt(splitedLine[1]));
+       }
         
         // video transfer request: /v [src name] [dest name] 
-        else if( msg.startsWith("/v") ) {
-                String srcName = msg.split(" ", 4)[1];
-        }
+       else if( msg.startsWith("/v") ) {
+    	   String srcName = msg.split(" ", 4)[1];
+       }
+        
         // file transfer request: /f [src name] [dest name] [src IP]
-        else if( msg.startsWith("/f") ) {
-                String srcName = msg.split(" ", 4)[1];
-                String srcAddr = msg.split(" ", 4)[3];
-                Thread recvThd = new Thread( new FileRX( srcAddr, srcName ) );
-                recvThd.start();
-        }
+       else if( msg.startsWith("/f") ) {
+    	   String srcName = msg.split(" ", 4)[1];
+    	   String srcAddr = msg.split(" ", 4)[3];
+    	   Thread recvThd = new Thread( new FileRX( srcAddr, srcName ) );
+    	   recvThd.start();
+       }
 	}
 }

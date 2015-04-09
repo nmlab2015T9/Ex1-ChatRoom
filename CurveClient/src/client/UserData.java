@@ -9,11 +9,12 @@ import javax.imageio.ImageIO;
 public class UserData
 {
 	public String username;
+	public int color;
 	public BufferedImage face = new BufferedImage(50, 50, BufferedImage.TYPE_INT_ARGB);
 	
-	public UserData(String newUser) {
+	public UserData(String newUser, int c) {
 		username = newUser;
-		
+		color = c;
 		
 		try {
 			BufferedImage tempImg

@@ -17,10 +17,11 @@ public class Client implements Runnable
 	private DataInputStream in;
 	private DataOutputStream out;
 	private String msg;
-	public String username;
+	public String username = "";
 	public int clientID;
     public int userColor;
 	public BufferedImage face;
+	boolean lalala = false;
 	
     public Client(Socket s, int id) {
 		try {
@@ -61,12 +62,18 @@ public class Client implements Runnable
 			}
 		} catch (EOFException e) {
 			//if( e instanceof SocketException ) {
-			CurveServer.removeUser(this, clientID);
+			//CurveServer.removeUser(this, clientID);
 			//}
+			System.out.println("EOFException");
+			if(CurveServer.clientList.contains(this))
+				CurveServer.removeUser(this, clientID);
 		} catch (SocketException e) {
-			CurveServer.removeUser(this, clientID);
+			//CurveServer.removeUser(this, clientID);
+			System.out.println("SocketException");
+			if(CurveServer.clientList.contains(this))
+				CurveServer.removeUser(this, clientID);
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	@SuppressWarnings("unused")
@@ -135,6 +142,7 @@ public class Client implements Runnable
 		}
 	}
 	private void setname() throws IOException {
+		if(username != "") return;
 		String name;
 		out.writeUTF("/u");
 		while( true ) {

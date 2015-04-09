@@ -63,7 +63,7 @@ public class RoomFrame extends JFrame implements ActionListener{
 	private BufferedImage profileBufferedImg = OpeningDialog.profileBufferedImg;
 	private String clientName, target = "All members";
 	private JButton profileImage, editColor;
-	private JButton angelButton, angryButton, coolButton, cryButton, eatingButton, embarrassButton, sadButton, smileButton; 
+	private JButton angelButton, angryButton, coolButton, cryButton, eatingButton, embarrassButton, sadButton, smileButton, sendToAllButton; 
 	private JLabel profileNameLabel, sendingTarget;
 	private JList<UserData> userList, roomList;
 	private JPopupMenu userListPopup, roomListPopup;
@@ -253,7 +253,7 @@ public class RoomFrame extends JFrame implements ActionListener{
 		sadButton.addActionListener(this);
 
 		smileButton = new JButton(new ImageIcon(client.CurveClient.class.getResource("/res/smile.png")));
-		smileButton.setBounds(50, 0, 20, 20);
+		smileButton.setBounds(175, 0, 20, 20);
 		smileButton.setBorderPainted(false);
 		smileButton.addActionListener(this);
 
@@ -262,13 +262,21 @@ public class RoomFrame extends JFrame implements ActionListener{
 		smileysPanel.setLayout(null);
 		smileysPanel.add(angelButton);
 		smileysPanel.add(angryButton);
-		//smileysPanel.add(coolButton);
-		//smileysPanel.add(cryButton);
-		//smileysPanel.add(eatingButton);
-		//smileysPanel.add(embarrassButton);
-		//smileysPanel.add(sadButton);
+		smileysPanel.add(coolButton);
+		smileysPanel.add(cryButton);
+		smileysPanel.add(eatingButton);
+		smileysPanel.add(embarrassButton);
+		smileysPanel.add(sadButton);
 		smileysPanel.add(smileButton);
-		smileysPanel.setBounds(0, 370, 200, 20);
+		smileysPanel.setBounds(125, 370, 200, 20);
+		
+		sendToAllButton = new JButton("Send to all");
+		sendToAllButton.setBounds(0, 0, 120, 30);
+		sendToAllButton.addActionListener(this);
+		JPanel sendToAllPanel = new JPanel();
+		sendToAllPanel.setLayout(null);
+		sendToAllPanel.add(sendToAllButton);
+		sendToAllPanel.setBounds(0, 365, 120, 30);
 		
 		sendingTarAndColorPanel.add(editColor);
 		sendingTarAndColorPanel.add(sendingTarget);
@@ -303,6 +311,7 @@ public class RoomFrame extends JFrame implements ActionListener{
 		rightPanel.add(chatAreaScrollPane);
 		rightPanel.add(sendingTarAndColorPanel);
 		rightPanel.add(smileysPanel);
+		rightPanel.add(sendToAllPanel);
 		rightPanel.add(textInputAreaScrollPane);
 		rightPanel.setBounds(140, 10, 450, 460);
 		
@@ -337,19 +346,19 @@ public class RoomFrame extends JFrame implements ActionListener{
                  		m = m.replace(client.CurveClient.class.getResource("/res/angry.png").toString(), "angry.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/cool.png").toString()) != -1){ 
-                 		m = m.replace(client.CurveClient.class.getResource("/res/cool.png").toString(), "cool.png ");
+                 		m = m.replace(client.CurveClient.class.getResource("/res/cool.png").toString(), "cooly.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/cry.png").toString()) != -1){ 
-                 		m = m.replace(client.CurveClient.class.getResource("/res/cry.png").toString(), "cry.png ");
+                 		m = m.replace(client.CurveClient.class.getResource("/res/cry.png").toString(), "cried.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/eating.png").toString()) != -1){ 
-                 		m = m.replace(client.CurveClient.class.getResource("/res/eating.png").toString(), "eating.png ");
+                 		m = m.replace(client.CurveClient.class.getResource("/res/eating.png").toString(), "eaten.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/embarrass.png").toString()) != -1){ 
-                 		m = m.replace(client.CurveClient.class.getResource("/res/embarrass.png").toString(), "embarrass.png ");
+                 		m = m.replace(client.CurveClient.class.getResource("/res/embarrass.png").toString(), "embar.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/sad.png").toString()) != -1){ 
-                 		m = m.replace(client.CurveClient.class.getResource("/res/sad.png").toString(), "sad.png ");
+                 		m = m.replace(client.CurveClient.class.getResource("/res/sad.png").toString(), "saddy.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/smile.png").toString()) != -1){ 
                  		m = m.replace(client.CurveClient.class.getResource("/res/smile.png").toString(), "smile.png ");
@@ -433,12 +442,15 @@ public class RoomFrame extends JFrame implements ActionListener{
 		}
 		
 		else if(e.getSource().equals(sendfile)){
-	
+			String tar = userList.getSelectedValue().toString();
+	        client.CurveClient.cMgr.sendFile(tar);
 		}
 		
 		else if(e.getSource().equals(invite)){
 			UserData tar = userList.getSelectedValue();
-			inviteUser(tar);
+			//inviteUser(tar);
+			client.CurveClient.cMgr.sendAddRoomUser(tar.username, RoomID);
+			
 		}
 		
 		else if(e.getSource().equals(angelButton)){
@@ -464,6 +476,10 @@ public class RoomFrame extends JFrame implements ActionListener{
 		}
 		else if(e.getSource().equals(smileButton)){
 			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/smile.png")));
+		}
+		else if(e.getSource().equals(sendToAllButton)){
+			target = "All members";
+			sendingTarget.setText("Send to: "+ target);
 		}
 	}
 	 
@@ -493,7 +509,6 @@ public class RoomFrame extends JFrame implements ActionListener{
                 Icon icon = StyleConstants.getIcon(el.getAttributes());
                 if(icon != null) {
                         String tmp = ((ImageIcon)icon).getDescription();
-                        // 假设 icon中的desc存放它的 filePath
                         mp.put(el.getStartOffset(), tmp);
                 }
         }
@@ -529,17 +544,21 @@ public class RoomFrame extends JFrame implements ActionListener{
 	}
 
 	
-	public void inviteUser ( UserData tar ) {
+	public void inviteUser ( UserData tar , int c) {
 		
 		roomListModel.addElement(tar);
 		//roomList.setListData(roomListVector);
 		userListModel.removeElement(tar);
 		//userList.setListData(userListVector);
 		addSysLine(tar.toString() + " joined.");
+		Style base = doc.getStyle("regular");
+        Style s = doc.addStyle(tar.username, base);
+        StyleConstants.setForeground(s, new Color(c));
 	}
 	
 	public void addNewUser(UserData user){
 		userListModel.addElement(user);
+		//inviteUser(user);
 	}
 	
 	public void delUser (UserData user) {
@@ -547,10 +566,18 @@ public class RoomFrame extends JFrame implements ActionListener{
 		roomListModel.removeElement(user);
 		//userList.setListData(userListVector);
 
-        //doc.removeStyle(user);
-
-        //addSysLine(user + " left.");
+        //doc.removeStyle(user.username);
     }
+	
+	public void kickUser(UserData tar) {
+		userListModel.addElement(tar);
+		//roomList.setListData(roomListVector);
+		roomListModel.removeElement(tar);
+		//userList.setListData(userListVector);
+		doc.removeStyle(tar.username);
+
+        addSysLine(tar.username + " left.");
+	}
 	
 	public void addNewLine ( String text , String color ) {
 		ChatLines.add(text + "\n");
@@ -637,6 +664,7 @@ public class RoomFrame extends JFrame implements ActionListener{
     public void userChangeColor ( String name, int c ) {
         Style s = doc.getStyle(name);
         StyleConstants.setForeground(s, new Color(c));
+        textInputArea.setForeground(new Color(c));
     }
 
 
@@ -656,6 +684,7 @@ public class RoomFrame extends JFrame implements ActionListener{
     
     public void setTarget(String t){
     	target = t;
+    	sendingTarget.setText("Whisper to: "+ target);
     }
     
     /*public void clear () {
@@ -753,45 +782,45 @@ public class RoomFrame extends JFrame implements ActionListener{
         }
         smileys.add("angry.png");
 
-        s = doc.addStyle("cool.png", regular);
+        s = doc.addStyle("cooly.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
         ImageIcon coolIcon = new ImageIcon(client.CurveClient.class.getResource("/res/cool.png"));
         if (coolIcon != null) {
             StyleConstants.setIcon(s, coolIcon);
         }
-        smileys.add("cool.png");
+        smileys.add("cooly.png");
 
-        s = doc.addStyle("cry.png", regular);
+        s = doc.addStyle("cried.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
         ImageIcon cryIcon = new ImageIcon(client.CurveClient.class.getResource("/res/cry.png"));
         if (cryIcon != null) {
             StyleConstants.setIcon(s, cryIcon);
         }
-        smileys.add("cry.png");
+        smileys.add("cried.png");
         
-        s = doc.addStyle("eating.png", regular);
+        s = doc.addStyle("eaten.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
         ImageIcon eatingIcon = new ImageIcon(client.CurveClient.class.getResource("/res/eating.png"));
         if (eatingIcon != null) {
             StyleConstants.setIcon(s, eatingIcon);
         }
-        smileys.add("eating.png");
+        smileys.add("eaten.png");
         
-        s = doc.addStyle("embarrass.png", regular);
+        s = doc.addStyle("embar.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
         ImageIcon embarrassIcon = new ImageIcon(client.CurveClient.class.getResource("/res/embarrass.png"));
         if (embarrassIcon != null) {
             StyleConstants.setIcon(s, embarrassIcon);
         }
-        smileys.add("embarrass.png");
+        smileys.add("embar.png");
         
-        s = doc.addStyle("sad.png", regular);
+        s = doc.addStyle("saddy.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
         ImageIcon sadIcon = new ImageIcon(client.CurveClient.class.getResource("/res/sad.png"));
         if (sadIcon != null) {
             StyleConstants.setIcon(s, sadIcon);
         }
-        smileys.add("sad.png");
+        smileys.add("saddy.png");
         
         s = doc.addStyle("smile.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);

@@ -48,7 +48,6 @@ public class RoomHead extends JFrame{
 		setUndecorated(true);
         setShape(ellipse);
         setSize(sx, sy);
-        setVisible(true);
         setLayout(new BorderLayout());
     	URL url = client.CurveClient.class.getResource("/res/otherhead.png");
 		ImageIcon otherheadImage = new ImageIcon(url);
@@ -127,9 +126,11 @@ public class RoomHead extends JFrame{
 	    			else{
 	    				if(p.x > (width/2 - sx2/2) && p.x < (width/2 + sx2/2) && p.y > (height - sy2)){
 	    					roomframe.dispose();
+	    					closeArea.dispose();
 	    					dispose();
-	    					cancel();
+	    					timer.cancel();
 	    					client.CurveClient.cMgr.sendLeaveRoom(ID);
+	    					client.CurveClient.dMgr.mainHead.delRoom(ID);
 	    				}
 	    				else {
 	    					closeArea.setVisible(false);
@@ -179,9 +180,9 @@ public class RoomHead extends JFrame{
 		addUser(CurveClient.dMgr.mainFrame.mainUserListModel.get(idx));
 	}
 	
-	public void inviteUser(String username){
+	public void inviteUser(String username, int c){
 		int idx = CurveClient.dMgr.mainFrame.searchUserByName(username);
-		roomframe.inviteUser(CurveClient.dMgr.mainFrame.mainUserListModel.get(idx));
+		roomframe.inviteUser(CurveClient.dMgr.mainFrame.mainUserListModel.get(idx), c);
 	}
 	
 	public void delUser(UserData user){
@@ -194,4 +195,9 @@ public class RoomHead extends JFrame{
 	/*public void setUserListVectorOfRoom(DefaultListModel<UserData> lobbyList){
 		roomframe.setUserListVectorOfRoom(lobbyList);
 	}*/
+
+	public void kickUser(String user) {
+		int idx = CurveClient.dMgr.mainFrame.searchUserByName(user);
+		roomframe.kickUser(CurveClient.dMgr.mainFrame.mainUserListModel.get(idx));		
+	}
 }

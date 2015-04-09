@@ -64,7 +64,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private BufferedImage profileBufferedImg = OpeningDialog.profileBufferedImg;
 	private String clientName, target = "All members";
 	private JButton profileImage, editColor;
-	private JButton angelButton, angryButton, coolButton, cryButton, eatingButton, embarrassButton, sadButton, smileButton; 
+	private JButton angelButton, angryButton, coolButton, cryButton, eatingButton, embarrassButton, sadButton, smileButton, sendToAllButton; 
 	private JLabel profileNameLabel, sendingTarget;
 	private JList<UserData> userList;
 	private JPopupMenu userListPopup;
@@ -234,7 +234,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		sadButton.addActionListener(this);
 
 		smileButton = new JButton(new ImageIcon(client.CurveClient.class.getResource("/res/smile.png")));
-		smileButton.setBounds(50, 0, 20, 20);
+		smileButton.setBounds(175, 0, 20, 20);
 		smileButton.setBorderPainted(false);
 		smileButton.addActionListener(this);
 
@@ -243,13 +243,22 @@ public class MainFrame extends JFrame implements ActionListener{
 		smileysPanel.setLayout(null);
 		smileysPanel.add(angelButton);
 		smileysPanel.add(angryButton);
-		//smileysPanel.add(coolButton);
-		//smileysPanel.add(cryButton);
-		//smileysPanel.add(eatingButton);
-		//smileysPanel.add(embarrassButton);
-		//smileysPanel.add(sadButton);
+		smileysPanel.add(coolButton);
+		smileysPanel.add(cryButton);
+		smileysPanel.add(eatingButton);
+		smileysPanel.add(embarrassButton);
+		smileysPanel.add(sadButton);
 		smileysPanel.add(smileButton);
-		smileysPanel.setBounds(0, 370, 200, 20);
+		smileysPanel.setBounds(125, 370, 200, 20);
+		
+		sendToAllButton = new JButton("Send to all");
+		sendToAllButton.setBounds(0, 0, 120, 30);
+		sendToAllButton.addActionListener(this);
+		JPanel sendToAllPanel = new JPanel();
+		sendToAllPanel.setLayout(null);
+		sendToAllPanel.add(sendToAllButton);
+		sendToAllPanel.setBounds(0, 365, 120, 30);
+		
 		
 		sendingTarAndColorPanel.add(editColor);
 		sendingTarAndColorPanel.add(sendingTarget);
@@ -284,6 +293,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		rightPanel.add(chatAreaScrollPane);
 		rightPanel.add(sendingTarAndColorPanel);
 		rightPanel.add(smileysPanel);
+		rightPanel.add(sendToAllPanel);
 		rightPanel.add(textInputAreaScrollPane);
 		rightPanel.setBounds(140, 10, 450, 460);
 		
@@ -318,19 +328,19 @@ public class MainFrame extends JFrame implements ActionListener{
                  		m = m.replace(client.CurveClient.class.getResource("/res/angry.png").toString(), "angry.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/cool.png").toString()) != -1){ 
-                 		m = m.replace(client.CurveClient.class.getResource("/res/cool.png").toString(), "cool.png ");
+                 		m = m.replace(client.CurveClient.class.getResource("/res/cool.png").toString(), "cooly.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/cry.png").toString()) != -1){ 
-                 		m = m.replace(client.CurveClient.class.getResource("/res/cry.png").toString(), "cry.png ");
+                 		m = m.replace(client.CurveClient.class.getResource("/res/cry.png").toString(), "cried.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/eating.png").toString()) != -1){ 
-                 		m = m.replace(client.CurveClient.class.getResource("/res/eating.png").toString(), "eating.png ");
+                 		m = m.replace(client.CurveClient.class.getResource("/res/eating.png").toString(), "eaten.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/embarrass.png").toString()) != -1){ 
-                 		m = m.replace(client.CurveClient.class.getResource("/res/embarrass.png").toString(), "embarrass.png ");
+                 		m = m.replace(client.CurveClient.class.getResource("/res/embarrass.png").toString(), "embar.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/sad.png").toString()) != -1){ 
-                 		m = m.replace(client.CurveClient.class.getResource("/res/sad.png").toString(), "sad.png ");
+                 		m = m.replace(client.CurveClient.class.getResource("/res/sad.png").toString(), "saddy.png ");
                  	}
                  	if (m.indexOf(client.CurveClient.class.getResource("/res/smile.png").toString()) != -1){ 
                  		m = m.replace(client.CurveClient.class.getResource("/res/smile.png").toString(), "smile.png ");
@@ -457,6 +467,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		else if(e.getSource().equals(smileButton)){
 			textInputArea.insertIcon(new ImageIcon(client.CurveClient.class.getResource("/res/smile.png")));
 		}
+		else if(e.getSource().equals(sendToAllButton)){
+			target = "All members";
+			sendingTarget.setText("Send to: "+ target);
+		}
 	}
 	 
 	public List<Element> getAllElements(JTextPane x) {
@@ -503,32 +517,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	 //send msg as public or whisper
     private void prepareMsg ( String msg ) {
-/*
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/angel.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/angel.png").toString(), "angel.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/angry.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/angry.png").toString(), "angry.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/cool.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/cool.png").toString(), "cool.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/cry.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/cry.png").toString(), "cry.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/eating.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/eating.png").toString(), "eating.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/embarrass.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/embarrass.png").toString(), "embarrass.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/sad.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/sad.png").toString(), "sad.png");
-    	}
-    	if (msg.indexOf(client.CurveClient.class.getResource("/res/smile.png").toString()) != -1){ 
-    		msg = msg.replace(client.CurveClient.class.getResource("/res/smile.png").toString(), "smile.png");
-    	}
-    	*/
         String tar = target;
         //public msg
         if ( tar == "All members" ) {
@@ -546,7 +534,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 
 	public void addNewUser(String newUser, int color){
-		UserData newUserData = new UserData(newUser);
+		UserData newUserData = new UserData(newUser, color);
 		mainUserListModel.addElement(newUserData);
 		//userList.setListData(userListVector);
 		
@@ -562,17 +550,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	public void delUser ( String user ) {
-		UserData newUserData = new UserData(user);
 		int idx = searchUserByName(user);
 		if(idx != -1) {
+			UserData bye = mainUserListModel.get(idx);
+			CurveClient.dMgr.otherhead.delUserToEveryRoom(bye);
 			mainUserListModel.remove(idx);
 		}
-		//userList.setListData(userListVector);
 
         doc.removeStyle(user);
-        
-        // del to every room
-        CurveClient.dMgr.otherhead.delUserToEveryRoom(newUserData);
 
         addSysLine(user + " left.");
     }
@@ -673,6 +658,7 @@ public class MainFrame extends JFrame implements ActionListener{
     public void userChangeColor ( String name, int c ) {
         Style s = doc.getStyle(name);
         StyleConstants.setForeground(s, new Color(c));
+        textInputArea.setForeground(new Color(c));
     }
 
 
@@ -692,6 +678,7 @@ public class MainFrame extends JFrame implements ActionListener{
     
     public void setTarget(String t){
     	target = t;
+    	sendingTarget.setText("Whisper to: "+ target);
     }
     
     public void clear () {
@@ -790,45 +777,45 @@ public class MainFrame extends JFrame implements ActionListener{
         }
         smileys.add("angry.png");
 
-        s = doc.addStyle("cool.png", regular);
+        s = doc.addStyle("cooly.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
         ImageIcon coolIcon = new ImageIcon(client.CurveClient.class.getResource("/res/cool.png"));
         if (coolIcon != null) {
             StyleConstants.setIcon(s, coolIcon);
         }
-        smileys.add("cool.png");
+        smileys.add("cooly.png");
 
-        s = doc.addStyle("cry.png", regular);
+        s = doc.addStyle("cried.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
         ImageIcon cryIcon = new ImageIcon(client.CurveClient.class.getResource("/res/cry.png"));
         if (cryIcon != null) {
             StyleConstants.setIcon(s, cryIcon);
         }
-        smileys.add("cry.png");
+        smileys.add("cried.png");
         
-        s = doc.addStyle("eating.png", regular);
+        s = doc.addStyle("eaten.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
         ImageIcon eatingIcon = new ImageIcon(client.CurveClient.class.getResource("/res/eating.png"));
         if (eatingIcon != null) {
             StyleConstants.setIcon(s, eatingIcon);
         }
-        smileys.add("eating.png");
+        smileys.add("eaten.png");
         
-        s = doc.addStyle("embarrass.png", regular);
+        s = doc.addStyle("embar.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
         ImageIcon embarrassIcon = new ImageIcon(client.CurveClient.class.getResource("/res/embarrass.png"));
         if (embarrassIcon != null) {
             StyleConstants.setIcon(s, embarrassIcon);
         }
-        smileys.add("embarrass.png");
+        smileys.add("embar.png");
         
-        s = doc.addStyle("sad.png", regular);
+        s = doc.addStyle("saddy.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
         ImageIcon sadIcon = new ImageIcon(client.CurveClient.class.getResource("/res/sad.png"));
         if (sadIcon != null) {
             StyleConstants.setIcon(s, sadIcon);
         }
-        smileys.add("sad.png");
+        smileys.add("saddy.png");
         
         s = doc.addStyle("smile.png", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
