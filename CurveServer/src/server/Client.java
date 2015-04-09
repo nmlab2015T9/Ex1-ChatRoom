@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 
 import javax.imageio.ImageIO;
 
@@ -60,8 +61,10 @@ public class Client implements Runnable
 			}
 		} catch (EOFException e) {
 			//if( e instanceof SocketException ) {
-				CurveServer.removeUser(this, clientID);
+			CurveServer.removeUser(this, clientID);
 			//}
+		} catch (SocketException e) {
+			CurveServer.removeUser(this, clientID);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -118,7 +121,9 @@ public class Client implements Runnable
 			// /f [src name] [dest name]
 			String src = msg.split(" ", 3)[1];
 			String dest = msg.split(" ", 3)[2];
-			CurveServer.sendPrivate(dest, msg+" "+sock.getInetAddress().getHostName());
+			CurveServer.printMsg("\nSEND FILE!!!!\nsock.getInetAddress = " + sock.getInetAddress());
+			CurveServer.printMsg("sock.getInetAddress().getHostAddress() = " + sock.getInetAddress().getHostAddress() + "\n");
+			CurveServer.sendPrivate(dest, msg+" "+sock.getInetAddress().getHostAddress());
 		}
 		else if( msg.startsWith("/q-")) { // remove user
 			// /q- [username]

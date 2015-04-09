@@ -19,9 +19,14 @@ public class UserData
 			BufferedImage tempImg
 			= ImageIO.read(CurveClient.class.getResource("/res/profileimg.png"));
 			Graphics g = face.createGraphics();
-			g.drawImage(tempImg, 0, 0, 50, 50, null);
+			if(tempImg.getHeight()>tempImg.getWidth()) {
+				g.drawImage(tempImg, 0, 0, 50*tempImg.getWidth()/tempImg.getHeight(), 50, null);
+			}
+			else {
+				g.drawImage(tempImg, 0, 0, 50, 50*tempImg.getHeight()/tempImg.getWidth(), null);
+			}
 		} catch (IOException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	

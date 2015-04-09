@@ -6,11 +6,8 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
-
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class FileRX implements Runnable {
 	private RXFrame gui;
@@ -25,7 +22,9 @@ public class FileRX implements Runnable {
 	public void run() {
 		gui = new RXFrame();
 		try {
-			s = new Socket( srcaddr, 9987 );
+			System.out.println("RX端 ... 準備要來new Socket...." + InetAddress.getByName(srcaddr));
+			s = new Socket( srcaddr, 9988 );
+			System.out.println("RX端 s = new Socket!!!");
 			DataInputStream in = new DataInputStream( s.getInputStream() );
 			DataOutputStream out = new DataOutputStream( s.getOutputStream() );
 			String filename = in.readUTF();

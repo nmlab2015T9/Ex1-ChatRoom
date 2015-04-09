@@ -139,7 +139,7 @@ public class MainHead extends JFrame{
                 			}
                 			else{
                 				closeProcess();
-                				cancel();
+                				timer.cancel();
                 				i = 0;
                 			}
                 		}},10 ,3);
@@ -158,7 +158,7 @@ public class MainHead extends JFrame{
                 			}
                 			else{
                 				closeProcess();
-                				cancel();
+                				timer.cancel();
                 				i = 0;
                 			}
                 		}},10 ,3);
@@ -177,7 +177,7 @@ public class MainHead extends JFrame{
                 			}
                 			else{
                 				closeProcess();
-                				cancel();
+                				timer.cancel();
                 				i = 0;
                 			}
                 		}},10 ,3);
@@ -196,7 +196,7 @@ public class MainHead extends JFrame{
                 			}
                 			else{
                 				closeProcess();
-                				cancel();
+                				timer.cancel();
                 				i = 0;
                 			}
                 		}},10 ,3);
