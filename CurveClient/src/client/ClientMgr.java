@@ -27,6 +27,7 @@ public class ClientMgr implements Runnable {
 	public void connectionBegin() {
 		try {
             socket = new Socket(InetAddress.getByName(IP), port);
+            System.out.println("IP = " + IP + "    InetAddress.getByName(IP) = " + InetAddress.getByName(IP));
             mainhead.addSysLine("Connected: " + IP + ":" + port);
             
             //check if name available

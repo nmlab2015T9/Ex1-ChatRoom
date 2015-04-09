@@ -186,7 +186,7 @@ public class OpeningDialog extends JDialog implements ActionListener{
 		port.setBackground(new Color(200, 200, 200));
 		port.setEditable(false);
 		
-		profileNameLabel = new JLabel("<html>Profile Name <font color='red'>Already used!</font></html>");
+		profileNameLabel = new JLabel("Profile Name Already Used!");
 		profileNameLabel.setText("Profile Name");
 		profileNameLabel.setSize(profileImageSX, 30);
 		profileNameLabel.setLocation(5, profileImageSY-5);
