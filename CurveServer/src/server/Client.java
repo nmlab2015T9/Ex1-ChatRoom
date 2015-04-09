@@ -17,7 +17,7 @@ public class Client implements Runnable
 	private DataInputStream in;
 	private DataOutputStream out;
 	private String msg;
-	public String username;
+	public String username = "";
 	public int clientID;
     public int userColor;
 	public BufferedImage face;
@@ -135,6 +135,7 @@ public class Client implements Runnable
 		}
 	}
 	private void setname() throws IOException {
+		if(username != "") return;
 		String name;
 		out.writeUTF("/u");
 		while( true ) {

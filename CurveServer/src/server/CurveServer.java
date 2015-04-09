@@ -153,9 +153,9 @@ public class CurveServer {
 		String name = client.username;
 		//int i = cli.indexOf(c);
 		//sock.remove(i);
-		clientList.remove(client);
 		//thd.remove(i);
 		if( name!=null ) {
+			clientList.remove(client);
 			if(hasGUI)
 				gui.removeUser(client);
 			//userlist.remove(name);
