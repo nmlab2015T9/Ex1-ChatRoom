@@ -126,7 +126,7 @@ public class MainHead extends JFrame{
             public void mouseReleased(MouseEvent e){
             	final Point p = getLocation();
             	if(p.x < gap){
-            		Timer timer = new Timer();
+            		final Timer timer = new Timer();
                 	timer.scheduleAtFixedRate(new TimerTask(){  
                 		@Override
                 		public void run() {
@@ -145,7 +145,7 @@ public class MainHead extends JFrame{
                 		}},10 ,3);
             	}
             	else if(p.y < gap){
-            		Timer timer = new Timer();
+            		final Timer timer = new Timer();
                 	timer.scheduleAtFixedRate(new TimerTask(){  
                 		@Override
                 		public void run() {
@@ -164,7 +164,7 @@ public class MainHead extends JFrame{
                 		}},10 ,3);
             	}
             	else if(Math.abs(p.x - width) < (gap + sx)){
-            		Timer timer = new Timer();
+            		final Timer timer = new Timer();
                 	timer.scheduleAtFixedRate(new TimerTask(){  
                 		@Override
                 		public void run() {
@@ -183,7 +183,7 @@ public class MainHead extends JFrame{
                 		}},10 ,3);
             	}
             	else if(Math.abs(p.y - height) < (gap + sy)){
-            		Timer timer = new Timer();
+            		final Timer timer = new Timer();
                 	timer.scheduleAtFixedRate(new TimerTask(){  
                 		@Override
                 		public void run() {

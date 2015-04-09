@@ -76,7 +76,7 @@ public class OtherHead extends JFrame{
         		Rooms.get(i).setVisible(true);
 			}
 			setVisible(true);
-			Timer timer = new Timer();
+			final Timer timer = new Timer();
 			timer.scheduleAtFixedRate(new TimerTask(){  
 				@Override
 				public void run() {
@@ -90,7 +90,7 @@ public class OtherHead extends JFrame{
 					}
 				}},500 ,10);
 			
-			Timer t = new Timer();
+			final Timer t = new Timer();
 			t.scheduleAtFixedRate(new TimerTask(){  
 				@Override
 				public void run() {
@@ -108,7 +108,7 @@ public class OtherHead extends JFrame{
 		}
 		
 		else{		
-			Timer timer = new Timer();
+			final Timer timer = new Timer();
 			timer.scheduleAtFixedRate(new TimerTask(){  
 				@Override
 				public void run() {
@@ -124,7 +124,7 @@ public class OtherHead extends JFrame{
 				}},500 ,10);
 			
 
-			Timer t = new Timer();
+			final Timer t = new Timer();
 			t.scheduleAtFixedRate(new TimerTask(){  
 				@Override
 				public void run() {

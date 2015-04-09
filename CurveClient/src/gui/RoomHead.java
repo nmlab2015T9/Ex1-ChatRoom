@@ -112,7 +112,7 @@ public class RoomHead extends JFrame{
 	
     private void closeProcess(){
     	final Point p = getLocation();
-    	Timer timer = new Timer();
+    	final Timer timer = new Timer();
     	timer.scheduleAtFixedRate(new TimerTask(){  
     		
 				@Override
@@ -137,7 +137,7 @@ public class RoomHead extends JFrame{
 	    					timer.cancel();
 	    					i = 0;
 	    					
-	    					Timer timer = new Timer();
+	    					final Timer timer = new Timer();
 	    			    	timer.scheduleAtFixedRate(new TimerTask(){  
 	    			    		
 	    			    		@Override

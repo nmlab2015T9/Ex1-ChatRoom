@@ -410,9 +410,9 @@ public class MainFrame extends JFrame implements ActionListener{
 			String tar = userList.getSelectedValue().toString();
 			target = tar;
 			client.CurveClient.cMgr.sendVideo(target);
-            String [] arg = new String[2];
-            arg[0] = "224.112.112.112/1234";
-            arg[1] = "224.112.112.112/1236";
+            String [] arg = new String[1];
+            arg[0] = "140.112.18.200/1234";
+            //arg[1] = "224.112.112.112/1236";
             AVReceive2 avReceive = new AVReceive2(arg);
             if (!avReceive.initialize()) {
                 System.err.println("Failed to initialize the sessions.");

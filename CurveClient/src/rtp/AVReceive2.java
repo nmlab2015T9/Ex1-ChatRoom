@@ -100,6 +100,29 @@ public class AVReceive2 implements ReceiveStreamListener, SessionListener,
             return false;
         }
 
+        String [] args = new String[3];
+        args[0] = "vfw://0";
+        args[1] = "140.112.18.199";
+        args[2] = "1236";
+
+        Format fmt = null;
+        int i = 0;
+
+        // Create a audio transmit object with the specified params.
+        AVTransmit2 at = new AVTransmit2(new MediaLocator(args[i]),
+                args[i+1], args[i+2], fmt);
+        // Start the transmission
+        String result = at.start();
+
+        // result will be non-null if there was an error. The return
+        // value is a String describing the possible error. Print it.
+        if (result != null) {
+            System.err.println("Error : " + result);
+            System.exit(0);
+        }
+
+        System.err.println("Start transmission for 60 seconds...");
+
         // Wait for data to arrive before moving on.
 
         long then = System.currentTimeMillis();
